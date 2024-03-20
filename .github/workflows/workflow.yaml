@@ -44,7 +44,6 @@ jobs:
           name: Test Results
           path: ${{ github.workspace }}/target/surefire-reports/TEST-TestSuite.xml, ${{ github.workspace }}/target/failsafe-reports/failsafe-summary.xml
           reporter: java-junit
-          java-version: 21
 
       - name: Output test environment logs
         if: failure()
