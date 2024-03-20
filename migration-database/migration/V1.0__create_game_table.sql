@@ -1,0 +1,23 @@
+CREATE TABLE IF NOT EXISTS game
+(
+    id
+    UUID
+    NOT
+    NULL
+    UNIQUE,
+    game_name
+    TEXT
+    NOT
+    NULL,
+    price
+    TEXT
+    NOT
+    NULL,
+    CONSTRAINT
+    pk_game_id
+    PRIMARY
+    KEY
+(
+    id
+)
+    );

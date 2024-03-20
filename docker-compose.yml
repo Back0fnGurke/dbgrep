@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+
+  flyway:
+    image: flyway/flyway:latest
+    container_name: flyway_dbgrep
+    command: clean migrate
+    volumes:
+      - ./migration-database/migration:/flyway/sql/migration
+      - ./migration-database/flyway.conf:/flyway/conf/flyway.conf
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - database
+
+  postgres:
+    image: postgres:15
+    container_name: postgres_dbgrep
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: test
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+    networks:
+      - database
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U test" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+networks:
+  database:

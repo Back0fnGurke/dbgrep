@@ -1,0 +1,19 @@
+CREATE TABLE IF NOT EXISTS person
+(
+    id
+    uuid
+    NOT
+    NULL
+    UNIQUE,
+    person_name
+    text
+    NOT
+    NULL,
+    CONSTRAINT
+    pk_person_id
+    PRIMARY
+    KEY
+(
+    id
+)
+    );

@@ -1,0 +1,19 @@
+CREATE TABLE IF NOT EXISTS symbol
+(
+    id
+    UUID
+    NOT
+    NULL
+    UNIQUE,
+    symbol
+    TEXT
+    NOT
+    NULL,
+    CONSTRAINT
+    pk_symbol_id
+    PRIMARY
+    KEY
+(
+    id
+)
+    );
