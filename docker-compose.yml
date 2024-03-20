@@ -3,7 +3,7 @@ version: '3.9'
 services:
 
   flyway:
-    image: flyway/flyway:latest
+    image: flyway/flyway:10.10.0
     container_name: flyway_dbgrep
     command: clean migrate
     volumes:
