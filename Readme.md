@@ -33,7 +33,7 @@ Use following command to check your code quality locally:
 
 For separate execution:
 
-- `mvn -Pcicdprofile install`
+- `mvn -Pcicdprofile test`
 - `mvn -Pcicdprofile checkstyle:check`
 - `mvn -Pcicdprofile pmd:check`
 - `mvn -Pcicdprofile spotbugs:check`

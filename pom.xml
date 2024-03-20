@@ -209,7 +209,7 @@
                         <artifactId>maven-pmd-plugin</artifactId>
                         <version>3.21.2</version>
                         <configuration>
-                            <targetJdk>21</targetJdk>
+                            <targetJdk>20</targetJdk>
                             <includeTests>true</includeTests>
                             <failOnViolation>true</failOnViolation>
                             <printFailingErrors>true</printFailingErrors>
