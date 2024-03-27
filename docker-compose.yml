@@ -2,21 +2,38 @@ version: '3.9'
 
 services:
 
-  flyway:
+  flyway_postgres:
     image: flyway/flyway:10.10.0
-    container_name: flyway_dbgrep
+    container_name: flyway_postgres_dbgrep
+    profiles:
+      - flyway
     command: clean migrate
     volumes:
       - ./migration-database/migration:/flyway/sql/migration
-      - ./migration-database/flyway.conf:/flyway/conf/flyway.conf
+      - ./migration-database/flyway_postgres.conf:/flyway/conf/flyway.conf
     depends_on:
       postgres:
         condition: service_healthy
     networks:
       - database
 
+  flyway_mysql:
+    image: flyway/flyway:10.10.0
+    container_name: flyway_mysql_dbgrep
+    profiles:
+      - flyway
+    command: clean migrate
+    volumes:
+      - ./migration-database/migration:/flyway/sql/migration
+      - ./migration-database/flyway_mysql.conf:/flyway/conf/flyway.conf
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - database
+
   postgres:
-    image: postgres:15
+    image: postgres:latest
     container_name: postgres_dbgrep
     ports:
       - "5432:5432"
@@ -32,6 +49,26 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+  mysql:
+    image: mysql:8.1
+    container_name: mysql_dbgrep
+    ports:
+      - "3306:3306"
+    command: [ "--authentication_policy=mysql_native_password" ]
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+      MYSQL_ROOT_PASSWORD: test
+    networks:
+      - database
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
 
 networks:
   database:
