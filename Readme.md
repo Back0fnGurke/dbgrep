@@ -51,11 +51,10 @@ Use following command to execute integration tests:
 
 Use following command to check your code quality locally:
 
-- ``mvn -Pcicdprofile clean install checkstyle:check pmd:check spotbugs:check``
+- ``mvn -Pcicdprofile checkstyle:check pmd:check spotbugs:check``
 
 For separate execution:
 
-- ``mvn -Pcicdprofile test``
 - ``mvn -Pcicdprofile checkstyle:check``
 - ``mvn -Pcicdprofile pmd:check``
 - ``mvn -Pcicdprofile spotbugs:check``
