@@ -51,7 +51,7 @@ Use following command to execute integration tests:
 
 Use following command to check your code quality locally:
 
-- ``mvn -Pcicdprofile checkstyle:check pmd:check spotbugs:check``
+``mvn -Pcicdprofile checkstyle:check pmd:check spotbugs:check``
 
 For separate execution:
 
