@@ -35,7 +35,7 @@ jobs:
         run: docker compose --file ./docker-compose.yml up --force-recreate --wait
 
       - name: Test with coverage
-        run: mvn -Pcicdprofile test
+        run: mvn -Pcicdprofile install
 
       - name: Output test environment logs
         if: failure()
