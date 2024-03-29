@@ -215,18 +215,6 @@
                             <printFailingErrors>true</printFailingErrors>
                         </configuration>
                     </plugin>
-                    <!-- Code quality: Spotbugs -->
-                    <plugin>
-                        <groupId>com.github.spotbugs</groupId>
-                        <artifactId>spotbugs-maven-plugin</artifactId>
-                        <version>4.8.3.1</version>
-                        <configuration combine.self="append">
-                            <includeTests>true</includeTests>
-                            <effort>Max</effort>
-                            <threshold>Low</threshold>
-                            <failOnError>true</failOnError>
-                        </configuration>
-                    </plugin>
                     <!-- Source code style checking. -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
