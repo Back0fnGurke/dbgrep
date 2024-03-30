@@ -13,9 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Test Report
-        uses: dorny/test-reporter@v1
-        with:
-          name: Test Results
-          artifact: test-results
-          path: TEST-de.hdm_stuttgart.mi.dad.TestService.xml, failsafe-summary.xml
-          reporter: java-junit
+      uses: dorny/test-reporter@v1
+      with:
+        name: Test Results
+        artifact: test-results
+        path: TEST-de.hdm_stuttgart.mi.dad.TestService.xml, failsafe-summary.xml
+        reporter: java-junit
