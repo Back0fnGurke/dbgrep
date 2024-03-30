@@ -35,7 +35,7 @@ jobs:
         run: docker compose --file ./docker-compose.yml up --force-recreate --wait
 
       - name: Test with coverage
-        run: mvn -Pcicdprofile test
+        run: mvn -Pcicdprofile install
 
       - name: Output test environment logs
         if: failure()
@@ -44,10 +44,10 @@ jobs:
       - name: Stop test environment
         run: docker compose --file ./docker-compose.yml down
 
-      - name: Test Report
-        uses: dorny/test-reporter@v1
+      - uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
-          name: Test Results
-          path: ${{ github.workspace }}/target/surefire-reports/TEST-TestSuite.xml, ${{ github.workspace }}/target/failsafe-reports/failsafe-summary.xml
-          reporter: java-junit
+          name: test-results
+          path: |
+            ./target/surefire-reports/TEST-TestSuite.xml
+            ./target/failsafe-reports/failsafe-summary.xml
