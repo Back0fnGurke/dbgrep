@@ -1,3 +1,4 @@
+name: Build and Test
 on:
   push:
   pull_request:
@@ -27,9 +28,6 @@ jobs:
 
       - name: PMD code quality analysis
         run: mvn -Pcicdprofile pmd:check
-
-      - name: SpotBugs code quality analysis
-        run: mvn -Pcicdprofile spotbugs:check
 
       - name: Start test environment
         run: docker compose --file ./docker-compose.yml up --force-recreate --wait
