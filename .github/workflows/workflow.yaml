@@ -48,4 +48,4 @@ jobs:
       #     name: Test Results
       #     path: ${{ github.workspace }}/target/surefire-reports/TEST-TestSuite.xml, ${{ github.workspace }}/target/failsafe-reports/failsafe-summary.xml
       #     reporter: java-junit
-      - run: ls
+      - run: cd target || ls
