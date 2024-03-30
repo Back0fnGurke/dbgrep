@@ -48,5 +48,5 @@ jobs:
       #     name: Test Results
       #     path: /target/surefire-reports/TEST-TestSuite.xml, /target/failsafe-reports/failsafe-summary.xml
       #     reporter: java-junit
-      - run: cd target || ls -a
+      - run: bash cd target || ls -a
     
