@@ -1,0 +1,21 @@
+name: Test Report
+on:
+  workflow_run:
+    workflows: ['Build and Test']                     # runs after CI workflow
+    types:
+      - completed
+permissions:
+  contents: read
+  actions: read
+  checks: write
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Test Report
+        uses: dorny/test-reporter@v1
+        with:
+          name: Test Results
+          artifact: test-results
+          path: TEST-de.hdm_stuttgart.mi.dad.TestService.xml, failsafe-summary.xml
+          reporter: java-junit
