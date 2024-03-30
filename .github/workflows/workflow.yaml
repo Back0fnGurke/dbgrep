@@ -46,5 +46,5 @@ jobs:
         if: success() || failure()
         with:
           name: Test Results
-          path: ./target/surefire-reports/TEST-TestSuite.xml, ./target/failsafe-reports/failsafe-summary.xml
+          path: /target/surefire-reports/TEST-TestSuite.xml, /target/failsafe-reports/failsafe-summary.xml
           reporter: java-junit
