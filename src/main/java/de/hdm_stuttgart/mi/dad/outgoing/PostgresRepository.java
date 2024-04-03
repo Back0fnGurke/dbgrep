@@ -13,7 +13,17 @@ public class PostgresRepository implements RepositoryPort {
     }
 
     @Override
-    public void findData() {
+    public void findInWholeDatabase() {
+        // do stuff
+    }
+
+    @Override
+    public void findInColumn() {
+        // do stuff
+    }
+
+    @Override
+    public void findInTable() {
         // do stuff
     }
 }
