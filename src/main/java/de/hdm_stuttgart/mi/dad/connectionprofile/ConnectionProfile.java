@@ -1,6 +1,6 @@
-package de.hdm_stuttgart.mi.dad.config;
+package de.hdm_stuttgart.mi.dad.connectionprofile;
 
-public class DatabaseConfig {
+public class ConnectionProfile {
     private final String driver;
     private final String host;
     private final String port;
@@ -8,7 +8,7 @@ public class DatabaseConfig {
     private final String password;
     private final String database;
 
-    public DatabaseConfig(String driver, String host, String port, String user, String password, String dbName) {
+    public ConnectionProfile(String driver, String host, String port, String user, String password, String dbName) {
         this.driver = driver;
         this.host = host;
         this.user = user;
