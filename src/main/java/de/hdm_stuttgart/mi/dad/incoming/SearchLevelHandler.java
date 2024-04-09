@@ -16,6 +16,6 @@ public class SearchLevelHandler {
     public void handleInput(final String[] args) {
         //do stuff with inpu
 
-        service.handle();
+        //service.handle();
     }
 }
