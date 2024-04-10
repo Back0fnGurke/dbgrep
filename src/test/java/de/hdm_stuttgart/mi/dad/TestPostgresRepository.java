@@ -15,9 +15,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static java.util.Map.entry;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestPostgresRepository {
 
@@ -56,7 +59,7 @@ public class TestPostgresRepository {
         assertTrue(expected.containsAll(actual));
         assertTrue(actual.containsAll(expected));
 
-        assertThrows(SQLException.class, () -> repository.findTableColumns("test"));
+        assertTrue(repository.findTableColumns("test").isEmpty(), "should be empty");
     }
 
     @Test
@@ -66,63 +69,159 @@ public class TestPostgresRepository {
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
 
         final Pattern pattern1 = Pattern.compile("Dorian");
-        final List<List<String>> actual1 = repository.findInTable("account", columns, pattern1);
-        final List<List<String>> expected1 = Arrays.asList(
-                Arrays.asList("1", "Dorian", "Sporner", "2018-03-30 00:59:12", "dsporner0", "dsporner0@51.la", "jY0\\EZ&/9<X0.t")
+        final List<Map<String, String>> actual1 = repository.findInTable("account", columns, pattern1);
+        final List<Map<String, String>> expected1 = Arrays.asList(
+                Map.ofEntries(
+                        entry("id", "1"),
+                        entry("first_name", "Dorian"),
+                        entry("last_name", "Sporner"),
+                        entry("account_created", "2018-03-30 00:59:12"),
+                        entry("username", "dsporner0"),
+                        entry("email", "dsporner0@51.la"),
+                        entry("password", "jY0\\EZ&/9<X0.t")
+                )
         );
-        assertEquals(1, actual1.size(), "Wrong number of rows");
-        assertTrue(expected1.getFirst().containsAll(actual1.getFirst()));
-        assertTrue(actual1.getFirst().containsAll(expected1.getFirst()));
+        assertEquals(expected1.size(), actual1.size(), "Wrong number of rows");
+        assertEquals(expected1.getFirst(), actual1.getFirst(), "Maps should match");
 
 
         final Pattern pattern2 = Pattern.compile("^c");
-        final List<List<String>> actual2 = repository.findInTable("account", columns, pattern2);
-        final List<List<String>> expected2 = Arrays.asList(
-                Arrays.asList("4", "Caroline", "Aubri", "2020-04-09 09:47:58", "caubri3", "caubri3@auda.org.au", "gK7*2Eit"),
-                Arrays.asList("7", "Candace", "Breslauer", "2019-02-05 15:18:33", "cbreslauer6", "cbreslauer6@hao123.com", "tQ8/vr&.")
+        final List<Map<String, String>> actual2 = repository.findInTable("account", columns, pattern2);
+        final List<Map<String, String>> expected2 = Arrays.asList(
+                Map.ofEntries(
+                        entry("id", "4"),
+                        entry("first_name", "Caroline"),
+                        entry("last_name", "Aubri"),
+                        entry("account_created", "2020-04-09 09:47:58"),
+                        entry("username", "caubri3"),
+                        entry("email", "caubri3@auda.org.au"),
+                        entry("password", "gK7*2Eit")
+                ),
+                Map.ofEntries(
+                        entry("id", "7"),
+                        entry("first_name", "Candace"),
+                        entry("last_name", "Breslauer"),
+                        entry("account_created", "2019-02-05 15:18:33"),
+                        entry("username", "cbreslauer6"),
+                        entry("email", "cbreslauer6@hao123.com"),
+                        entry("password", "tQ8/vr&.")
+                )
         );
-        assertEquals(2, actual2.size(), "Wrong number of rows");
-        assertTrue(expected2.getFirst().containsAll(actual2.getFirst()));
-        assertTrue(actual2.getFirst().containsAll(expected2.getFirst()));
-        assertTrue(expected2.get(1).containsAll(actual2.get(1)));
-        assertTrue(actual2.get(1).containsAll(expected2.get(1)));
+        assertEquals(expected2.size(), actual2.size(), "Wrong number of rows");
+        assertEquals(expected2.getFirst(), actual2.getFirst(), "Maps should match");
+        assertEquals(expected2.get(1), actual2.get(1), "Maps should match");
+
 
         final Pattern pattern3 = Pattern.compile("[0-9]+");
-        final List<List<String>> actual3 = repository.findInTable("account", columns, pattern3);
-        final List<List<String>> expected3 = Arrays.asList(
-                Arrays.asList("1", "Dorian", "Sporner", "2018-03-30 00:59:12", "dsporner0", "dsporner0@51.la", "jY0\\EZ&/9<X0.t"),
-                Arrays.asList("2", "Bale", "Sandal", "2018-06-14 01:06:41", "bsandal1", "bsandal1@virginia.edu", "iO9\"J?s==0b6cP}9"),
-                Arrays.asList("3", "Burke", "Klaves", "2022-12-31 14:43:42", "bklaves2", "bklaves2@opera.com", "eA3\\i$tyTe*M(/z"),
-                Arrays.asList("4", "Caroline", "Aubri", "2020-04-09 09:47:58", "caubri3", "caubri3@auda.org.au", "gK7*2Eit"),
-                Arrays.asList("5", "Andrea", "Rummings", "2020-03-29 01:43:10", "arummings4", "arummings4@cnbc.com", "iL7_~0m#~\\*"),
-                Arrays.asList("6", "Keenan", "Ramme", "2019-01-07 09:11:25", "kramme5", "kramme5@vistaprint.com", "aE9)*,3ye1?)Snh"),
-                Arrays.asList("7", "Candace", "Breslauer", "2019-02-05 15:18:33", "cbreslauer6", "cbreslauer6@hao123.com", "tQ8/vr&."),
-                Arrays.asList("8", "Nelson", "Santacrole", "2018-09-01 19:57:19", "nsantacrole7", "nsantacrole7@usatoday.com", "qP2#Z0.I1C@2kV"),
-                Arrays.asList("9", "Laurel", "Norrie", "2020-11-15 17:37:15", "lnorrie8", "lnorrie8@google.ru", "mQ6}y=B8+eK"),
-                Arrays.asList("10", "Vernen", "Pordal", "2020-07-20 01:21:51", "vpordal9", "vpordal9@paginegialle.it", "nZ4_k\\+!N*xhT")
+        final List<Map<String, String>> actual3 = repository.findInTable("account", columns, pattern3);
+        final List<Map<String, String>> expected3 = Arrays.asList(
+                Map.ofEntries(
+                        entry("id", "1"),
+                        entry("first_name", "Dorian"),
+                        entry("last_name", "Sporner"),
+                        entry("account_created", "2018-03-30 00:59:12"),
+                        entry("username", "dsporner0"),
+                        entry("email", "dsporner0@51.la"),
+                        entry("password", "jY0\\EZ&/9<X0.t")
+                ),
+                Map.ofEntries(
+                        entry("id", "2"),
+                        entry("first_name", "Bale"),
+                        entry("last_name", "Sandal"),
+                        entry("account_created", "2018-06-14 01:06:41"),
+                        entry("username", "bsandal1"),
+                        entry("email", "bsandal1@virginia.edu"),
+                        entry("password", "iO9\"J?s==0b6cP}9")
+                ),
+                Map.ofEntries(
+                        entry("id", "3"),
+                        entry("first_name", "Burke"),
+                        entry("last_name", "Klaves"),
+                        entry("account_created", "2022-12-31 14:43:42"),
+                        entry("username", "bklaves2"),
+                        entry("email", "bklaves2@opera.com"),
+                        entry("password", "eA3\\i$tyTe*M(/z")
+                ),
+                Map.ofEntries(
+                        entry("id", "4"),
+                        entry("first_name", "Caroline"),
+                        entry("last_name", "Aubri"),
+                        entry("account_created", "2020-04-09 09:47:58"),
+                        entry("username", "caubri3"),
+                        entry("email", "caubri3@auda.org.au"),
+                        entry("password", "gK7*2Eit")
+                ),
+                Map.ofEntries(
+                        entry("id", "5"),
+                        entry("first_name", "Andrea"),
+                        entry("last_name", "Rummings"),
+                        entry("account_created", "2020-03-29 01:43:10"),
+                        entry("username", "arummings4"),
+                        entry("email", "arummings4@cnbc.com"),
+                        entry("password", "iL7_~0m#~\\*")
+                ),
+                Map.ofEntries(
+                        entry("id", "6"),
+                        entry("first_name", "Keenan"),
+                        entry("last_name", "Ramme"),
+                        entry("account_created", "2019-01-07 09:11:25"),
+                        entry("username", "kramme5"),
+                        entry("email", "kramme5@vistaprint.com"),
+                        entry("password", "aE9)*,3ye1?)Snh")
+                ),
+                Map.ofEntries(
+                        entry("id", "7"),
+                        entry("first_name", "Candace"),
+                        entry("last_name", "Breslauer"),
+                        entry("account_created", "2019-02-05 15:18:33"),
+                        entry("username", "cbreslauer6"),
+                        entry("email", "cbreslauer6@hao123.com"),
+                        entry("password", "tQ8/vr&.")
+                ),
+                Map.ofEntries(
+                        entry("id", "8"),
+                        entry("first_name", "Nelson"),
+                        entry("last_name", "Santacrole"),
+                        entry("account_created", "2018-09-01 19:57:19"),
+                        entry("username", "nsantacrole7"),
+                        entry("email", "nsantacrole7@usatoday.com"),
+                        entry("password", "qP2#Z0.I1C@2kV")
+                ),
+                Map.ofEntries(
+                        entry("id", "9"),
+                        entry("first_name", "Laurel"),
+                        entry("last_name", "Norrie"),
+                        entry("account_created", "2020-11-15 17:37:15"),
+                        entry("username", "lnorrie8"),
+                        entry("email", "lnorrie8@google.ru"),
+                        entry("password", "mQ6}y=B8+eK")
+                ),
+                Map.ofEntries(
+                        entry("id", "10"),
+                        entry("first_name", "Vernen"),
+                        entry("last_name", "Pordal"),
+                        entry("account_created", "2020-07-20 01:21:51"),
+                        entry("username", "vpordal9"),
+                        entry("email", "vpordal9@paginegialle.it"),
+                        entry("password", "nZ4_k\\+!N*xhT")
+                )
         );
-        assertEquals(10, actual3.size(), "Wrong number of rows");
-        assertTrue(expected3.getFirst().containsAll(actual3.getFirst()));
-        assertTrue(actual3.getFirst().containsAll(expected3.getFirst()));
-        assertTrue(expected3.get(1).containsAll(actual3.get(1)));
-        assertTrue(actual3.get(1).containsAll(expected3.get(1)));
-        assertTrue(expected3.get(2).containsAll(actual3.get(2)));
-        assertTrue(actual3.get(2).containsAll(expected3.get(2)));
-        assertTrue(expected3.get(3).containsAll(actual3.get(3)));
-        assertTrue(actual3.get(3).containsAll(expected3.get(3)));
-        assertTrue(expected3.get(4).containsAll(actual3.get(4)));
-        assertTrue(actual3.get(4).containsAll(expected3.get(4)));
-        assertTrue(expected3.get(5).containsAll(actual3.get(5)));
-        assertTrue(actual3.get(5).containsAll(expected3.get(5)));
-        assertTrue(expected3.get(6).containsAll(actual3.get(6)));
-        assertTrue(actual3.get(6).containsAll(expected3.get(6)));
-        assertTrue(expected3.get(7).containsAll(actual3.get(7)));
-        assertTrue(actual3.get(7).containsAll(expected3.get(7)));
-        assertTrue(expected3.get(8).containsAll(actual3.get(8)));
-        assertTrue(actual3.get(8).containsAll(expected3.get(8)));
-        System.out.println(expected3.get(9) + "\n\n" + actual3.get(9));
-        assertTrue(expected3.get(9).containsAll(actual3.get(9)));
-        assertTrue(actual3.get(9).containsAll(expected3.get(9)));
+        assertEquals(expected3.size(), actual3.size(), "Wrong number of rows");
+        assertEquals(expected3.getFirst(), actual3.getFirst(), "Maps should match");
+        assertEquals(expected3.get(1), actual3.get(1), "Maps should match");
+        assertEquals(expected3.get(2), actual3.get(2), "Maps should match");
+        assertEquals(expected3.get(3), actual3.get(3), "Maps should match");
+        assertEquals(expected3.get(4), actual3.get(4), "Maps should match");
+        assertEquals(expected3.get(5), actual3.get(5), "Maps should match");
+        assertEquals(expected3.get(6), actual3.get(6), "Maps should match");
+        assertEquals(expected3.get(7), actual3.get(7), "Maps should match");
+        assertEquals(expected3.get(8), actual3.get(8), "Maps should match");
+        assertEquals(expected3.get(9), actual3.get(9), "Maps should match");
+
+
+        final Pattern pattern4 = Pattern.compile("test");
+        final List<Map<String, String>> actual4 = repository.findInTable("account", columns, pattern4);
+        assertTrue(actual4.isEmpty(), "should be empty");
     }
 
 }

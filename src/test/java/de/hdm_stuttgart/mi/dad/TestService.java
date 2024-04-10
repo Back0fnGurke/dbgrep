@@ -41,20 +41,77 @@ class TestService {
         final List<String> columnNames1 = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
         final List<String> columnNames2 = Arrays.asList("id", "name", "description", "genre", "price");
         final List<String> columnNames3 = Arrays.asList("id", "game", "account", "review");
-        final List<List<String>> foundRows1 = Arrays.asList(
-                Arrays.asList("4", "Caroline", "Aubri", "2020-04-09 09:47:58", "caubri3", "caubri3@auda.org.au", "gK7*2Eit"),
-                Arrays.asList("7", "Candace", "Breslauer", "2019-02-05 15:18:33", "cbreslauer6", "cbreslauer6@hao123.com", "tQ8/vr&."),
-                Arrays.asList("9", "Laurel", "Norrie", "2020-11-15 17:37:15", "lnorrie8", "lnorrie8@google.ru", "mQ6}y=B8+eK")
+        final List<Map<String, String>> foundRows1 = Arrays.asList(
+                Map.ofEntries(
+                        entry("id", "4"),
+                        entry("first_name", "Caroline"),
+                        entry("last_name", "Aubri"),
+                        entry("account_created", "2020-04-09 09:47:58"),
+                        entry("username", "caubri3"),
+                        entry("email", "caubri3@auda.org.au"),
+                        entry("password", "gK7*2Eit")
+                ),
+                Map.ofEntries(
+                        entry("id", "7"),
+                        entry("first_name", "Candace"),
+                        entry("last_name", "Breslauer"),
+                        entry("account_created", "2019-02-05 15:18:33"),
+                        entry("username", "cbreslauer6"),
+                        entry("email", "cbreslauer6@hao123.com"),
+                        entry("password", "tQ8/vr&.")
+                ),
+                Map.ofEntries(
+                        entry("id", "9"),
+                        entry("first_name", "Laurel"),
+                        entry("last_name", "Norrie"),
+                        entry("account_created", "2020-11-15 17:37:15"),
+                        entry("username", "lnorrie8"),
+                        entry("email", "lnorrie8@google.ru"),
+                        entry("password", "mQ6}y=B8+eK")
+                )
         );
-        final List<List<String>> foundRows2 = Arrays.asList(
-                Arrays.asList("1", "The Last of Us", "survival shooter horror game", "horror", "30"),
-                Arrays.asList("2", "Hollow knight", "play as a bug", "Metroidvania", "15"),
-                Arrays.asList("3", "Helldivers 2", "bring democracy to the galaxy", "coop shooter", "40")
+        final List<Map<String, String>> foundRows2 = Arrays.asList(
+                Map.ofEntries(
+                        entry("id", "1"),
+                        entry("name", "The Last of Us"),
+                        entry("description", "survival shooter horror game"),
+                        entry("genre", "horror"),
+                        entry("price", "30")
+                ),
+                Map.ofEntries(
+                        entry("id", "2"),
+                        entry("name", "Hollow knight"),
+                        entry("description", "play as a bug"),
+                        entry("genre", "Metroidvania"),
+                        entry("price", "15")
+                ),
+                Map.ofEntries(
+                        entry("id", "3"),
+                        entry("name", "Helldivers 2"),
+                        entry("description", "bring democracy to the galaxy"),
+                        entry("genre", "coop shooter"),
+                        entry("price", "40")
+                )
         );
-        final List<List<String>> foundRows3 = Arrays.asList(
-                Arrays.asList("1", "1", "4", "10/10 would cry again"),
-                Arrays.asList("2", "2", "7", "10/10 haven't seen the light of day since weeks"),
-                Arrays.asList("3", "3", "9", "10/10 scared of my roomba now")
+        final List<Map<String, String>> foundRows3 = Arrays.asList(
+                Map.ofEntries(
+                        entry("id", "1"),
+                        entry("game", "1"),
+                        entry("account", "4"),
+                        entry("review", "10/10 would cry again")
+                ),
+                Map.ofEntries(
+                        entry("id", "2"),
+                        entry("game", "2"),
+                        entry("account", "7"),
+                        entry("review", "10/10 haven't seen the light of day since weeks")
+                ),
+                Map.ofEntries(
+                        entry("id", "3"),
+                        entry("game", "3"),
+                        entry("account", "9"),
+                        entry("review", "10/10 scared of my roomba now")
+                )
         );
 
         when(repository.findTableColumns(table1)).thenReturn(columnNames1);
@@ -65,20 +122,25 @@ class TestService {
         when(repository.findInTable(table3, columnNames3, pattern)).thenReturn(foundRows3);
 
 
-        final Map<String, List<List<String>>> expected1 = Map.ofEntries(
+        final Map<String, List<Map<String, String>>> expected1 = Map.ofEntries(
                 entry(table1, foundRows1),
                 entry(table2, foundRows2),
                 entry(table3, foundRows3)
         );
-
-        final Map<String, List<List<String>>> actual1 = service.searchTable(List.of(table1, table2, table3), pattern);
-
+        final Map<String, List<Map<String, String>>> actual1 = service.searchTable(List.of(table1, table2, table3), pattern);
         assertEquals(expected1.size(), actual1.size());
         assertEquals(expected1.get(table1).size(), actual1.get(table1).size());
         assertEquals(expected1.get(table2).size(), actual1.get(table2).size());
         assertEquals(expected1.get(table3).size(), actual1.get(table3).size());
-        assertEquals(expected1.get(table1), actual1.get(table1));
-        assertEquals(expected1.get(table2), actual1.get(table2));
-        assertEquals(expected1.get(table3), actual1.get(table3));
+
+        assertEquals(expected1.get(table1).getFirst(), actual1.get(table1).getFirst());
+        assertEquals(expected1.get(table1).get(1), actual1.get(table1).get(1));
+        assertEquals(expected1.get(table1).get(2), actual1.get(table1).get(2));
+        assertEquals(expected1.get(table2).getFirst(), actual1.get(table2).getFirst());
+        assertEquals(expected1.get(table2).get(1), actual1.get(table2).get(1));
+        assertEquals(expected1.get(table2).get(2), actual1.get(table2).get(2));
+        assertEquals(expected1.get(table3).getFirst(), actual1.get(table3).getFirst());
+        assertEquals(expected1.get(table3).get(1), actual1.get(table3).get(1));
+        assertEquals(expected1.get(table3).get(2), actual1.get(table3).get(2));
     }
 }

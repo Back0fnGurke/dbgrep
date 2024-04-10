@@ -11,7 +11,7 @@
         <option name="MAIN_CLASS_NAME" value="de.hdm_stuttgart.mi.dad.TestService"/>
         <option name="METHOD_NAME" value=""/>
         <option name="TEST_OBJECT" value="class"/>
-        <option name="VM_PARAMETERS" value="-ea -Dnet.bytebuddy.experimental=true"/>
+        <option name="VM_PARAMETERS" value="-ea -Dnet.bytebuddy.experimental=true -XX:+EnableDynamicAgentLoading"/>
         <method v="2">
             <option name="Make" enabled="true"/>
         </method>
