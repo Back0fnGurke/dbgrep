@@ -1,16 +1,18 @@
 package de.hdm_stuttgart.mi.dad.config;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Properties;
 import java.util.stream.Stream;
 
 public class ConfigHandler {
-    final String DIRECTORY_OF_PROFILES = ".dbgrep/profiles";
+    private final String DIRECTORY_OF_PROFILES = ".dbgrep/profiles";
 
-    public Path getDefaultProfile() throws IOException {
+    public DatabaseConfig getDefaultDBConfig() throws IOException {
         try (Stream<Path> stream = Files.list(getDirectory())) {
             List<Path> profiles = stream
                     //TODO Filterung mit verschiedenen Dateitypen wie .cnf
@@ -30,14 +32,15 @@ public class ConfigHandler {
                         " vorhanden. Bitte wählen Sie mit dem Befehl '--profile' ein Profil aus den hier" +
                         " aufgelisteten Profilen heraus: \n" + getStringOfProfileList(profiles));
             }
-            return profiles.get(0);
+
+            return readProfileFile(profiles.get(0));
         }
     }
 
-    public Path getSelectedProfile(String fileName) {
+    public DatabaseConfig getSelectedDBConfig(String fileName) throws IOException {
         Path pathOfProfile = getDirectory().resolve(fileName);
         if (Files.exists(pathOfProfile) && !Files.isDirectory(pathOfProfile)) {
-            return pathOfProfile;
+            return readProfileFile(pathOfProfile);
         }
         //TODO eigene Exception schreiben?
         throw new IllegalArgumentException("Die angegebene File" + fileName + "existiert nicht im Ordner " +
@@ -48,13 +51,29 @@ public class ConfigHandler {
         return Paths.get(DIRECTORY_OF_PROFILES);
     }
 
-    private String getStringOfProfileList(List<Path> profiles){
+    private String getStringOfProfileList(List<Path> profiles) {
         StringBuilder profileList = new StringBuilder();
-        for (Path profile : profiles){
+        for (Path profile : profiles) {
             profileList.append(profile.getFileName().toString());
             profileList.append("\n");
         }
         return profileList.toString();
+    }
+
+    private DatabaseConfig readProfileFile(Path pathOfProfile) throws IOException {
+        Properties configProperties = new Properties();
+        try (InputStream stream = Files.newInputStream(pathOfProfile)) {
+            configProperties.load(stream);
+        }
+        //TODO null Abfrage; Testen ob die angegebenen Werte passen? Wo?
+        String driver = configProperties.getProperty("driver");
+        String host = configProperties.getProperty("host");
+        String port = configProperties.getProperty("port");
+        String user = configProperties.getProperty("user");
+        String password = configProperties.getProperty("password");
+        String database = configProperties.getProperty("database");
+
+        return new DatabaseConfig(driver, host, port, user, password, database);
     }
 
 }
