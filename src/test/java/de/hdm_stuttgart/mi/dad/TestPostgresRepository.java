@@ -1,6 +1,7 @@
 package de.hdm_stuttgart.mi.dad;
 
-import de.hdm_stuttgart.mi.dad.outgoing.PostgresRepository;
+import de.hdm_stuttgart.mi.dad.outgoing.RepositoryFactory;
+import de.hdm_stuttgart.mi.dad.ports.RepositoryPort;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestPostgresRepository {
 
     static Connection connection;
-    static PostgresRepository repository;
+    static RepositoryPort repository;
     static ScriptRunner scriptRunner;
 
     @BeforeAll
@@ -31,7 +32,7 @@ public class TestPostgresRepository {
         scriptRunner = new ScriptRunner(connection);
         scriptRunner.setSendFullScript(true);
         scriptRunner.setStopOnError(true);
-        repository = new PostgresRepository(connection);
+        repository = RepositoryFactory.newRepository(connection, "postgresql");
     }
 
     @AfterAll

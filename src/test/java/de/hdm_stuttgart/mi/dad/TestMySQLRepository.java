@@ -1,6 +1,7 @@
 package de.hdm_stuttgart.mi.dad;
 
-import de.hdm_stuttgart.mi.dad.outgoing.MySQLRepository;
+import de.hdm_stuttgart.mi.dad.outgoing.RepositoryFactory;
+import de.hdm_stuttgart.mi.dad.ports.RepositoryPort;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,10 +19,10 @@ import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestMySQLRepository {
+class TestMySQLRepository {
 
     static Connection connection;
-    static MySQLRepository repository;
+    static RepositoryPort repository;
     static ScriptRunner scriptRunner;
 
     @BeforeAll
@@ -31,7 +32,7 @@ public class TestMySQLRepository {
         scriptRunner = new ScriptRunner(connection);
         scriptRunner.setSendFullScript(true);
         scriptRunner.setStopOnError(true);
-        repository = new MySQLRepository(connection);
+        repository = RepositoryFactory.newRepository(connection, "mysql");
     }
 
     @AfterAll

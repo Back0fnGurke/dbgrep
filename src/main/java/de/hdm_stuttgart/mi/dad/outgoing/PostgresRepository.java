@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class PostgresRepository implements RepositoryPort {
+class PostgresRepository implements RepositoryPort {
 
     final Connection connection;
 

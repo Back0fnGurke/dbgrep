@@ -4,6 +4,8 @@
 
 ## Development
 
+Java version: 21
+
 ### Start test environment
 
 #### Prerequisites:

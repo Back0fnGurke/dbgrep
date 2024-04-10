@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class MySQLRepository implements RepositoryPort {
+class MySQLRepository implements RepositoryPort {
 
     final Connection connection;
 
