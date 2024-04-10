@@ -22,11 +22,11 @@ public class Service implements ServicePort {
     }
 
     @Override
-    public Map<String, List<List<String>>> searchTable(final List<String> tableNames, final Pattern pattern) throws Exception {
+    public Map<String, List<Map<String, String>>> searchTable(final List<String> tableNames, final Pattern pattern) throws SQLException {
 
         log.debug("table names: {}, search pattern: {}", tableNames, pattern.pattern());
 
-        final Map<String, List<List<String>>> results = HashMap.newHashMap(tableNames.size());
+        final Map<String, List<Map<String, String>>> results = HashMap.newHashMap(tableNames.size());
 
         for (final String tableName : tableNames) {
 
@@ -41,7 +41,7 @@ public class Service implements ServicePort {
 
             log.debug("column names of table: {}", columnNames);
 
-            final List<List<String>> rows;
+            final List<Map<String, String>> rows;
             try {
                 rows = repository.findInTable(tableName, columnNames, pattern);
 

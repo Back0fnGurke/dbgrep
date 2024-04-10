@@ -9,9 +9,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
+/**
+ * Implementation of the RepositoryPort Interface for mysql databases.
+ */
 class MySQLRepository implements RepositoryPort {
 
     final Connection connection;
@@ -32,8 +37,9 @@ class MySQLRepository implements RepositoryPort {
 
     }
 
+
     @Override
-    public List<List<String>> findInTable(final String tableName, final List<String> columnNames, final Pattern pattern) throws SQLException {
+    public List<Map<String, String>> findInTable(final String tableName, final List<String> columnNames, final Pattern pattern) throws SQLException {
 
         log.debug("table name: {}, column names: {}, search pattern: {}", tableName, columnNames, pattern);
 
@@ -56,20 +62,16 @@ class MySQLRepository implements RepositoryPort {
 
             log.debug("sql query string: {}", statement);
 
-            final List<List<String>> result = new ArrayList<>();
+            final List<Map<String, String>> result = new ArrayList<>();
             try (final ResultSet tableSet = statement.executeQuery()) {
-
-                if (!tableSet.isBeforeFirst()) {
-                    throw new SQLException("no matches in columns found");
-                }
 
                 while (tableSet.next()) {
 
                     final int columnCount = tableSet.getMetaData().getColumnCount();
-                    final ArrayList<String> columns = new ArrayList<>(columnCount);
+                    final Map<String, String> columns = HashMap.newHashMap(columnCount);
 
                     for (int i = 1; i <= columnCount; i++) {
-                        columns.add(tableSet.getString(i));
+                        columns.put(tableSet.getMetaData().getColumnName(i), tableSet.getString(i));
                     }
 
                     log.debug("column count in found row: {}, columns: {}", columnCount, columns);
@@ -96,10 +98,6 @@ class MySQLRepository implements RepositoryPort {
             log.debug("query string: {}", statement);
 
             try (final ResultSet columnNamesSet = statement.executeQuery()) {
-
-                if (!columnNamesSet.isBeforeFirst()) {
-                    throw new SQLException("no columns found");
-                }
 
                 while (columnNamesSet.next()) {
                     columnNames.add(columnNamesSet.getString(1));
