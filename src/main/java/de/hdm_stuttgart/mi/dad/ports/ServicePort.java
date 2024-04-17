@@ -19,5 +19,5 @@ public interface ServicePort {
      * @return a List of Tables. List of Rows in Table is Empty if none where found.
      * @throws SQLException if a database access error occurs
      */
-    List<Table> searchTables(final List<String> tableNames, final Pattern pattern) throws SQLException;
+    List<Table> searchPatternInTables(final List<String> tableNames, final Pattern pattern) throws SQLException;
 }

@@ -22,7 +22,7 @@ public class Service implements ServicePort {
     }
 
     @Override
-    public List<Table> searchTables(final List<String> tableNames, final Pattern pattern) throws SQLException {
+    public List<Table> searchPatternInTables(final List<String> tableNames, final Pattern pattern) throws SQLException {
 
         log.debug("table names: {}, search pattern: {}", tableNames, pattern.pattern());
 

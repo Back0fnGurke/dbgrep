@@ -123,7 +123,7 @@ class TestService {
 
 
         final List<Table> expected1 = Arrays.asList(table1, table2, table3);
-        final List<Table> actual1 = service.searchTables(List.of(tableName1, tableName2, tableName3), pattern);
+        final List<Table> actual1 = service.searchPatternInTables(List.of(tableName1, tableName2, tableName3), pattern);
         assertEquals(expected1.size(), actual1.size());
         for (int i = 0; i < expected1.size(); i++) {
 
