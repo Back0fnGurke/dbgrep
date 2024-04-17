@@ -10,7 +10,7 @@ import java.util.Properties;
 import java.util.stream.Stream;
 
 public class ConnectionProfileHandler {
-    private final String DIRECTORY_OF_PROFILES = ".dbgrep/profiles";
+    private final String DIRECTORY_OF_PROFILES = "~/.dbgrep/profiles";
 
     public ConnectionProfileHandler() {
     }
@@ -25,12 +25,11 @@ public class ConnectionProfileHandler {
             long fileCount = profiles.size();
 
             if (fileCount == 0) {
-                //TODO Errornachrichten System erstellen? Enums?
+                //TODO Errornachrichten System erstellen
                 throw new IllegalArgumentException("Im Ordner " + DIRECTORY_OF_PROFILES +
                         " existiert keine File. Bitte erstellen Sie ein Profil in diesem Ordner.");
             }
             if (fileCount > 1) {
-                //TODO Auf jeden Fall Formatierung xD
                 throw new IllegalArgumentException("Es sind mehrere Profile im Ordner " + DIRECTORY_OF_PROFILES +
                         " vorhanden. Bitte wählen Sie mit dem Befehl '--profile' ein Profil aus den hier" +
                         " aufgelisteten Profilen heraus: \n" + getStringOfProfileList(profiles));
@@ -68,7 +67,7 @@ public class ConnectionProfileHandler {
         try (InputStream stream = Files.newInputStream(pathOfProfile)) {
             configProperties.load(stream);
         }
-        //TODO null Abfrage; Testen ob die angegebenen Werte passen? Wo?
+
         String driver = configProperties.getProperty("driver");
         String host = configProperties.getProperty("host");
         String port = configProperties.getProperty("port");
