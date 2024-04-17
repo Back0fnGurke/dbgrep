@@ -13,7 +13,17 @@ public class MySQLRepository implements RepositoryPort {
     }
 
     @Override
-    public void findData() {
-        // do stuff
+    public void findInWholeDatabase() {
+
+    }
+
+    @Override
+    public void findInColumn() {
+
+    }
+
+    @Override
+    public void findInTable() {
+
     }
 }
