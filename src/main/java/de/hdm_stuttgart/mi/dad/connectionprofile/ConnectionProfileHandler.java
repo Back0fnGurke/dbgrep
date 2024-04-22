@@ -1,5 +1,10 @@
 package de.hdm_stuttgart.mi.dad.connectionprofile;
 
+import de.hdm_stuttgart.mi.dad.core.exception.IllegalFileExtensionException;
+import de.hdm_stuttgart.mi.dad.core.exception.MultipleProfileException;
+import de.hdm_stuttgart.mi.dad.core.exception.NoProfileException;
+
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -10,27 +15,26 @@ import java.util.Properties;
 import java.util.stream.Stream;
 
 public class ConnectionProfileHandler {
-    private final String DIRECTORY_OF_PROFILES = "~/.dbgrep/profiles";
+    private String directoryOfProfiles = "~/.dbgrep/profiles";
 
-    public ConnectionProfileHandler() {
+    public ConnectionProfileHandler(String directory) {
+        directoryOfProfiles = directory;
     }
 
-    public ConnectionProfile getDefaultDBConfig() throws IOException {
+    public ConnectionProfile getDefaultDBConfig() throws NoProfileException, MultipleProfileException, IOException {
         try (Stream<Path> stream = Files.list(getDirectory())) {
             List<Path> profiles = stream
-                    //TODO Filterung mit verschiedenen Dateitypen wie .cnf
-                    .filter(file -> !Files.isDirectory(file))
+                    .filter(file -> !Files.isDirectory(file) && hasConfigExtension(file.getFileName().toString()))
                     .toList();
 
             long fileCount = profiles.size();
 
             if (fileCount == 0) {
-                //TODO Errornachrichten System erstellen
-                throw new IllegalArgumentException("Im Ordner " + DIRECTORY_OF_PROFILES +
+                throw new NoProfileException("Im Ordner " + directoryOfProfiles +
                         " existiert keine File. Bitte erstellen Sie ein Profil in diesem Ordner.");
             }
             if (fileCount > 1) {
-                throw new IllegalArgumentException("Es sind mehrere Profile im Ordner " + DIRECTORY_OF_PROFILES +
+                throw new MultipleProfileException("Es sind mehrere Profile im Ordner " + directoryOfProfiles +
                         " vorhanden. Bitte wählen Sie mit dem Befehl '--profile' ein Profil aus den hier" +
                         " aufgelisteten Profilen heraus: \n" + getStringOfProfileList(profiles));
             }
@@ -39,18 +43,20 @@ public class ConnectionProfileHandler {
         }
     }
 
-    public ConnectionProfile getSelectedDBConfig(String fileName) throws IOException {
+    public ConnectionProfile getSelectedDBConfig(String fileName) throws IOException, IllegalFileExtensionException {
+        if(hasConfigExtension(fileName)){
+            throw new IllegalFileExtensionException("Die Profile File muss mit .cnf enden.");
+        }
         Path pathOfProfile = getDirectory().resolve(fileName);
         if (Files.exists(pathOfProfile) && !Files.isDirectory(pathOfProfile)) {
             return readProfileFile(pathOfProfile);
         }
-        //TODO eigene Exception schreiben?
-        throw new IllegalArgumentException("Die angegebene File" + fileName + "existiert nicht im Ordner " +
-                DIRECTORY_OF_PROFILES + ".");
+        throw new FileNotFoundException("Die angegebene File" + fileName + "existiert nicht im Ordner " +
+                directoryOfProfiles + ".");
     }
 
     private Path getDirectory() {
-        return Paths.get(DIRECTORY_OF_PROFILES);
+        return Paths.get(directoryOfProfiles);
     }
 
     private String getStringOfProfileList(List<Path> profiles) {
@@ -76,5 +82,9 @@ public class ConnectionProfileHandler {
         String database = configProperties.getProperty("database");
 
         return new ConnectionProfile(driver, host, port, user, password, database);
+    }
+
+    private boolean hasConfigExtension(String file){
+        return file.endsWith(".cnf");
     }
 }
