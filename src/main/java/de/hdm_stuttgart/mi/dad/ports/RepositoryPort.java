@@ -26,6 +26,17 @@ public interface RepositoryPort {
     Table findPattern(final String tableName, final List<String> columnNames, final Pattern pattern) throws SQLException;
 
     /**
+     * Find rows in provided table that have column values which match the provided LIKE pattern.
+     *
+     * @param tableName   the table name to search in
+     * @param columnNames column names of the table to match against the provided pattern
+     * @param pattern     the pattern to match the columns against
+     * @return a Table containing all rows with matching column values. List of Rows is Empty if none where found.
+     * @throws SQLException if a database access error occurs
+     */
+    Table findLikePattern(final String tableName, final List<String> columnNames, final String pattern) throws SQLException;
+
+    /**
      * Find column names of a table.
      *
      * @param tableName the table name to search the columns for

@@ -231,4 +231,28 @@ class TestMySQLRepository {
         assertTrue(actual4.rows().isEmpty(), "should be empty");
     }
 
+    @Test
+    void test_findLikePattern() throws SQLException, FileNotFoundException {
+        scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findPattern_testdata.sql"));
+
+        final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
+
+
+        final String tableName1 = "account";
+        final String pattern1 = "Dorian";
+        final Table actual1 = repository.findLikePattern(tableName1, columns, pattern1);
+        final Table expected1 = new Table(tableName1, List.of(
+                new Row(Arrays.asList(
+                        new ColumnValue("id", "1"),
+                        new ColumnValue("first_name", "Dorian"),
+                        new ColumnValue("last_name", "Sporner"),
+                        new ColumnValue("account_created", "2018-03-30 00:59:12"),
+                        new ColumnValue("username", "dsporner0"),
+                        new ColumnValue("email", "dsporner0@51.la"),
+                        new ColumnValue("password", "jY0\\EZ&/9<X0.t")
+                ))
+        ));
+        assertEquals(expected1.rows().size(), actual1.rows().size(), "Wrong number of rows");
+        assertEquals(expected1.rows().getFirst(), actual1.rows().getFirst(), "Maps should match");
+    }
 }

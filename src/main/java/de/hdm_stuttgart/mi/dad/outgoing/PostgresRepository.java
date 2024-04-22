@@ -85,6 +85,11 @@ class PostgresRepository implements RepositoryPort {
     }
 
     @Override
+    public Table findLikePattern(String tableName, List<String> columnNames, String pattern) throws SQLException {
+        return null;
+    }
+
+    @Override
     public List<String> findTableColumnNames(final String tableName) throws SQLException {
 
         log.debug("table name: {}", tableName);
