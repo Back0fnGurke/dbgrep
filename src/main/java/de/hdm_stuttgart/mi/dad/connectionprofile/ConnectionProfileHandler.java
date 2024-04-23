@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Properties;
 import java.util.stream.Stream;
 
+/**
+ * Find the connection profile file in the determined directory and create a connection profile
+ */
 public class ConnectionProfileHandler {
     private String directoryOfProfiles = "~/.dbgrep/profiles";
 
@@ -21,7 +24,13 @@ public class ConnectionProfileHandler {
         directoryOfProfiles = directory;
     }
 
-    public ConnectionProfile getDefaultDBConfig() throws NoProfileException, MultipleProfileException, IOException {
+    /**
+     * List all files of the directory of profiles and return a connection profile if only one exists
+     * else an exception is thrown.
+     *
+     * @return a connection profile of the profile file
+     */
+    public ConnectionProfile getDefaultProfile() throws NoProfileException, MultipleProfileException, IOException {
         try (Stream<Path> stream = Files.list(getDirectory())) {
             List<Path> profiles = stream
                     .filter(file -> !Files.isDirectory(file) && hasConfigExtension(file.getFileName().toString()))
@@ -39,11 +48,17 @@ public class ConnectionProfileHandler {
                         " aufgelisteten Profilen heraus: \n" + getStringOfProfileList(profiles));
             }
 
-            return readProfileFile(profiles.get(0));
+            return readProfileFile(profiles.getFirst());
         }
     }
 
-    public ConnectionProfile getSelectedDBConfig(String fileName) throws IOException, IllegalFileExtensionException {
+    /**
+     * Test if a file of the file name exist and create a connection profile
+     *
+     * @param fileName the file name of the connection profile
+     * @return a connection profile object of the file
+     */
+    public ConnectionProfile getSelectedProfile(String fileName) throws IOException, IllegalFileExtensionException {
         if(hasConfigExtension(fileName)){
             throw new IllegalFileExtensionException("Die Profile File muss mit .cnf enden.");
         }
