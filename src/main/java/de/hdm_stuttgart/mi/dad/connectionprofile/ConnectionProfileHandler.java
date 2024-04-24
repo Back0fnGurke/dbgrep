@@ -59,7 +59,7 @@ public class ConnectionProfileHandler {
      * @return a connection profile object of the file
      */
     public ConnectionProfile getSelectedProfile(String fileName) throws IOException, IllegalFileExtensionException {
-        if(hasConfigExtension(fileName)){
+        if(!hasConfigExtension(fileName)){
             throw new IllegalFileExtensionException("Die Profile File muss mit .cnf enden.");
         }
         Path pathOfProfile = getDirectory().resolve(fileName);
