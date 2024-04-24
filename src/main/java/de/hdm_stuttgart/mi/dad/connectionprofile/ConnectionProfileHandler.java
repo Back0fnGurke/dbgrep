@@ -18,7 +18,7 @@ import java.util.stream.Stream;
  * Find the connection profile file in the determined directory and create a connection profile
  */
 public class ConnectionProfileHandler {
-    private String directoryOfProfiles = "~/.dbgrep/profiles";
+    private final String directoryOfProfiles;
 
     public ConnectionProfileHandler(String directory) {
         directoryOfProfiles = directory;
@@ -31,25 +31,18 @@ public class ConnectionProfileHandler {
      * @return a connection profile of the profile file
      */
     public ConnectionProfile getDefaultProfile() throws NoProfileException, MultipleProfileException, IOException {
-        try (Stream<Path> stream = Files.list(getDirectory())) {
-            List<Path> profiles = stream
-                    .filter(file -> !Files.isDirectory(file) && hasConfigExtension(file.getFileName().toString()))
-                    .toList();
+        List<Path> profiles = getListOfProfilesPath();
 
-            long fileCount = profiles.size();
+        long fileCount = profiles.size();
 
-            if (fileCount == 0) {
-                throw new NoProfileException("Im Ordner " + directoryOfProfiles +
-                        " existiert keine File. Bitte erstellen Sie ein Profil in diesem Ordner.");
-            }
-            if (fileCount > 1) {
-                throw new MultipleProfileException("Es sind mehrere Profile im Ordner " + directoryOfProfiles +
-                        " vorhanden. Bitte wählen Sie mit dem Befehl '--profile' ein Profil aus den hier" +
-                        " aufgelisteten Profilen heraus: \n" + getStringOfProfileList(profiles));
-            }
-
-            return readProfileFile(profiles.getFirst());
+        if (fileCount == 0) {
+            throw new NoProfileException("There is no profile file in '" + directoryOfProfiles + "'.");
         }
+        if (fileCount > 1) {
+            throw new MultipleProfileException("There are multiply profile files in '" + directoryOfProfiles + "'.");
+        }
+
+        return readProfileFile(profiles.getFirst());
     }
 
     /**
@@ -60,27 +53,40 @@ public class ConnectionProfileHandler {
      */
     public ConnectionProfile getSelectedProfile(String fileName) throws IOException, IllegalFileExtensionException {
         if(!hasConfigExtension(fileName)){
-            throw new IllegalFileExtensionException("Die Profile File muss mit .cnf enden.");
+            throw new IllegalFileExtensionException("A profile file has to end with '.cnf'.");
         }
         Path pathOfProfile = getDirectory().resolve(fileName);
         if (Files.exists(pathOfProfile) && !Files.isDirectory(pathOfProfile)) {
             return readProfileFile(pathOfProfile);
         }
-        throw new FileNotFoundException("Die angegebene File" + fileName + "existiert nicht im Ordner " +
-                directoryOfProfiles + ".");
+        throw new FileNotFoundException("File '" + fileName + "' does not exist in '" +
+                directoryOfProfiles + "'.");
     }
 
-    private Path getDirectory() {
-        return Paths.get(directoryOfProfiles);
-    }
-
-    private String getStringOfProfileList(List<Path> profiles) {
+    /**
+     * List all files of the directory of profiles
+     * @return String with file names of all profiles in directory
+     */
+    public String getStringOfProfileList() throws IOException {
+        List<Path> profiles = getListOfProfilesPath();
         StringBuilder profileList = new StringBuilder();
         for (Path profile : profiles) {
             profileList.append(profile.getFileName().toString());
             profileList.append("\n");
         }
         return profileList.toString();
+    }
+
+    private Path getDirectory() {
+        return Paths.get(directoryOfProfiles);
+    }
+
+    private List<Path> getListOfProfilesPath() throws IOException {
+        try (Stream<Path> stream = Files.list(getDirectory())) {
+            return stream
+                    .filter(file -> !Files.isDirectory(file) && hasConfigExtension(file.getFileName().toString()))
+                    .toList();
+        }
     }
 
     private ConnectionProfile readProfileFile(Path pathOfProfile) throws IOException {

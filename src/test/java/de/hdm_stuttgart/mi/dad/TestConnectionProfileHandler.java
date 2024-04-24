@@ -54,4 +54,15 @@ public class TestConnectionProfileHandler {
         assertEquals(profile2.getPassword(), "secret");
         assertEquals(profile2.getDriver(), "Driver/postgresql-42.6.0.jar");
     }
+
+    @Test
+    void testGetStringOfProfileList(){
+        ConnectionProfileHandler handler = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/multiple_profile");
+        String string = assertDoesNotThrow(handler::getStringOfProfileList);
+        assertEquals(string, "test1.cnf\ntest3.cnf\n");
+
+        ConnectionProfileHandler handlerNoProfile = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/no_profile");
+        String stringNoProfile = assertDoesNotThrow(handlerNoProfile::getStringOfProfileList);
+        assertEquals(stringNoProfile, "");
+    }
 }
