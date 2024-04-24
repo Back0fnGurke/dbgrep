@@ -52,7 +52,7 @@ public class ConnectionProfileHandler {
      * @return a connection profile object of the file
      */
     public ConnectionProfile getSelectedProfile(String fileName) throws IOException, IllegalFileExtensionException {
-        if(!hasConfigExtension(fileName)){
+        if (!hasConfigExtension(fileName)) {
             throw new IllegalFileExtensionException("A profile file has to end with '.cnf'.");
         }
         Path pathOfProfile = getDirectory().resolve(fileName);
@@ -65,6 +65,7 @@ public class ConnectionProfileHandler {
 
     /**
      * List all files of the directory of profiles
+     *
      * @return String with file names of all profiles in directory
      */
     public String getStringOfProfileList() throws IOException {
@@ -105,7 +106,7 @@ public class ConnectionProfileHandler {
         return new ConnectionProfile(driver, host, port, user, password, database);
     }
 
-    private boolean hasConfigExtension(String file){
+    private boolean hasConfigExtension(String file) {
         return file.endsWith(".cnf");
     }
 }

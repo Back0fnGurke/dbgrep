@@ -14,32 +14,32 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestConnectionProfileHandler {
 
     @Test
-    void testGetDefaultProfileWithNoProfile(){
+    void testGetDefaultProfileWithNoProfile() {
         ConnectionProfileHandler handler = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/no_profile");
         assertThrows(NoProfileException.class, handler::getDefaultProfile);
     }
 
     @Test
-    void testGetDefaultProfileWithOneProfile(){
+    void testGetDefaultProfileWithOneProfile() {
         ConnectionProfileHandler handler = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/one_profile");
         ConnectionProfile profile = assertDoesNotThrow(handler::getDefaultProfile);
         assertEquals(profile.getUser(), "user5");
     }
 
     @Test
-    void testGetDefaultProfileWithMultipleProfile(){
+    void testGetDefaultProfileWithMultipleProfile() {
         ConnectionProfileHandler handler = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/multiple_profile");
         assertThrows(MultipleProfileException.class, handler::getDefaultProfile);
     }
 
     @Test
-    void testGetSelectedProfileWithNotExistingFile(){
+    void testGetSelectedProfileWithNotExistingFile() {
         ConnectionProfileHandler handler = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/multiple_profile");
         assertThrows(FileNotFoundException.class, () -> handler.getSelectedProfile("tet1.cnf"));
     }
 
     @Test
-    void testGetSelectedProfileWithExistingFile(){
+    void testGetSelectedProfileWithExistingFile() {
         ConnectionProfileHandler handler = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/multiple_profile");
         assertThrows(IllegalFileExtensionException.class, () -> handler.getSelectedProfile("test2.txt"));
 
@@ -56,7 +56,7 @@ public class TestConnectionProfileHandler {
     }
 
     @Test
-    void testGetStringOfProfileList(){
+    void testGetStringOfProfileList() {
         ConnectionProfileHandler handler = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/multiple_profile");
         String string = assertDoesNotThrow(handler::getStringOfProfileList);
         assertEquals(string, "test1.cnf\ntest3.cnf\n");
