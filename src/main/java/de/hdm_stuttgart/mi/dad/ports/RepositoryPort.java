@@ -34,7 +34,7 @@ public interface RepositoryPort {
      * @return a Table containing all rows with matching column values. List of Rows is Empty if none where found.
      * @throws SQLException if a database access error occurs
      */
-    Table findLikePattern(final String tableName, final List<String> columnNames, final String pattern) throws SQLException;
+    Table findLikePattern(final String tableName, final List<String> columnNames, final Pattern pattern) throws SQLException;
 
     /**
      * Find column names of a table.

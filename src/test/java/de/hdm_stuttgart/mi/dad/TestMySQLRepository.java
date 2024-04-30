@@ -239,7 +239,7 @@ class TestMySQLRepository {
 
 
         final String tableName1 = "account";
-        final String pattern1 = "Dorian";
+        final Pattern pattern1 = Pattern.compile("Dorian");
         final Table actual1 = repository.findLikePattern(tableName1, columns, pattern1);
         final Table expected1 = new Table(tableName1, List.of(
                 new Row(Arrays.asList(
@@ -256,7 +256,7 @@ class TestMySQLRepository {
         assertEquals(expected1.rows().getFirst(), actual1.rows().getFirst(), "Maps should match");
 
         final String tableName2 = "account";
-        final String pattern2 = "c%";
+        final Pattern pattern2 = Pattern.compile("c%");
         final Table actual2 = repository.findLikePattern(tableName2, columns, pattern2);
         final Table expected2 = new Table(tableName2, Arrays.asList(
                 new Row(Arrays.asList(
@@ -284,7 +284,7 @@ class TestMySQLRepository {
 
 
         final String tableName3 = "account";
-        final String pattern3 = "20__-__-__ __:__:__";
+        final Pattern pattern3 = Pattern.compile("20__-__-__ __:__:__");
         final Table actual3 = repository.findLikePattern(tableName3, columns, pattern3);
         final Table expected3 = new Table(tableName3, Arrays.asList(
                 new Row(Arrays.asList(
@@ -392,7 +392,7 @@ class TestMySQLRepository {
 
 
         final String tableName4 = "account";
-        final String pattern4 = "test";
+        final Pattern pattern4 = Pattern.compile("test");
         final Table actual4 = repository.findLikePattern(tableName4, columns, pattern4);
         assertTrue(actual4.rows().isEmpty(), "should be empty");
     }

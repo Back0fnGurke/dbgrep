@@ -86,7 +86,7 @@ class MySQLRepository implements RepositoryPort {
     }
 
     @Override
-    public Table findLikePattern(String tableName, List<String> columnNames, String pattern) throws SQLException {
+    public Table findLikePattern(String tableName, List<String> columnNames, Pattern pattern) throws SQLException {
         log.debug("table name: {}, column names: {}, search pattern: {}", tableName, columnNames, pattern);
 
         final int columnNamesCount = columnNames.size();
@@ -103,7 +103,7 @@ class MySQLRepository implements RepositoryPort {
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             for (int i = 0; i < columnNamesCount; i++) {
-                statement.setString(i + 1, pattern);
+                statement.setString(i + 1, pattern.pattern());
             }
 
             log.debug("sql query string: {}", statement);
