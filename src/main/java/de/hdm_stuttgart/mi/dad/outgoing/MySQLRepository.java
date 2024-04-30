@@ -95,6 +95,33 @@ class MySQLRepository implements RepositoryPort {
     }
 
     @Override
+    public Table findEqual(String tableName, List<String> columnNames, final double number) throws SQLException {
+        log.debug("table name: {}, column names: {}, search pattern: {}", tableName, columnNames, number);
+
+        final int columnNamesCount = columnNames.size();
+        String query = "SELECT * FROM " + tableName + " WHERE ";
+        for (int i = 0; i < columnNamesCount; i++) {
+            if (i + 1 == columnNamesCount) {
+                query += "CAST(" + columnNames.get(i) + " AS CHAR) = ?;";
+            } else {
+                query += "CAST(" + columnNames.get(i) + " AS CHAR) = ? OR ";
+            }
+        }
+
+        log.debug("sql query string with placeholders: {}", query);
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            for (int i = 0; i < columnNamesCount; i++) {
+                statement.setDouble(i + 1, number);
+            }
+
+            log.debug("sql query string: {}", statement);
+
+            return getResultTable(statement, tableName);
+        }
+    }
+
+    @Override
     public Table getResultTable(PreparedStatement statement, final String tableName){
 
         final List<Row> result = new ArrayList<>();
