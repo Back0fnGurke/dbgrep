@@ -62,26 +62,60 @@ class PostgresRepository implements RepositoryPort {
 
             log.debug("sql query string: {}", statement);
 
-            final List<Row> result = new ArrayList<>();
-            try (final ResultSet tableSet = statement.executeQuery()) {
+            return getResultTable(statement, tableName);
+        }
+    }
 
-                while (tableSet.next()) {
+    @Override
+    public Table findLikePattern(String tableName, List<String> columnNames, final Pattern pattern) throws SQLException {
+        log.debug("table name: {}, column names: {}, search pattern: {}", tableName, columnNames, pattern);
 
-                    final int columnCount = tableSet.getMetaData().getColumnCount();
-                    final List<ColumnValue> columnValues = new ArrayList<>(columnCount);
+        final int columnNamesCount = columnNames.size();
+        String query = "SELECT * FROM " + tableName + " WHERE ";
+        for (int i = 0; i < columnNamesCount; i++) {
+            if (i + 1 == columnNamesCount) {
+                query += columnNames.get(i) + "::text LIKE ?;";
+            } else {
+                query += columnNames.get(i) + "::text LIKE ? OR ";
+            }
+        }
 
-                    for (int i = 1; i <= columnCount; i++) {
-                        columnValues.add(new ColumnValue(tableSet.getMetaData().getColumnLabel(i), tableSet.getString(i)));
-                    }
+        log.debug("sql query string with placeholders: {}", query);
 
-                    log.debug("column count in found row: {}, columns: {}", columnCount, columnValues);
-
-                    result.add(new Row(columnValues));
-                }
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            for (int i = 0; i < columnNamesCount; i++) {
+                statement.setString(i + 1, pattern.pattern());
             }
 
-            return new Table(tableName, result);
+            log.debug("sql query string: {}", statement);
+
+            return getResultTable(statement, tableName);
         }
+    }
+
+    @Override
+    public Table getResultTable(PreparedStatement statement, String tableName) {
+        final List<Row> result = new ArrayList<>();
+        try (final ResultSet tableSet = statement.executeQuery()) {
+
+            while (tableSet.next()) {
+
+                final int columnCount = tableSet.getMetaData().getColumnCount();
+                final List<ColumnValue> columnValues = new ArrayList<>(columnCount);
+
+                for (int i = 1; i <= columnCount; i++) {
+                    columnValues.add(new ColumnValue(tableSet.getMetaData().getColumnLabel(i), tableSet.getString(i)));
+                }
+
+                log.debug("column count in found row: {}, columns: {}", columnCount, columnValues);
+
+                result.add(new Row(columnValues));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new Table(tableName, result);
     }
 
     @Override
