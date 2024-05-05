@@ -50,18 +50,18 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findTableColumnNames() throws SQLException, FileNotFoundException {
+    void test_findAllTableColumnNames() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findTableColumnNames_testdata.sql"));
 
         final List<String> expected = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
-        final List<String> actual = repository.findTableColumnNames("account");
+        final List<String> actual = repository.findAllTableColumnNames("account");
 
         System.out.println(actual);
         assertEquals(expected.size(), actual.size(), "Wrong number of columns");
         assertTrue(expected.containsAll(actual));
         assertTrue(actual.containsAll(expected));
 
-        assertTrue(repository.findTableColumnNames("test").isEmpty(), "should be empty");
+        assertTrue(repository.findAllTableColumnNames("test").isEmpty(), "should be empty");
     }
 
     @Test

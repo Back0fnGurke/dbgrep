@@ -95,7 +95,7 @@ class MySQLRepository implements RepositoryPort {
     }
 
     @Override
-    public Table getResultTable(PreparedStatement statement, final String tableName){
+    public Table getResultTable(PreparedStatement statement, final String tableName) {
 
         final List<Row> result = new ArrayList<>();
         try (final ResultSet tableSet = statement.executeQuery()) {
@@ -122,7 +122,7 @@ class MySQLRepository implements RepositoryPort {
     }
 
     @Override
-    public List<String> findTableColumnNames(final String tableName) throws SQLException {
+    public List<String> findAllTableColumnNames(final String tableName) throws SQLException {
 
         log.debug("table name: {}", tableName);
 

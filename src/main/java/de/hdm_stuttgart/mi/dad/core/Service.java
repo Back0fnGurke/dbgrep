@@ -34,7 +34,7 @@ public class Service implements ServicePort {
 
             final List<String> columnNames;
             try {
-                columnNames = repository.findTableColumnNames(tableName);
+                columnNames = repository.findAllTableColumnNames(tableName);
             } catch (final SQLException e) {
                 throw new SQLException("failed to find column names of table: " + e.getMessage(), e);
             }

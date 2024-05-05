@@ -40,11 +40,11 @@ public interface RepositoryPort {
     Table getResultTable(PreparedStatement statement, String tableName);
 
     /**
-     * Find column names of a table.
+     * Find all column names of a table.
      *
      * @param tableName the table name to search the columns for
      * @return List<String> containing all found column names of the table, empty if none where found
      * @throws SQLException if a database access error occurs
      */
-    List<String> findTableColumnNames(final String tableName) throws SQLException;
+    List<String> findAllTableColumnNames(final String tableName) throws SQLException;
 }

@@ -119,7 +119,7 @@ class PostgresRepository implements RepositoryPort {
     }
 
     @Override
-    public List<String> findTableColumnNames(final String tableName) throws SQLException {
+    public List<String> findAllTableColumnNames(final String tableName) throws SQLException {
 
         log.debug("table name: {}", tableName);
 
