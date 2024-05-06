@@ -50,17 +50,17 @@ public class TestPostgresRepository {
     }
 
     @Test
-    void test_findAllTableColumnNames() throws SQLException, FileNotFoundException {
+    void test_findTableColumnNamesAll() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findTableColumnNames_testdata.sql"));
 
-        final List<String> actual = repository.findAllTableColumnNames("account");
+        final List<String> actual = repository.findTableColumnNamesAll("account");
 
         final List<String> expected = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
         assertEquals(expected.size(), actual.size(), "Wrong number of columns");
         assertTrue(expected.containsAll(actual));
         assertTrue(actual.containsAll(expected));
 
-        assertTrue(repository.findAllTableColumnNames("test").isEmpty(), "should be empty");
+        assertTrue(repository.findTableColumnNamesAll("test").isEmpty(), "should be empty");
     }
 
     @Test

@@ -2,7 +2,6 @@ package de.hdm_stuttgart.mi.dad.ports;
 
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -37,14 +36,21 @@ public interface RepositoryPort {
      */
     Table findLikePattern(final String tableName, final List<String> columnNames, final Pattern pattern) throws SQLException;
 
-    Table getResultTable(PreparedStatement statement, String tableName);
-
     /**
-     * Find all column names of a table.
+     * Find all column names of a table regardless of column type.
      *
      * @param tableName the table name to search the columns for
      * @return List<String> containing all found column names of the table, empty if none where found
      * @throws SQLException if a database access error occurs
      */
-    List<String> findAllTableColumnNames(final String tableName) throws SQLException;
+    List<String> findTableColumnNamesAll(final String tableName) throws SQLException;
+
+    /**
+     * Find column names of a table with column type numeric.
+     *
+     * @param tableName the table name to search the columns for
+     * @return List<String> containing all found column names of the table, empty if none where found
+     * @throws SQLException if a database access error occurs
+     */
+    List<String> findTableColumnNamesNumeric(final String tableName) throws SQLException;
 }

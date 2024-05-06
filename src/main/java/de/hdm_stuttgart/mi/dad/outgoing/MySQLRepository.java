@@ -41,7 +41,6 @@ class MySQLRepository implements RepositoryPort {
 
     @Override
     public Table findPattern(final String tableName, final List<String> columnNames, final Pattern pattern) throws SQLException {
-
         log.debug("table name: {}, column names: {}, search pattern: {}", tableName, columnNames, pattern);
 
         final int columnNamesCount = columnNames.size();
@@ -95,8 +94,39 @@ class MySQLRepository implements RepositoryPort {
     }
 
     @Override
-    public Table getResultTable(PreparedStatement statement, final String tableName) {
+    public List<String> findTableColumnNamesAll(final String tableName) throws SQLException {
+        log.debug("table name: {}", tableName);
 
+        final String query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = ?";
+        try (final PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, tableName);
+
+            log.debug("query string: {}", statement);
+
+            return findTableColumnNames(statement);
+        }
+    }
+
+    @Override
+    public List<String> findTableColumnNamesNumeric(String tableName) throws SQLException {
+        log.debug("table name: {}", tableName);
+
+        final String query = "SELECT column_name FROM information_schema.columns " +
+                "WHERE table_name = ? AND data_type in " +
+                "('tinyint', 'smallint', 'mediumint', 'int', 'bigint', " +
+                "'decimal', 'bit', 'float', 'double')";
+        try (final PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, tableName);
+
+            log.debug("query string: {}", statement);
+
+            return findTableColumnNames(statement);
+        }
+    }
+
+    public Table getResultTable(PreparedStatement statement, final String tableName) throws SQLException {
         final List<Row> result = new ArrayList<>();
         try (final ResultSet tableSet = statement.executeQuery()) {
 
@@ -114,31 +144,19 @@ class MySQLRepository implements RepositoryPort {
                 result.add(new Row(columnValues));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SQLException(e);
         }
 
         return new Table(tableName, result);
-
     }
 
-    @Override
-    public List<String> findAllTableColumnNames(final String tableName) throws SQLException {
-
-        log.debug("table name: {}", tableName);
-
-        final String query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = ?";
+    List<String> findTableColumnNames(final PreparedStatement statement) throws SQLException {
         final List<String> columnNames = new ArrayList<>();
-        try (final PreparedStatement statement = connection.prepareStatement(query)) {
 
-            statement.setString(1, tableName);
+        try (final ResultSet columnNamesSet = statement.executeQuery()) {
 
-            log.debug("query string: {}", statement);
-
-            try (final ResultSet columnNamesSet = statement.executeQuery()) {
-
-                while (columnNamesSet.next()) {
-                    columnNames.add(columnNamesSet.getString(1));
-                }
+            while (columnNamesSet.next()) {
+                columnNames.add(columnNamesSet.getString(1));
             }
         }
 

@@ -114,9 +114,9 @@ class TestService {
                 ))
         ));
 
-        when(repository.findAllTableColumnNames(tableName1)).thenReturn(columnNames1);
-        when(repository.findAllTableColumnNames(tableName2)).thenReturn(columnNames2);
-        when(repository.findAllTableColumnNames(tableName3)).thenReturn(columnNames3);
+        when(repository.findTableColumnNamesAll(tableName1)).thenReturn(columnNames1);
+        when(repository.findTableColumnNamesAll(tableName2)).thenReturn(columnNames2);
+        when(repository.findTableColumnNamesAll(tableName3)).thenReturn(columnNames3);
         when(repository.findPattern(tableName1, columnNames1, pattern)).thenReturn(table1);
         when(repository.findPattern(tableName2, columnNames2, pattern)).thenReturn(table2);
         when(repository.findPattern(tableName3, columnNames3, pattern)).thenReturn(table3);
