@@ -197,6 +197,7 @@
                     <!--suppress UnresolvedMavenProperty -->
                     <argLine>${surefireArgLine}</argLine>
                     <argLine>-Dnet.bytebuddy.experimental=true</argLine>
+                    <argLine>-Duser.timezone=GMT+2</argLine>
                     <excludes>
                         <exclude>**/*IT.java</exclude>
                     </excludes>
