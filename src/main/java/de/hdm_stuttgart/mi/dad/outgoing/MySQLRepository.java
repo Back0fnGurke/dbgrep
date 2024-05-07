@@ -7,10 +7,12 @@ import de.hdm_stuttgart.mi.dad.ports.RepositoryPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -94,6 +96,60 @@ class MySQLRepository implements RepositoryPort {
     }
 
     @Override
+    public Table findGreaterNumeric(final String tableName, final List<String> columnNames, final BigDecimal number) throws SQLException {
+        log.debug("table name: {}, column names: {}, number: {}", tableName, columnNames, number);
+
+        final int columnNamesCount = columnNames.size();
+        String query = "SELECT * FROM " + tableName + " WHERE ";
+        for (int i = 0; i < columnNamesCount; i++) {
+            if (i + 1 == columnNamesCount) {
+                query += columnNames.get(i) + " > ?;";
+            } else {
+                query += columnNames.get(i) + " > ? OR ";
+            }
+        }
+
+        log.debug("sql query string with placeholders: {}", query);
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            for (int i = 0; i < columnNamesCount; i++) {
+                statement.setBigDecimal(i + 1, number);
+            }
+
+            log.debug("sql query string: {}", statement);
+
+            return getResultTable(statement, tableName);
+        }
+    }
+
+    @Override
+    public Table findGreaterDate(final String tableName, final List<String> columnNames, final LocalDate date) throws SQLException {
+        log.debug("table name: {}, column names: {}, number: {}", tableName, columnNames, date);
+
+        final int columnNamesCount = columnNames.size();
+        String query = "SELECT * FROM " + tableName + " WHERE ";
+        for (int i = 0; i < columnNamesCount; i++) {
+            if (i + 1 == columnNamesCount) {
+                query += "CAST(" + columnNames.get(i) + " AS DATE) > CAST( ? AS DATE);";
+            } else {
+                query += "CAST(" + columnNames.get(i) + " AS DATE) > CAST( ? AS DATE) OR ";
+            }
+        }
+
+        log.debug("sql query string with placeholders: {}", query);
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            for (int i = 0; i < columnNamesCount; i++) {
+                statement.setObject(i + 1, date);
+            }
+
+            log.debug("sql query string: {}", statement);
+
+            return getResultTable(statement, tableName);
+        }
+    }
+
+    @Override
     public List<String> findTableColumnNamesAll(final String tableName) throws SQLException {
         log.debug("table name: {}", tableName);
 
@@ -116,6 +172,23 @@ class MySQLRepository implements RepositoryPort {
                 "WHERE table_name = ? AND data_type in " +
                 "('tinyint', 'smallint', 'mediumint', 'int', 'bigint', " +
                 "'decimal', 'bit', 'float', 'double')";
+        try (final PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, tableName);
+
+            log.debug("query string: {}", statement);
+
+            return findTableColumnNames(statement);
+        }
+    }
+
+    @Override
+    public List<String> findTableColumnNamesDate(String tableName) throws SQLException {
+        log.debug("table name: {}", tableName);
+
+        final String query = "SELECT column_name FROM information_schema.columns " +
+                "WHERE table_name = ? AND data_type in " +
+                "('date', 'datetime', 'timestamp')";
         try (final PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setString(1, tableName);
