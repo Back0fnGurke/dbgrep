@@ -18,7 +18,7 @@ import java.util.stream.Stream;
  * Find the connection profile file in the determined directory and create a connection profile
  */
 public class ConnectionProfileHandler {
-    private final String directoryOfProfiles;
+    public final String directoryOfProfiles;
 
     public ConnectionProfileHandler(String directory) {
         directoryOfProfiles = directory;
@@ -42,7 +42,7 @@ public class ConnectionProfileHandler {
             throw new MultipleProfileException("There are multiply profile files in '" + directoryOfProfiles + "'.");
         }
 
-        return readProfileFile(profiles.getFirst());
+        return readProfileFile(profiles.get(0));
     }
 
     /**
