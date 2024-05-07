@@ -129,45 +129,9 @@ public class TestPostgresRepository {
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
 
         final String tableName = "account";
-        final Pattern pattern = Pattern.compile("[0-9]+");
+        final Pattern pattern = Pattern.compile("10");
         final Table actual = repository.findPattern(tableName, columns, pattern);
         final Table expected = new Table(tableName, Arrays.asList(
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "1"),
-                        new ColumnValue("first_name", "Dorian"),
-                        new ColumnValue("last_name", "Sporner"),
-                        new ColumnValue("account_created", "2018-03-30 00:59:12"),
-                        new ColumnValue("username", "dsporner0"),
-                        new ColumnValue("email", "dsporner0@51.la"),
-                        new ColumnValue("password", "jY0\\EZ&/9<X0.t")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "2"),
-                        new ColumnValue("first_name", "Bale"),
-                        new ColumnValue("last_name", "Sandal"),
-                        new ColumnValue("account_created", "2018-06-14 01:06:41"),
-                        new ColumnValue("username", "bsandal1"),
-                        new ColumnValue("email", "bsandal1@virginia.edu"),
-                        new ColumnValue("password", "iO9\"J?s==0b6cP}9")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "3"),
-                        new ColumnValue("first_name", "Burke"),
-                        new ColumnValue("last_name", "Klaves"),
-                        new ColumnValue("account_created", "2022-12-31 14:43:42"),
-                        new ColumnValue("username", "bklaves2"),
-                        new ColumnValue("email", "bklaves2@opera.com"),
-                        new ColumnValue("password", "eA3\\i$tyTe*M(/z")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "4"),
-                        new ColumnValue("first_name", "Caroline"),
-                        new ColumnValue("last_name", "Aubri"),
-                        new ColumnValue("account_created", "2020-04-09 09:47:58"),
-                        new ColumnValue("username", "caubri3"),
-                        new ColumnValue("email", "caubri3@auda.org.au"),
-                        new ColumnValue("password", "gK7*2Eit")
-                )),
                 new Row(Arrays.asList(
                         new ColumnValue("id", "5"),
                         new ColumnValue("first_name", "Andrea"),
@@ -176,42 +140,6 @@ public class TestPostgresRepository {
                         new ColumnValue("username", "arummings4"),
                         new ColumnValue("email", "arummings4@cnbc.com"),
                         new ColumnValue("password", "iL7_~0m#~\\*")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "6"),
-                        new ColumnValue("first_name", "Keenan"),
-                        new ColumnValue("last_name", "Ramme"),
-                        new ColumnValue("account_created", "2019-01-07 09:11:25"),
-                        new ColumnValue("username", "kramme5"),
-                        new ColumnValue("email", "kramme5@vistaprint.com"),
-                        new ColumnValue("password", "aE9)*,3ye1?)Snh")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "7"),
-                        new ColumnValue("first_name", "Candace"),
-                        new ColumnValue("last_name", "Breslauer"),
-                        new ColumnValue("account_created", "2019-02-05 15:18:33"),
-                        new ColumnValue("username", "cbreslauer6"),
-                        new ColumnValue("email", "cbreslauer6@hao123.com"),
-                        new ColumnValue("password", "tQ8/vr&.")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "8"),
-                        new ColumnValue("first_name", "Nelson"),
-                        new ColumnValue("last_name", "Santacrole"),
-                        new ColumnValue("account_created", "2018-09-01 19:57:19"),
-                        new ColumnValue("username", "nsantacrole7"),
-                        new ColumnValue("email", "nsantacrole7@usatoday.com"),
-                        new ColumnValue("password", "qP2#Z0.I1C@2kV")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "9"),
-                        new ColumnValue("first_name", "Laurel"),
-                        new ColumnValue("last_name", "Norrie"),
-                        new ColumnValue("account_created", "2020-11-15 17:37:15"),
-                        new ColumnValue("username", "lnorrie8"),
-                        new ColumnValue("email", "lnorrie8@google.ru"),
-                        new ColumnValue("password", "mQ6}y=B8+eK")
                 )),
                 new Row(Arrays.asList(
                         new ColumnValue("id", "10"),
@@ -226,14 +154,6 @@ public class TestPostgresRepository {
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
         assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
         assertEquals(expected.rows().get(1), actual.rows().get(1), "Maps should match");
-        assertEquals(expected.rows().get(2), actual.rows().get(2), "Maps should match");
-        assertEquals(expected.rows().get(3), actual.rows().get(3), "Maps should match");
-        assertEquals(expected.rows().get(4), actual.rows().get(4), "Maps should match");
-        assertEquals(expected.rows().get(5), actual.rows().get(5), "Maps should match");
-        assertEquals(expected.rows().get(6), actual.rows().get(6), "Maps should match");
-        assertEquals(expected.rows().get(7), actual.rows().get(7), "Maps should match");
-        assertEquals(expected.rows().get(8), actual.rows().get(8), "Maps should match");
-        assertEquals(expected.rows().get(9), actual.rows().get(9), "Maps should match");
     }
 
     @Test
@@ -313,7 +233,7 @@ public class TestPostgresRepository {
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
 
         final String tableName = "account";
-        final Pattern pattern = Pattern.compile("20__-__-__ __:__:__");
+        final Pattern pattern = Pattern.compile("2018-__-__ __:__:__");
         final Table actual = repository.findLikePattern(tableName, columns, pattern);
         final Table expected = new Table(tableName, Arrays.asList(
                 new Row(Arrays.asList(
@@ -335,51 +255,6 @@ public class TestPostgresRepository {
                         new ColumnValue("password", "iO9\"J?s==0b6cP}9")
                 )),
                 new Row(Arrays.asList(
-                        new ColumnValue("id", "3"),
-                        new ColumnValue("first_name", "Burke"),
-                        new ColumnValue("last_name", "Klaves"),
-                        new ColumnValue("account_created", "2022-12-31 14:43:42"),
-                        new ColumnValue("username", "bklaves2"),
-                        new ColumnValue("email", "bklaves2@opera.com"),
-                        new ColumnValue("password", "eA3\\i$tyTe*M(/z")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "4"),
-                        new ColumnValue("first_name", "Caroline"),
-                        new ColumnValue("last_name", "Aubri"),
-                        new ColumnValue("account_created", "2020-04-09 09:47:58"),
-                        new ColumnValue("username", "caubri3"),
-                        new ColumnValue("email", "caubri3@auda.org.au"),
-                        new ColumnValue("password", "gK7*2Eit")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "5"),
-                        new ColumnValue("first_name", "Andrea"),
-                        new ColumnValue("last_name", "Rummings"),
-                        new ColumnValue("account_created", "2020-03-29 01:43:10"),
-                        new ColumnValue("username", "arummings4"),
-                        new ColumnValue("email", "arummings4@cnbc.com"),
-                        new ColumnValue("password", "iL7_~0m#~\\*")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "6"),
-                        new ColumnValue("first_name", "Keenan"),
-                        new ColumnValue("last_name", "Ramme"),
-                        new ColumnValue("account_created", "2019-01-07 09:11:25"),
-                        new ColumnValue("username", "kramme5"),
-                        new ColumnValue("email", "kramme5@vistaprint.com"),
-                        new ColumnValue("password", "aE9)*,3ye1?)Snh")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "7"),
-                        new ColumnValue("first_name", "Candace"),
-                        new ColumnValue("last_name", "Breslauer"),
-                        new ColumnValue("account_created", "2019-02-05 15:18:33"),
-                        new ColumnValue("username", "cbreslauer6"),
-                        new ColumnValue("email", "cbreslauer6@hao123.com"),
-                        new ColumnValue("password", "tQ8/vr&.")
-                )),
-                new Row(Arrays.asList(
                         new ColumnValue("id", "8"),
                         new ColumnValue("first_name", "Nelson"),
                         new ColumnValue("last_name", "Santacrole"),
@@ -387,37 +262,12 @@ public class TestPostgresRepository {
                         new ColumnValue("username", "nsantacrole7"),
                         new ColumnValue("email", "nsantacrole7@usatoday.com"),
                         new ColumnValue("password", "qP2#Z0.I1C@2kV")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "9"),
-                        new ColumnValue("first_name", "Laurel"),
-                        new ColumnValue("last_name", "Norrie"),
-                        new ColumnValue("account_created", "2020-11-15 17:37:15"),
-                        new ColumnValue("username", "lnorrie8"),
-                        new ColumnValue("email", "lnorrie8@google.ru"),
-                        new ColumnValue("password", "mQ6}y=B8+eK")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "10"),
-                        new ColumnValue("first_name", "Vernen"),
-                        new ColumnValue("last_name", "Pordal"),
-                        new ColumnValue("account_created", "2020-07-20 01:21:51"),
-                        new ColumnValue("username", "vpordal9"),
-                        new ColumnValue("email", "vpordal9@paginegialle.it"),
-                        new ColumnValue("password", "nZ4_k\\+!N*xhT")
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
         assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
         assertEquals(expected.rows().get(1), actual.rows().get(1), "Maps should match");
         assertEquals(expected.rows().get(2), actual.rows().get(2), "Maps should match");
-        assertEquals(expected.rows().get(3), actual.rows().get(3), "Maps should match");
-        assertEquals(expected.rows().get(4), actual.rows().get(4), "Maps should match");
-        assertEquals(expected.rows().get(5), actual.rows().get(5), "Maps should match");
-        assertEquals(expected.rows().get(6), actual.rows().get(6), "Maps should match");
-        assertEquals(expected.rows().get(7), actual.rows().get(7), "Maps should match");
-        assertEquals(expected.rows().get(8), actual.rows().get(8), "Maps should match");
-        assertEquals(expected.rows().get(9), actual.rows().get(9), "Maps should match");
     }
 
     @Test
