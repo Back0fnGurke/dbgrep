@@ -1,8 +1,9 @@
 package de.hdm_stuttgart.mi.dad.ports;
 
+import de.hdm_stuttgart.mi.dad.core.entity.Table;
+
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -15,8 +16,8 @@ public interface ServicePort {
      *
      * @param tableNames the table names to search in
      * @param pattern    the pattern to search for in the column values
-     * @return a map with table names as keys and a List containing found table rows as values. Rows are represented by maps with column names as keys and their values as the value. List is Empty if none where found.
+     * @return a List of Tables. List of Rows in Table is Empty if none where found.
      * @throws SQLException if a database access error occurs
      */
-    Map<String, List<Map<String, String>>> searchTable(final List<String> tableNames, final Pattern pattern) throws SQLException;
+    List<Table> searchTables(final List<String> tableNames, final Pattern pattern) throws SQLException;
 }
