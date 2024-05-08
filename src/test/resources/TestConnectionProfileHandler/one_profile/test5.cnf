@@ -1,0 +1,6 @@
+host=myserver.companynet.com
+port=5432
+database=main_test_data
+user=user5
+password=secret
+driver=Driver/postgresql-42.6.0.jar
