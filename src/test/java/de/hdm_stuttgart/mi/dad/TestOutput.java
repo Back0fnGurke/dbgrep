@@ -4,8 +4,6 @@ import de.hdm_stuttgart.mi.dad.core.entity.ColumnValue;
 import de.hdm_stuttgart.mi.dad.core.entity.Row;
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.outgoing.OutputHandler;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TestOutput {
