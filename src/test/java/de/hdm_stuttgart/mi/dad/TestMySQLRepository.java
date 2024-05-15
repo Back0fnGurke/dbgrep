@@ -272,31 +272,27 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findEqual() throws SQLException, FileNotFoundException {
+    void test_findEqual_no_match() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findEqual_testdata.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "age", "money");
 
+        final String tableName = "account";
+        final double number = 11;
+        final Table actual = repository.findEqual(tableName, columns, number);
+        assertTrue(actual.rows().isEmpty(), "should be empty");
+    }
 
-        final String tableName1 = "account";
-        final double number1 = 74;
-        final Table actual1 = repository.findEqual(tableName1, columns, number1);
-        final Table expected1 = new Table(tableName1, List.of(
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "1"),
-                        new ColumnValue("first_name", "Tucker"),
-                        new ColumnValue("last_name", "Blumire"),
-                        new ColumnValue("age", "74"),
-                        new ColumnValue("money", "9432.00")
-                ))
-        ));
-        assertEquals(expected1.rows().size(), actual1.rows().size(), "Wrong number of rows");
-        assertEquals(expected1.rows().getFirst(), actual1.rows().getFirst(), "Maps should match");
+    @Test
+    void test_findEqual_integer() throws SQLException, FileNotFoundException {
+        scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findEqual_testdata.sql"));
 
-        final String tableName2 = "account";
-        final double number2 = 34;
-        final Table actual2 = repository.findEqual(tableName2, columns, number2);
-        final Table expected2 = new Table(tableName1, List.of(
+        final List<String> columns = Arrays.asList("id", "first_name", "last_name", "age", "money");
+
+        final String tableName = "account";
+        final double number = 34;
+        final Table actual = repository.findEqual(tableName, columns, number);
+        final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "5"),
                         new ColumnValue("first_name", "Onfroi"),
@@ -312,14 +308,21 @@ class TestMySQLRepository {
                         new ColumnValue("money", "5306.60")
                 ))
         ));
-        assertEquals(expected2.rows().size(), actual2.rows().size(), "Wrong number of rows");
-        assertEquals(expected2.rows().getFirst(), actual2.rows().getFirst(), "Should match");
-        assertEquals(expected2.rows().getLast(), actual2.rows().getLast(), "Should match");
+        assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().getLast(), actual.rows().getLast(), "Should match");
+    }
 
-        final String tableName3 = "account";
-        final double number3 = 0.50;
-        final Table actual3 = repository.findEqual(tableName2, columns, number3);
-        final Table expected3 = new Table(tableName1, List.of(
+    @Test
+    void test_findEqual_decimal() throws SQLException, FileNotFoundException {
+        scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findEqual_testdata.sql"));
+
+        final List<String> columns = Arrays.asList("id", "first_name", "last_name", "age", "money");
+
+        final String tableName = "account";
+        final double number = 0.50;
+        final Table actual = repository.findEqual(tableName, columns, number);
+        final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "4"),
                         new ColumnValue("first_name", "Malinde"),
@@ -335,15 +338,9 @@ class TestMySQLRepository {
                         new ColumnValue("money", "0.50")
                 ))
         ));
-        assertEquals(expected3.rows().size(), actual3.rows().size(), "Wrong number of rows");
-        assertEquals(expected3.rows().getFirst(), actual3.rows().getFirst(), "Should match");
-        assertEquals(expected3.rows().getLast(), actual3.rows().getLast(), "Should match");
-
-
-        final String tableName4 = "account";
-        final double number4 = 11;
-        final Table actual4 = repository.findEqual(tableName4, columns, number4);
-        assertTrue(actual4.rows().isEmpty(), "should be empty");
+        assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().getLast(), actual.rows().getLast(), "Should match");
     }
 
     @Test
