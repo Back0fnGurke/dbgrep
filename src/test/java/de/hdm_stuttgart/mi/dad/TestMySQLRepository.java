@@ -440,6 +440,105 @@ class TestMySQLRepository {
     }
 
     @Test
+    void test_findInRangeNumeric_no_match() throws SQLException, FileNotFoundException {
+        scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findInRangeNumeric_test_data.sql"));
+
+        final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
+
+        final String tableName = "account";
+        final BigDecimal from = BigDecimal.valueOf(98278675);
+        final BigDecimal to = BigDecimal.valueOf(100000000);
+        final Table actual = repository.findInRangeNumeric(tableName, columns, from, to);
+        assertTrue(actual.rows().isEmpty(), "should be empty");
+    }
+
+    @Test
+    void test_findInRangeNumeric_one_match() throws SQLException, FileNotFoundException {
+        scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findInRangeNumeric_test_data.sql"));
+
+        final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
+
+        final String tableName = "account";
+        final BigDecimal from = BigDecimal.valueOf(80);
+        final BigDecimal to = BigDecimal.valueOf(100);
+        final Table actual = repository.findInRangeNumeric(tableName, columns, from, to);
+        final Table expected = new Table(tableName, List.of(
+                new Row(Arrays.asList(
+                        new ColumnValue("id", "4"),
+                        new ColumnValue("first_name", "Conni"),
+                        new ColumnValue("last_name", "Jennemann"),
+                        new ColumnValue("account_created", "2024-05-03 11:06:29"),
+                        new ColumnValue("username", "cjennemann3"),
+                        new ColumnValue("email", "cjennemann3@whitehouse.gov"),
+                        new ColumnValue("password", "sJ3@y)c|`w{ku"),
+                        new ColumnValue("zipcode", "88"),
+                        new ColumnValue("balance", "1958874"),
+                        new ColumnValue("votes", "474797"),
+                        new ColumnValue("bought_books", "546353")
+                ))
+        ));
+        assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+    }
+
+    @Test
+    void test_findInRangeNumeric_multiple_match() throws SQLException, FileNotFoundException {
+        scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findInRangeNumeric_test_data.sql"));
+
+        final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
+
+        final String tableName = "account";
+        final BigDecimal from = BigDecimal.valueOf(90000000);
+        final BigDecimal to = BigDecimal.valueOf(100000000);
+        final Table actual = repository.findInRangeNumeric(tableName, columns, from, to);
+        final Table expected = new Table(tableName, List.of(
+                new Row(Arrays.asList(
+                        new ColumnValue("id", "7"),
+                        new ColumnValue("first_name", "Yvonne"),
+                        new ColumnValue("last_name", "Biaggetti"),
+                        new ColumnValue("account_created", "2024-01-04 01:24:35"),
+                        new ColumnValue("username", "ybiaggetti6"),
+                        new ColumnValue("email", "ybiaggetti6@ning.com"),
+                        new ColumnValue("password", "bB5$4''AkxnC>uK("),
+                        new ColumnValue("zipcode", "11247"),
+                        new ColumnValue("balance", "94935074"),
+                        new ColumnValue("votes", "479981"),
+                        new ColumnValue("bought_books", "107847")
+                )),
+                new Row(Arrays.asList(
+                        new ColumnValue("id", "9"),
+                        new ColumnValue("first_name", "Tye"),
+                        new ColumnValue("last_name", "Heintzsch"),
+                        new ColumnValue("account_created", "2024-03-01 18:11:51"),
+                        new ColumnValue("username", "theintzsch8"),
+                        new ColumnValue("email", "theintzsch8@newyorker.com"),
+                        new ColumnValue("password", "hE1#zsv=P0"),
+                        new ColumnValue("zipcode", "24442"),
+                        new ColumnValue("balance", "96443590"),
+                        new ColumnValue("votes", "827467"),
+                        new ColumnValue("bought_books", "928780")
+                )),
+                new Row(Arrays.asList(
+                        new ColumnValue("id", "10"),
+                        new ColumnValue("first_name", "Claudianus"),
+                        new ColumnValue("last_name", "Hirsch"),
+                        new ColumnValue("account_created", "2023-10-22 13:53:38"),
+                        new ColumnValue("username", "chirsch9"),
+                        new ColumnValue("email", "chirsch9@fc2.com"),
+                        new ColumnValue("password", "fR1`C=>yQCP"),
+                        new ColumnValue("zipcode", "618"),
+                        new ColumnValue("balance", "97278675"),
+                        new ColumnValue("votes", "316616"),
+                        new ColumnValue("bought_books", "358568")
+                ))
+        ));
+        assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().get(1), actual.rows().get(1), "Should match");
+        assertEquals(expected.rows().getLast(), actual.rows().getLast(), "Should match");
+    }
+
+    @Test
     void test_findTableColumnNamesAll_no_match() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findTableColumnNamesAll_test_data.sql"));
 

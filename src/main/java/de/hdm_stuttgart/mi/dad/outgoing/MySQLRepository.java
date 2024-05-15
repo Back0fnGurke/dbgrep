@@ -31,17 +31,6 @@ class MySQLRepository implements RepositoryPort {
     }
 
     @Override
-    public void findInWholeDatabase() {
-
-    }
-
-    @Override
-    public void findInColumn() {
-
-    }
-
-
-    @Override
     public Table findPattern(final String tableName, final List<String> columnNames, final Pattern pattern) throws SQLException {
         log.debug("table name: {}, column names: {}, search pattern: {}", tableName, columnNames, pattern);
 
@@ -168,6 +157,34 @@ class MySQLRepository implements RepositoryPort {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             for (int i = 0; i < columnNamesCount; i++) {
                 statement.setObject(i + 1, date);
+            }
+
+            log.debug("sql query string: {}", statement);
+
+            return getResultTable(statement, tableName);
+        }
+    }
+
+    @Override
+    public Table findInRangeNumeric(String tableName, List<String> columnNames, BigDecimal from, BigDecimal to) throws SQLException {
+        log.debug("table name: {}, column names: {}, from: {}, to: {}", tableName, columnNames, from, to);
+
+        final int columnNamesCount = columnNames.size();
+        String query = "SELECT * FROM " + tableName + " WHERE ";
+        for (int i = 0; i < columnNamesCount; i++) {
+            if (i + 1 == columnNamesCount) {
+                query += columnNames.get(i) + " BETWEEN ? AND ?;";
+            } else {
+                query += columnNames.get(i) + " BETWEEN ? AND ? OR ";
+            }
+        }
+
+        log.debug("sql query string with placeholders: {}", query);
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            for (int i = 0; i < columnNamesCount * 2; i += 2) {
+                statement.setBigDecimal(i + 1, from);
+                statement.setBigDecimal(i + 2, to);
             }
 
             log.debug("sql query string: {}", statement);
