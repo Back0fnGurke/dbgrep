@@ -86,7 +86,7 @@ class TestMySQLRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
     }
 
     @Test
@@ -119,8 +119,8 @@ class TestMySQLRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
-        assertEquals(expected.rows().get(1), actual.rows().get(1), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().getLast(), actual.rows().getLast(), "Should match");
     }
 
     @Test
@@ -153,8 +153,8 @@ class TestMySQLRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
-        assertEquals(expected.rows().get(1), actual.rows().get(1), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().getLast(), actual.rows().getLast(), "Should match");
     }
 
     @Test
@@ -190,7 +190,7 @@ class TestMySQLRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
     }
 
     @Test
@@ -223,8 +223,8 @@ class TestMySQLRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
-        assertEquals(expected.rows().get(1), actual.rows().get(1), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().getLast(), actual.rows().getLast(), "Should match");
     }
 
     @Test
@@ -266,9 +266,84 @@ class TestMySQLRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
-        assertEquals(expected.rows().get(1), actual.rows().get(1), "Maps should match");
-        assertEquals(expected.rows().get(2), actual.rows().get(2), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().get(1), actual.rows().get(1), "Should match");
+        assertEquals(expected.rows().getLast(), actual.rows().getLast(), "Should match");
+    }
+
+    @Test
+    void test_findEqual() throws SQLException, FileNotFoundException {
+        scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findEqual_testdata.sql"));
+
+        final List<String> columns = Arrays.asList("id", "first_name", "last_name", "age", "money");
+
+
+        final String tableName1 = "account";
+        final double number1 = 74;
+        final Table actual1 = repository.findEqual(tableName1, columns, number1);
+        final Table expected1 = new Table(tableName1, List.of(
+                new Row(Arrays.asList(
+                        new ColumnValue("id", "1"),
+                        new ColumnValue("first_name", "Tucker"),
+                        new ColumnValue("last_name", "Blumire"),
+                        new ColumnValue("age", "74"),
+                        new ColumnValue("money", "9432.00")
+                ))
+        ));
+        assertEquals(expected1.rows().size(), actual1.rows().size(), "Wrong number of rows");
+        assertEquals(expected1.rows().getFirst(), actual1.rows().getFirst(), "Maps should match");
+
+        final String tableName2 = "account";
+        final double number2 = 34;
+        final Table actual2 = repository.findEqual(tableName2, columns, number2);
+        final Table expected2 = new Table(tableName1, List.of(
+                new Row(Arrays.asList(
+                        new ColumnValue("id", "5"),
+                        new ColumnValue("first_name", "Onfroi"),
+                        new ColumnValue("last_name", "Martignoni"),
+                        new ColumnValue("age", "34"),
+                        new ColumnValue("money", "2830.37")
+                )),
+                new Row(Arrays.asList(
+                        new ColumnValue("id", "8"),
+                        new ColumnValue("first_name", "Binnie"),
+                        new ColumnValue("last_name", "Feld"),
+                        new ColumnValue("age", "34"),
+                        new ColumnValue("money", "5306.60")
+                ))
+        ));
+        assertEquals(expected2.rows().size(), actual2.rows().size(), "Wrong number of rows");
+        assertEquals(expected2.rows().getFirst(), actual2.rows().getFirst(), "Should match");
+        assertEquals(expected2.rows().getLast(), actual2.rows().getLast(), "Should match");
+
+        final String tableName3 = "account";
+        final double number3 = 0.50;
+        final Table actual3 = repository.findEqual(tableName2, columns, number3);
+        final Table expected3 = new Table(tableName1, List.of(
+                new Row(Arrays.asList(
+                        new ColumnValue("id", "4"),
+                        new ColumnValue("first_name", "Malinde"),
+                        new ColumnValue("last_name", "Ketchen"),
+                        new ColumnValue("age", "94"),
+                        new ColumnValue("money", "0.50")
+                )),
+                new Row(Arrays.asList(
+                        new ColumnValue("id", "6"),
+                        new ColumnValue("first_name", "Ardelis"),
+                        new ColumnValue("last_name", "Coundley"),
+                        new ColumnValue("age", "61"),
+                        new ColumnValue("money", "0.50")
+                ))
+        ));
+        assertEquals(expected3.rows().size(), actual3.rows().size(), "Wrong number of rows");
+        assertEquals(expected3.rows().getFirst(), actual3.rows().getFirst(), "Should match");
+        assertEquals(expected3.rows().getLast(), actual3.rows().getLast(), "Should match");
+
+
+        final String tableName4 = "account";
+        final double number4 = 11;
+        final Table actual4 = repository.findEqual(tableName4, columns, number4);
+        assertTrue(actual4.rows().isEmpty(), "should be empty");
     }
 
     @Test
@@ -308,7 +383,7 @@ class TestMySQLRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
     }
 
     @Test
@@ -362,7 +437,9 @@ class TestMySQLRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().get(1), actual.rows().get(1), "Should match");
+        assertEquals(expected.rows().getLast(), actual.rows().getLast(), "Should match");
     }
 
     @Test
@@ -397,7 +474,7 @@ class TestMySQLRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
     }
 
     @Test
@@ -436,7 +513,9 @@ class TestMySQLRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().get(1), actual.rows().get(1), "Should match");
+        assertEquals(expected.rows().getLast(), actual.rows().getLast(), "Should match");
     }
 
     @Test
@@ -478,7 +557,7 @@ class TestMySQLRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
     }
 
     @Test
@@ -602,80 +681,5 @@ class TestMySQLRepository {
         assertEquals(expected.size(), actual.size(), "Wrong number of columns");
         assertTrue(expected.containsAll(actual));
         assertTrue(actual.containsAll(expected));
-    }
-
-    @Test
-    void test_findEqual() throws SQLException, FileNotFoundException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findEqual_testdata.sql"));
-
-        final List<String> columns = Arrays.asList("id", "first_name", "last_name", "age", "money");
-
-
-        final String tableName1 = "account";
-        final double number1 = 74;
-        final Table actual1 = repository.findEqual(tableName1, columns, number1);
-        final Table expected1 = new Table(tableName1, List.of(
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "1"),
-                        new ColumnValue("first_name", "Tucker"),
-                        new ColumnValue("last_name", "Blumire"),
-                        new ColumnValue("age", "74"),
-                        new ColumnValue("money", "9432.00")
-                ))
-        ));
-        assertEquals(expected1.rows().size(), actual1.rows().size(), "Wrong number of rows");
-        assertEquals(expected1.rows().getFirst(), actual1.rows().getFirst(), "Maps should match");
-
-        final String tableName2 = "account";
-        final double number2 = 34;
-        final Table actual2 = repository.findEqual(tableName2, columns, number2);
-        final Table expected2 = new Table(tableName1, List.of(
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "5"),
-                        new ColumnValue("first_name", "Onfroi"),
-                        new ColumnValue("last_name", "Martignoni"),
-                        new ColumnValue("age", "34"),
-                        new ColumnValue("money", "2830.37")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "8"),
-                        new ColumnValue("first_name", "Binnie"),
-                        new ColumnValue("last_name", "Feld"),
-                        new ColumnValue("age", "34"),
-                        new ColumnValue("money", "5306.60")
-                ))
-        ));
-        assertEquals(expected2.rows().size(), actual2.rows().size(), "Wrong number of rows");
-        assertEquals(expected2.rows().getFirst(), actual2.rows().getFirst(), "Maps should match");
-        assertEquals(expected2.rows().getLast(), actual2.rows().getLast(), "Maps should match");
-
-        final String tableName3 = "account";
-        final double number3 = 0.50;
-        final Table actual3 = repository.findEqual(tableName2, columns, number3);
-        final Table expected3 = new Table(tableName1, List.of(
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "4"),
-                        new ColumnValue("first_name", "Malinde"),
-                        new ColumnValue("last_name", "Ketchen"),
-                        new ColumnValue("age", "94"),
-                        new ColumnValue("money", "0.50")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "6"),
-                        new ColumnValue("first_name", "Ardelis"),
-                        new ColumnValue("last_name", "Coundley"),
-                        new ColumnValue("age", "61"),
-                        new ColumnValue("money", "0.50")
-                ))
-        ));
-        assertEquals(expected3.rows().size(), actual3.rows().size(), "Wrong number of rows");
-        assertEquals(expected3.rows().getFirst(), actual3.rows().getFirst(), "Maps should match");
-        assertEquals(expected3.rows().getLast(), actual3.rows().getLast(), "Maps should match");
-
-
-        final String tableName4 = "account";
-        final double number4 = 11;
-        final Table actual4 = repository.findEqual(tableName4, columns, number4);
-        assertTrue(actual4.rows().isEmpty(), "should be empty");
     }
 }

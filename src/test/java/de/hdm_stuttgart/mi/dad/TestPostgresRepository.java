@@ -85,7 +85,7 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
     }
 
     @Test
@@ -118,8 +118,8 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
-        assertEquals(expected.rows().get(1), actual.rows().get(1), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().get(1), actual.rows().get(1), "Should match");
     }
 
     @Test
@@ -152,8 +152,8 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
-        assertEquals(expected.rows().get(1), actual.rows().get(1), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().get(1), actual.rows().get(1), "Should match");
     }
 
     @Test
@@ -189,7 +189,7 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
     }
 
     @Test
@@ -222,8 +222,8 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
-        assertEquals(expected.rows().get(1), actual.rows().get(1), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().get(1), actual.rows().get(1), "Should match");
     }
 
     @Test
@@ -265,9 +265,9 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
-        assertEquals(expected.rows().get(1), actual.rows().get(1), "Maps should match");
-        assertEquals(expected.rows().get(2), actual.rows().get(2), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().get(1), actual.rows().get(1), "Should match");
+        assertEquals(expected.rows().get(2), actual.rows().get(2), "Should match");
     }
 
     @Test
@@ -290,7 +290,7 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected1.rows().size(), actual1.rows().size(), "Wrong number of rows");
-        assertEquals(expected1.rows().getFirst(), actual1.rows().getFirst(), "Maps should match");
+        assertEquals(expected1.rows().getFirst(), actual1.rows().getFirst(), "Should match");
 
         final String tableName2 = "account";
         final double number2 = 34;
@@ -312,8 +312,8 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected2.rows().size(), actual2.rows().size(), "Wrong number of rows");
-        assertEquals(expected2.rows().getFirst(), actual2.rows().getFirst(), "Maps should match");
-        assertEquals(expected2.rows().getLast(), actual2.rows().getLast(), "Maps should match");
+        assertEquals(expected2.rows().getFirst(), actual2.rows().getFirst(), "Should match");
+        assertEquals(expected2.rows().getLast(), actual2.rows().getLast(), "Should match");
 
         final String tableName3 = "account";
         final double number3 = 0.50;
@@ -335,8 +335,8 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected3.rows().size(), actual3.rows().size(), "Wrong number of rows");
-        assertEquals(expected3.rows().getFirst(), actual3.rows().getFirst(), "Maps should match");
-        assertEquals(expected3.rows().getLast(), actual3.rows().getLast(), "Maps should match");
+        assertEquals(expected3.rows().getFirst(), actual3.rows().getFirst(), "Should match");
+        assertEquals(expected3.rows().getLast(), actual3.rows().getLast(), "Should match");
 
 
         final String tableName4 = "account";
@@ -382,7 +382,7 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
     }
 
     @Test
@@ -473,7 +473,7 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
     }
 
     @Test
@@ -556,7 +556,7 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
     }
 
     @Test
