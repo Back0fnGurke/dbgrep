@@ -1,10 +1,14 @@
 package de.hdm_stuttgart.mi.dad.core.property;
 
-import de.hdm_stuttgart.mi.dad.core.entity.Table;
-
 public class Like implements Property {
+
     @Override
-    public Table searchWithProperty() {
+    public PropertyType getType() {
+        return null;
+    }
+
+    @Override
+    public Object getValue() {
         return null;
     }
 }

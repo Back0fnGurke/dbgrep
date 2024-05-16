@@ -1,6 +1,6 @@
 package de.hdm_stuttgart.mi.dad.core.property;
 
-public class Regex implements Property {
+public class GreaterNumeric implements Property {
 
     @Override
     public PropertyType getType() {

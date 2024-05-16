@@ -1,6 +1,6 @@
 package de.hdm_stuttgart.mi.dad.outgoing;
 
-import de.hdm_stuttgart.mi.dad.ports.RepositoryPort;
+import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
 
 import java.sql.Connection;
 

@@ -1,9 +1,9 @@
 package de.hdm_stuttgart.mi.dad.core;
 
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
+import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
+import de.hdm_stuttgart.mi.dad.core.ports.ServicePort;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
-import de.hdm_stuttgart.mi.dad.ports.RepositoryPort;
-import de.hdm_stuttgart.mi.dad.ports.ServicePort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -3,7 +3,8 @@ package de.hdm_stuttgart.mi.dad.outgoing;
 import de.hdm_stuttgart.mi.dad.core.entity.ColumnValue;
 import de.hdm_stuttgart.mi.dad.core.entity.Row;
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
-import de.hdm_stuttgart.mi.dad.ports.RepositoryPort;
+import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
+import de.hdm_stuttgart.mi.dad.core.property.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,10 +13,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
+
+import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.RANGENUMERIC;
 
 /**
  * Implementation of the RepositoryPort Interface for postgresql databases.
@@ -31,160 +32,29 @@ class PostgresRepository implements RepositoryPort {
     }
 
     @Override
-    public Table findPattern(final String tableName, final List<String> columnNames, final Pattern pattern) throws SQLException {
-        log.debug("table name: {}, column names: {}, search pattern: {}", tableName, columnNames, pattern);
+    public Table findTableRowsWithProperties(String tableName, List<String> columnNames, List<Property> properties) throws SQLException {
+        log.debug("table name: {}, column names: {}, properties: {}", tableName, columnNames, properties);
 
-        final int columnNamesCount = columnNames.size();
-        String query = "SELECT * FROM " + tableName + " WHERE ";
-        for (int i = 0; i < columnNamesCount; i++) {
-            if (i + 1 == columnNamesCount) {
-                query += columnNames.get(i) + "::text ~ ?;";
-            } else {
-                query += columnNames.get(i) + "::text ~ ? OR ";
-            }
-        }
+        String query = "SELECT * FROM " + tableName + " WHERE " + getWhereClause(columnNames, properties);
 
         log.debug("sql query string with placeholders: {}", query);
 
+        final int columnNamesCount = columnNames.size();
         try (PreparedStatement statement = connection.prepareStatement(query)) {
+            int index = 1;
             for (int i = 0; i < columnNamesCount; i++) {
-                statement.setString(i + 1, pattern.pattern());
-            }
-
-            log.debug("sql query string: {}", statement);
-
-            return getResultTable(statement, tableName);
-        }
-    }
-
-    @Override
-    public Table findLikePattern(final String tableName, final List<String> columnNames, final Pattern pattern) throws SQLException {
-        log.debug("table name: {}, column names: {}, search pattern: {}", tableName, columnNames, pattern);
-
-        final int columnNamesCount = columnNames.size();
-        String query = "SELECT * FROM " + tableName + " WHERE ";
-        for (int i = 0; i < columnNamesCount; i++) {
-            if (i + 1 == columnNamesCount) {
-                query += columnNames.get(i) + "::text LIKE ?;";
-            } else {
-                query += columnNames.get(i) + "::text LIKE ? OR ";
-            }
-        }
-
-        log.debug("sql query string with placeholders: {}", query);
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            for (int i = 0; i < columnNamesCount; i++) {
-                statement.setString(i + 1, pattern.pattern());
-            }
-
-            log.debug("sql query string: {}", statement);
-
-            return getResultTable(statement, tableName);
-        }
-    }
-
-    @Override
-    public Table findEqual(String tableName, List<String> columnNames, double number) throws SQLException {
-        log.debug("table name: {}, column names: {}, search pattern: {}", tableName, columnNames, number);
-
-        final int columnNamesCount = columnNames.size();
-        String query = "SELECT * FROM " + tableName + " WHERE ";
-        for (int i = 0; i < columnNamesCount; i++) {
-            if (i + 1 == columnNamesCount) {
-                query += columnNames.get(i) + "::numeric = ?;";
-            } else {
-                query += columnNames.get(i) + "::numeric = ? OR ";
-            }
-        }
-
-        log.debug("sql query string with placeholders: {}", query);
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            for (int i = 0; i < columnNamesCount; i++) {
-                statement.setDouble(i + 1, number);
-            }
-
-            log.debug("sql query string: {}", statement);
-
-            return getResultTable(statement, tableName);
-        }
-    }
-
-    @Override
-    public Table findGreaterNumeric(final String tableName, final List<String> columnNames, final BigDecimal number) throws SQLException {
-        log.debug("table name: {}, column names: {}, number: {}", tableName, columnNames, number);
-
-        final int columnNamesCount = columnNames.size();
-        String query = "SELECT * FROM " + tableName + " WHERE ";
-        for (int i = 0; i < columnNamesCount; i++) {
-            if (i + 1 == columnNamesCount) {
-                query += columnNames.get(i) + "::numeric > ?::numeric;";
-            } else {
-                query += columnNames.get(i) + "::numeric > ?::numeric OR ";
-            }
-        }
-
-        log.debug("sql query string with placeholders: {}", query);
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            for (int i = 0; i < columnNamesCount; i++) {
-                statement.setBigDecimal(i + 1, number);
-            }
-
-            log.debug("sql query string: {}", statement);
-
-            return getResultTable(statement, tableName);
-        }
-    }
-
-    @Override
-    public Table findGreaterDate(final String tableName, final List<String> columnNames, final LocalDate date) throws SQLException {
-        log.debug("table name: {}, column names: {}, date: {}", tableName, columnNames, date);
-
-        final int columnNamesCount = columnNames.size();
-        String query = "SELECT * FROM " + tableName + " WHERE ";
-        for (int i = 0; i < columnNamesCount; i++) {
-            if (i + 1 == columnNamesCount) {
-                query += columnNames.get(i) + "::date > ?::date;";
-            } else {
-                query += columnNames.get(i) + "::date > ?::date OR ";
-            }
-        }
-
-        log.debug("sql query string with placeholders: {}", query);
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            for (int i = 0; i < columnNamesCount; i++) {
-                statement.setObject(i + 1, date);
-            }
-
-            log.debug("sql query string: {}", statement);
-
-            return getResultTable(statement, tableName);
-        }
-    }
-
-    @Override
-    public Table findInRangeNumeric(String tableName, List<String> columnNames, BigDecimal from, BigDecimal to) throws SQLException {
-        log.debug("table name: {}, column names: {}, from: {}, to: {}", tableName, columnNames, from, to);
-
-        final int columnNamesCount = columnNames.size();
-        String query = "SELECT * FROM " + tableName + " WHERE ";
-        for (int i = 0; i < columnNamesCount; i++) {
-            if (i + 1 == columnNamesCount) {
-                query += columnNames.get(i) + "::numeric BETWEEN ?::numeric AND ?::numeric;";
-            } else {
-                query += columnNames.get(i) + "::numeric BETWEEN ?::numeric AND ?::numeric OR ";
-            }
-        }
-
-        log.debug("sql query string with placeholders: {}", query);
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            for (int i = 0; i < columnNamesCount * 2; i += 2) {
-                statement.setBigDecimal(i + 1, from);
-                statement.setBigDecimal(i + 2, to);
+                for (Property property : properties) {
+                    if (property.getType().equals(RANGENUMERIC)) {
+                        BigDecimal[] range = ((BigDecimal[]) property.getValue());
+                        statement.setObject(index, range[0]);
+                        statement.setObject(index + 1, range[1]);
+                        index += 2;
+                    } else {
+                        statement.setObject(index, property.getValue());
+                        index++;
+                    }
+                }
+                index++;
             }
 
             log.debug("sql query string: {}", statement);
@@ -278,5 +148,71 @@ class PostgresRepository implements RepositoryPort {
         }
 
         return columnNames;
+    }
+
+    String getWhereClause(List<String> columnNames, List<Property> properties) {
+        final int columnNamesCount = columnNames.size();
+        String clause = "";
+        for (int i = 0; i < columnNamesCount; i++) {
+            if (i + 1 == columnNamesCount) {
+                clause += getStatementForColumn(columnNames.get(i), properties) + ";";
+            } else {
+                clause += getStatementForColumn(columnNames.get(i), properties) + " OR ";
+            }
+        }
+
+        return clause;
+    }
+
+    String getStatementForColumn(final String columnName, final List<Property> properties) {
+        String statement = "((" + columnName;
+        for (int j = 0; j < properties.size(); j++) {
+            switch (properties.get(j).getType()) {
+                case REGEX -> {
+                    if (j + 1 == properties.size()) {
+                        statement += "::text ~ ?))";
+                    } else {
+                        statement += "::text ~ ?) AND (" + columnName;
+                    }
+                }
+                case LIKE -> {
+                    if (j + 1 == properties.size()) {
+                        statement += "::text LIKE ?))";
+                    } else {
+                        statement += "::text LIKE ?) AND (" + columnName;
+                    }
+                }
+                case EQUAL -> {
+                    if (j + 1 == properties.size()) {
+                        statement += "::numeric = ?::numeric))";
+                    } else {
+                        statement += "::numeric = ?::numeric) AND (" + columnName;
+                    }
+                }
+                case GREATERNUMERIC -> {
+                    if (j + 1 == properties.size()) {
+                        statement += "::numeric > ?::numeric))";
+                    } else {
+                        statement += "::numeric > ?::numeric) AND (" + columnName;
+                    }
+                }
+                case GREATERDATE -> {
+                    if (j + 1 == properties.size()) {
+                        statement += "::date > ?::date))";
+                    } else {
+                        statement += "::date > ?::date) AND (" + columnName;
+                    }
+                }
+                case RANGENUMERIC -> {
+                    if (j + 1 == properties.size()) {
+                        statement += "::numeric BETWEEN ?::numeric AND ?::numeric))";
+                    } else {
+                        statement += "::numeric BETWEEN ?::numeric AND ?::numeric) AND (" + columnName;
+                    }
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + properties.get(j).getType());
+            }
+        }
+        return statement;
     }
 }

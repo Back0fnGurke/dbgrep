@@ -3,7 +3,7 @@ package de.hdm_stuttgart.mi.dad.outgoing;
 import de.hdm_stuttgart.mi.dad.core.entity.ColumnValue;
 import de.hdm_stuttgart.mi.dad.core.entity.Row;
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
-import de.hdm_stuttgart.mi.dad.ports.RepositoryPort;
+import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package de.hdm_stuttgart.mi.dad.ports;
+package de.hdm_stuttgart.mi.dad.core.ports;
 
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
