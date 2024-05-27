@@ -19,7 +19,7 @@ public class TestOutput {
                 )),
                 new Row(Arrays.asList(
                         new ColumnValue("ID", "2"),
-                        new ColumnValue("Name", "Sarah-Jane"),
+                        new ColumnValue("Name", "Sarah-Jane Lillian Long Long Long "),
                         new ColumnValue("Age", "22")
                 ))
         ));
