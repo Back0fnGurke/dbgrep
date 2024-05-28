@@ -496,7 +496,7 @@ public class TestPostgresRepository {
                         new ColumnValue("first_name", "Conni"),
                         new ColumnValue("last_name", "Jennemann"),
                         new ColumnValue("account_created", "2023-06-13"),
-                        new ColumnValue("last_updated", "2024-05-03 11:06:29"),
+                        new ColumnValue("last_updated", "2024-05-04 11:06:29"),
                         new ColumnValue("last_login", "2023-06-13 03:20:04+02")
                 )),
                 new Row(Arrays.asList(

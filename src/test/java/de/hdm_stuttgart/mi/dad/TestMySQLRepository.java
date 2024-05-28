@@ -497,8 +497,8 @@ class TestMySQLRepository {
                         new ColumnValue("first_name", "Conni"),
                         new ColumnValue("last_name", "Jennemann"),
                         new ColumnValue("account_created", "2023-06-13"),
-                        new ColumnValue("last_updated", "2024-05-03 11:06:29"),
-                        new ColumnValue("last_login", "2023-06-13 03:20:04+02")
+                        new ColumnValue("last_updated", "2024-05-04 11:06:29"),
+                        new ColumnValue("last_login", "2023-06-13 03:20:04")
                 )),
                 new Row(Arrays.asList(
                         new ColumnValue("id", "5"),
@@ -506,7 +506,7 @@ class TestMySQLRepository {
                         new ColumnValue("last_name", "Markie"),
                         new ColumnValue("account_created", "2023-09-06"),
                         new ColumnValue("last_updated", "2024-03-12 17:39:27"),
-                        new ColumnValue("last_login", "2024-04-12 17:39:27+02")
+                        new ColumnValue("last_login", "2024-04-12 17:39:27")
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
