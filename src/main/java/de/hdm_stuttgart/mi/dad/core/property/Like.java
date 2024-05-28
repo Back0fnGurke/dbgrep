@@ -1,14 +1,22 @@
 package de.hdm_stuttgart.mi.dad.core.property;
 
-public class Like implements Property {
+import java.util.regex.Pattern;
 
-    @Override
-    public PropertyType getType() {
-        return null;
+public class Like implements Property<String> {
+
+    private final Pattern value;
+
+    public Like(final Pattern value) {
+        this.value = Pattern.compile(value.pattern());
     }
 
     @Override
-    public Object getValue() {
-        return null;
+    public PropertyType getType() {
+        return PropertyType.LIKE;
+    }
+
+    @Override
+    public String getValue() {
+        return value.pattern();
     }
 }

@@ -1,8 +1,8 @@
 package de.hdm_stuttgart.mi.dad.core.property;
 
-public interface Property {
+public interface Property<T> {
 
     PropertyType getType();
 
-    Object getValue();
+    T getValue();
 }

@@ -4,6 +4,7 @@ import de.hdm_stuttgart.mi.dad.core.entity.ColumnValue;
 import de.hdm_stuttgart.mi.dad.core.entity.Row;
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
+import de.hdm_stuttgart.mi.dad.core.property.*;
 import de.hdm_stuttgart.mi.dad.outgoing.RepositoryFactory;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.junit.jupiter.api.AfterAll;
@@ -59,7 +60,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("test");
-        final Table actual = repository.findPattern(tableName, columns, pattern);
+        final Property property = new Regex(pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
 
@@ -72,7 +74,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("Dorian");
-        final Table actual = repository.findPattern(tableName, columns, pattern);
+        final Property property = new Regex(pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         System.out.println(actual.rows());
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
@@ -97,7 +100,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("^c");
-        final Table actual = repository.findPattern(tableName, columns, pattern);
+        final Property property = new Regex(pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, Arrays.asList(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "4"),
@@ -131,7 +135,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("10");
-        final Table actual = repository.findPattern(tableName, columns, pattern);
+        final Property property = new Regex(pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, Arrays.asList(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "5"),
@@ -165,7 +170,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("test");
-        final Table actual = repository.findPattern(tableName, columns, pattern);
+        final Property property = new Like(pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
 
@@ -177,7 +183,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("Dorian");
-        final Table actual = repository.findLikePattern(tableName, columns, pattern);
+        final Property property = new Like(pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "1"),
@@ -201,7 +208,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("c%");
-        final Table actual = repository.findLikePattern(tableName, columns, pattern);
+        final Property property = new Like(pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, Arrays.asList(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "4"),
@@ -235,7 +243,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("2018-__-__ __:__:__");
-        final Table actual = repository.findLikePattern(tableName, columns, pattern);
+        final Property property = new Like(pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, Arrays.asList(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "1"),
@@ -278,8 +287,9 @@ class TestMySQLRepository {
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "age", "money");
 
         final String tableName = "account";
-        final double number = 11;
-        final Table actual = repository.findEqual(tableName, columns, number);
+        final BigDecimal number = BigDecimal.valueOf(11);
+        final Property property = new Equal(number);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
 
@@ -290,8 +300,9 @@ class TestMySQLRepository {
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "age", "money");
 
         final String tableName = "account";
-        final double number = 34;
-        final Table actual = repository.findEqual(tableName, columns, number);
+        final BigDecimal number = BigDecimal.valueOf(34);
+        final Property property = new Equal(number);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "5"),
@@ -320,8 +331,9 @@ class TestMySQLRepository {
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "age", "money");
 
         final String tableName = "account";
-        final double number = 0.50;
-        final Table actual = repository.findEqual(tableName, columns, number);
+        final BigDecimal number = BigDecimal.valueOf(0.50);
+        final Property property = new Equal(number);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "4"),
@@ -351,7 +363,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final BigDecimal number = BigDecimal.valueOf(98278675);
-        final Table actual = repository.findGreaterNumeric(tableName, columns, number);
+        final Property property = new GreaterNumeric(number);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
 
@@ -363,7 +376,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final BigDecimal number = BigDecimal.valueOf(97278674);
-        final Table actual = repository.findGreaterNumeric(tableName, columns, number);
+        final Property property = new GreaterNumeric(number);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "10"),
@@ -391,7 +405,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final BigDecimal number = BigDecimal.valueOf(94935073);
-        final Table actual = repository.findGreaterNumeric(tableName, columns, number);
+        final Property property = new GreaterNumeric(number);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "7"),
@@ -447,7 +462,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final LocalDate date = LocalDate.parse("2024-12-12");
-        final Table actual = repository.findGreaterDate(tableName, columns, date);
+        final Property property = new GreaterDate(date);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
 
@@ -459,7 +475,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final LocalDate date = LocalDate.parse("2024-05-03");
-        final Table actual = repository.findGreaterDate(tableName, columns, date);
+        final Property property = new GreaterDate(date);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "4"),
@@ -482,7 +499,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final LocalDate date = LocalDate.parse("2024-04-03");
-        final Table actual = repository.findGreaterDate(tableName, columns, date);
+        final Property property = new GreaterDate(date);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "1"),
@@ -497,8 +515,8 @@ class TestMySQLRepository {
                         new ColumnValue("first_name", "Conni"),
                         new ColumnValue("last_name", "Jennemann"),
                         new ColumnValue("account_created", "2023-06-13"),
-                        new ColumnValue("last_updated", "2024-05-03 11:06:29"),
-                        new ColumnValue("last_login", "2023-06-13 03:20:04+02")
+                        new ColumnValue("last_updated", "2024-05-04 11:06:29"),
+                        new ColumnValue("last_login", "2023-06-13 03:20:04")
                 )),
                 new Row(Arrays.asList(
                         new ColumnValue("id", "5"),
@@ -506,7 +524,7 @@ class TestMySQLRepository {
                         new ColumnValue("last_name", "Markie"),
                         new ColumnValue("account_created", "2023-09-06"),
                         new ColumnValue("last_updated", "2024-03-12 17:39:27"),
-                        new ColumnValue("last_login", "2024-04-12 17:39:27+02")
+                        new ColumnValue("last_login", "2024-04-12 17:39:27")
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
@@ -524,7 +542,8 @@ class TestMySQLRepository {
         final String tableName = "account";
         final BigDecimal from = BigDecimal.valueOf(98278675);
         final BigDecimal to = BigDecimal.valueOf(100000000);
-        final Table actual = repository.findInRangeNumeric(tableName, columns, from, to);
+        final Property property = new RangeNumeric(from, to);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
 
@@ -537,7 +556,8 @@ class TestMySQLRepository {
         final String tableName = "account";
         final BigDecimal from = BigDecimal.valueOf(80);
         final BigDecimal to = BigDecimal.valueOf(100);
-        final Table actual = repository.findInRangeNumeric(tableName, columns, from, to);
+        final Property property = new RangeNumeric(from, to);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "4"),
@@ -566,7 +586,8 @@ class TestMySQLRepository {
         final String tableName = "account";
         final BigDecimal from = BigDecimal.valueOf(90000000);
         final BigDecimal to = BigDecimal.valueOf(100000000);
-        final Table actual = repository.findInRangeNumeric(tableName, columns, from, to);
+        final Property property = new RangeNumeric(from, to);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "7"),

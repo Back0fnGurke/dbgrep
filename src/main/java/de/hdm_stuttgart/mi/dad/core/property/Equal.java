@@ -1,14 +1,22 @@
 package de.hdm_stuttgart.mi.dad.core.property;
 
-public class Equal implements Property {
+import java.math.BigDecimal;
 
-    @Override
-    public PropertyType getType() {
-        return null;
+public class Equal implements Property<BigDecimal> {
+
+    private final BigDecimal value;
+
+    public Equal(final BigDecimal value) {
+        this.value = value;
     }
 
     @Override
-    public Object getValue() {
-        return null;
+    public PropertyType getType() {
+        return PropertyType.EQUAL;
+    }
+
+    @Override
+    public BigDecimal getValue() {
+        return value;
     }
 }

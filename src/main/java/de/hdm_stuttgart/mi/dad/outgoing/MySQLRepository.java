@@ -4,6 +4,7 @@ import de.hdm_stuttgart.mi.dad.core.entity.ColumnValue;
 import de.hdm_stuttgart.mi.dad.core.entity.Row;
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
+import de.hdm_stuttgart.mi.dad.core.property.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,10 +13,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
+
+import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.RANGENUMERIC;
 
 /**
  * Implementation of the RepositoryPort Interface for mysql databases.
@@ -31,164 +32,27 @@ class MySQLRepository implements RepositoryPort {
     }
 
     @Override
-    public Table findPattern(final String tableName, final List<String> columnNames, final Pattern pattern) throws SQLException {
-        log.debug("table name: {}, column names: {}, search pattern: {}", tableName, columnNames, pattern);
+    public Table findTableRowsWithProperties(String tableName, List<String> columnNames, List<Property> properties) throws SQLException {
+        log.debug("table name: {}, column names: {}, properties: {}", tableName, columnNames, properties);
 
-        final int columnNamesCount = columnNames.size();
-        String query = "SELECT * FROM " + tableName + " WHERE ";
-        for (int i = 0; i < columnNamesCount; i++) {
-            if (i + 1 == columnNamesCount) {
-                query += "CAST(" + columnNames.get(i) + " AS CHAR) REGEXP ?;";
-            } else {
-                query += "CAST(" + columnNames.get(i) + " AS CHAR) REGEXP ? OR ";
-            }
-        }
-
+        String query = "SELECT * FROM " + tableName + " WHERE " + getWhereClause(columnNames, properties);
         log.debug("sql query string with placeholders: {}", query);
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            for (int i = 0; i < columnNamesCount; i++) {
-                statement.setString(i + 1, pattern.pattern());
+            int index = 1;
+            for (String ignored : columnNames) {
+                for (Property property : properties) {
+                    if (property.getType().equals(RANGENUMERIC)) {
+                        BigDecimal[] range = (BigDecimal[]) property.getValue();
+                        statement.setObject(index++, range[0]);
+                        statement.setObject(index++, range[1]);
+                    } else {
+                        statement.setObject(index++, property.getValue());
+                    }
+                }
             }
 
             log.debug("sql query string: {}", statement);
-
-            return getResultTable(statement, tableName);
-        }
-    }
-
-    @Override
-    public Table findLikePattern(String tableName, List<String> columnNames, Pattern pattern) throws SQLException {
-        log.debug("table name: {}, column names: {}, search pattern: {}", tableName, columnNames, pattern);
-
-        final int columnNamesCount = columnNames.size();
-        String query = "SELECT * FROM " + tableName + " WHERE ";
-        for (int i = 0; i < columnNamesCount; i++) {
-            if (i + 1 == columnNamesCount) {
-                query += "CAST(" + columnNames.get(i) + " AS CHAR) LIKE ?;";
-            } else {
-                query += "CAST(" + columnNames.get(i) + " AS CHAR) LIKE ? OR ";
-            }
-        }
-
-        log.debug("sql query string with placeholders: {}", query);
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            for (int i = 0; i < columnNamesCount; i++) {
-                statement.setString(i + 1, pattern.pattern());
-            }
-
-            log.debug("sql query string: {}", statement);
-
-            return getResultTable(statement, tableName);
-        }
-    }
-
-    @Override
-    public Table findEqual(String tableName, List<String> columnNames, final double number) throws SQLException {
-        log.debug("table name: {}, column names: {}, search pattern: {}", tableName, columnNames, number);
-
-        final int columnNamesCount = columnNames.size();
-        String query = "SELECT * FROM " + tableName + " WHERE ";
-        for (int i = 0; i < columnNamesCount; i++) {
-            if (i + 1 == columnNamesCount) {
-                query += "CAST(" + columnNames.get(i) + " AS CHAR) = ?;";
-            } else {
-                query += "CAST(" + columnNames.get(i) + " AS CHAR) = ? OR ";
-            }
-        }
-
-        log.debug("sql query string with placeholders: {}", query);
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            for (int i = 0; i < columnNamesCount; i++) {
-                statement.setDouble(i + 1, number);
-            }
-
-            log.debug("sql query string: {}", statement);
-
-            return getResultTable(statement, tableName);
-        }
-    }
-
-    @Override
-    public Table findGreaterNumeric(final String tableName, final List<String> columnNames, final BigDecimal number) throws SQLException {
-        log.debug("table name: {}, column names: {}, number: {}", tableName, columnNames, number);
-
-        final int columnNamesCount = columnNames.size();
-        String query = "SELECT * FROM " + tableName + " WHERE ";
-        for (int i = 0; i < columnNamesCount; i++) {
-            if (i + 1 == columnNamesCount) {
-                query += columnNames.get(i) + " > ?;";
-            } else {
-                query += columnNames.get(i) + " > ? OR ";
-            }
-        }
-
-        log.debug("sql query string with placeholders: {}", query);
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            for (int i = 0; i < columnNamesCount; i++) {
-                statement.setBigDecimal(i + 1, number);
-            }
-
-            log.debug("sql query string: {}", statement);
-
-            return getResultTable(statement, tableName);
-        }
-    }
-
-    @Override
-    public Table findGreaterDate(final String tableName, final List<String> columnNames, final LocalDate date) throws SQLException {
-        log.debug("table name: {}, column names: {}, number: {}", tableName, columnNames, date);
-
-        final int columnNamesCount = columnNames.size();
-        String query = "SELECT * FROM " + tableName + " WHERE ";
-        for (int i = 0; i < columnNamesCount; i++) {
-            if (i + 1 == columnNamesCount) {
-                query += "CAST(" + columnNames.get(i) + " AS DATE) > CAST( ? AS DATE);";
-            } else {
-                query += "CAST(" + columnNames.get(i) + " AS DATE) > CAST( ? AS DATE) OR ";
-            }
-        }
-
-        log.debug("sql query string with placeholders: {}", query);
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            for (int i = 0; i < columnNamesCount; i++) {
-                statement.setObject(i + 1, date);
-            }
-
-            log.debug("sql query string: {}", statement);
-
-            return getResultTable(statement, tableName);
-        }
-    }
-
-    @Override
-    public Table findInRangeNumeric(String tableName, List<String> columnNames, BigDecimal from, BigDecimal to) throws SQLException {
-        log.debug("table name: {}, column names: {}, from: {}, to: {}", tableName, columnNames, from, to);
-
-        final int columnNamesCount = columnNames.size();
-        String query = "SELECT * FROM " + tableName + " WHERE ";
-        for (int i = 0; i < columnNamesCount; i++) {
-            if (i + 1 == columnNamesCount) {
-                query += columnNames.get(i) + " BETWEEN ? AND ?;";
-            } else {
-                query += columnNames.get(i) + " BETWEEN ? AND ? OR ";
-            }
-        }
-
-        log.debug("sql query string with placeholders: {}", query);
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            for (int i = 0; i < columnNamesCount * 2; i += 2) {
-                statement.setBigDecimal(i + 1, from);
-                statement.setBigDecimal(i + 2, to);
-            }
-
-            log.debug("sql query string: {}", statement);
-
             return getResultTable(statement, tableName);
         }
     }
@@ -196,87 +60,96 @@ class MySQLRepository implements RepositoryPort {
     @Override
     public List<String> findTableColumnNamesAll(final String tableName) throws SQLException {
         log.debug("table name: {}", tableName);
-
-        final String query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = ?";
-        try (final PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setString(1, tableName);
-
-            log.debug("query string: {}", statement);
-
-            return findTableColumnNames(statement);
-        }
+        String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ?";
+        return findTableColumnNames(query, tableName);
     }
 
     @Override
-    public List<String> findTableColumnNamesNumeric(String tableName) throws SQLException {
+    public List<String> findTableColumnNamesNumeric(final String tableName) throws SQLException {
         log.debug("table name: {}", tableName);
-
-        final String query = "SELECT column_name FROM information_schema.columns " +
-                "WHERE table_name = ? AND data_type in " +
-                "('tinyint', 'smallint', 'mediumint', 'int', 'bigint', " +
-                "'decimal', 'bit', 'float', 'double')";
-        try (final PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setString(1, tableName);
-
-            log.debug("query string: {}", statement);
-
-            return findTableColumnNames(statement);
-        }
+        String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ? AND data_type IN ('tinyint', 'smallint', 'mediumint', 'int', 'bigint', 'decimal', 'bit', 'float', 'double')";
+        return findTableColumnNames(query, tableName);
     }
 
     @Override
-    public List<String> findTableColumnNamesDate(String tableName) throws SQLException {
+    public List<String> findTableColumnNamesDate(final String tableName) throws SQLException {
         log.debug("table name: {}", tableName);
-
-        final String query = "SELECT column_name FROM information_schema.columns " +
-                "WHERE table_name = ? AND data_type in " +
-                "('date', 'datetime', 'timestamp')";
-        try (final PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setString(1, tableName);
-
-            log.debug("query string: {}", statement);
-
-            return findTableColumnNames(statement);
-        }
+        String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ? AND data_type IN ('date', 'datetime', 'timestamp')";
+        return findTableColumnNames(query, tableName);
     }
 
-    public Table getResultTable(PreparedStatement statement, final String tableName) throws SQLException {
-        final List<Row> result = new ArrayList<>();
-        try (final ResultSet tableSet = statement.executeQuery()) {
-
+    private Table getResultTable(final PreparedStatement statement, final String tableName) throws SQLException {
+        List<Row> result = new ArrayList<>();
+        try (ResultSet tableSet = statement.executeQuery()) {
             while (tableSet.next()) {
-
-                final int columnCount = tableSet.getMetaData().getColumnCount();
-                final List<ColumnValue> columnValues = new ArrayList<>(columnCount);
-
-                for (int i = 1; i <= columnCount; i++) {
+                List<ColumnValue> columnValues = new ArrayList<>();
+                for (int i = 1; i <= tableSet.getMetaData().getColumnCount(); i++) {
                     columnValues.add(new ColumnValue(tableSet.getMetaData().getColumnLabel(i), tableSet.getString(i)));
                 }
-
-                log.debug("column count in found row: {}, columns: {}", columnCount, columnValues);
-
+                log.debug("column count in found row: {}, columns: {}", columnValues.size(), columnValues);
                 result.add(new Row(columnValues));
             }
-        } catch (SQLException e) {
-            throw new SQLException(e);
         }
-
         return new Table(tableName, result);
     }
 
-    List<String> findTableColumnNames(final PreparedStatement statement) throws SQLException {
-        final List<String> columnNames = new ArrayList<>();
+    private List<String> findTableColumnNames(final String query, final String tableName) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, tableName);
+            log.debug("query string: {}", statement);
+            return getColumnNames(statement);
+        }
+    }
 
-        try (final ResultSet columnNamesSet = statement.executeQuery()) {
-
+    private List<String> getColumnNames(final PreparedStatement statement) throws SQLException {
+        List<String> columnNames = new ArrayList<>();
+        try (ResultSet columnNamesSet = statement.executeQuery()) {
             while (columnNamesSet.next()) {
                 columnNames.add(columnNamesSet.getString(1));
             }
         }
-
         return columnNames;
+    }
+
+    String getWhereClause(final List<String> columnNames, final List<Property> properties) {
+        StringBuilder clause = new StringBuilder();
+        int columnNamesCount = columnNames.size();
+
+        for (int i = 0; i < columnNamesCount; i++) {
+            clause.append(getStatementForColumn(columnNames.get(i), properties));
+            if (i + 1 < columnNamesCount) {
+                clause.append(" OR ");
+            } else {
+                clause.append(";");
+            }
+        }
+
+        return clause.toString();
+    }
+
+    String getStatementForColumn(final String columnName, final List<Property> properties) {
+        StringBuilder statement = new StringBuilder();
+        statement.append("((CAST(").append(columnName);
+
+        for (int j = 0; j < properties.size(); j++) {
+            switch (properties.get(j).getType()) {
+                case REGEX -> statement.append(" AS CHAR) REGEXP ?");
+                case LIKE -> statement.append(" AS CHAR) LIKE ?");
+                case EQUAL -> statement.append(" AS CHAR) = ?");
+                case GREATERNUMERIC -> statement.append(" AS DECIMAL) > ?");
+                case GREATERDATE -> statement.append(" AS DATE) > CAST(? AS DATE)");
+                case RANGENUMERIC -> statement.append(" AS DECIMAL) BETWEEN ? AND ?");
+                default -> throw new IllegalStateException("Unexpected value: " + properties.get(j).getType());
+            }
+
+            if (j + 1 < properties.size()) {
+                statement.append(" AND (CAST(").append(columnName);
+            } else {
+                statement.append(")");
+            }
+        }
+
+        statement.append(")");
+        return statement.toString();
     }
 }
