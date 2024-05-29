@@ -85,7 +85,7 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
     }
 
     @Test
@@ -118,8 +118,8 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
-        assertEquals(expected.rows().get(1), actual.rows().get(1), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().get(1), actual.rows().get(1), "Should match");
     }
 
     @Test
@@ -152,8 +152,8 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
-        assertEquals(expected.rows().get(1), actual.rows().get(1), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().get(1), actual.rows().get(1), "Should match");
     }
 
     @Test
@@ -189,7 +189,7 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
     }
 
     @Test
@@ -222,8 +222,8 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
-        assertEquals(expected.rows().get(1), actual.rows().get(1), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().get(1), actual.rows().get(1), "Should match");
     }
 
     @Test
@@ -265,9 +265,81 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
-        assertEquals(expected.rows().get(1), actual.rows().get(1), "Maps should match");
-        assertEquals(expected.rows().get(2), actual.rows().get(2), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().get(1), actual.rows().get(1), "Should match");
+        assertEquals(expected.rows().get(2), actual.rows().get(2), "Should match");
+    }
+
+    @Test
+    void test_findEqual_no_match() throws SQLException, FileNotFoundException {
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findEqual_testdata.sql"));
+
+        final List<String> columns = Arrays.asList("id", "age", "money");
+
+        final String tableName = "account";
+        final double number = 11;
+        final Table actual = repository.findEqual(tableName, columns, number);
+        assertTrue(actual.rows().isEmpty(), "should be empty");
+    }
+
+    @Test
+    void test_findEqual_integer() throws SQLException, FileNotFoundException {
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findEqual_testdata.sql"));
+
+        final List<String> columns = Arrays.asList("id", "age", "money");
+
+        final String tableName = "account";
+        final double number = 34;
+        final Table actual = repository.findEqual(tableName, columns, number);
+        final Table expected = new Table(tableName, List.of(
+                new Row(Arrays.asList(
+                        new ColumnValue("id", "5"),
+                        new ColumnValue("first_name", "Onfroi"),
+                        new ColumnValue("last_name", "Martignoni"),
+                        new ColumnValue("age", "34"),
+                        new ColumnValue("money", "2830.37")
+                )),
+                new Row(Arrays.asList(
+                        new ColumnValue("id", "8"),
+                        new ColumnValue("first_name", "Binnie"),
+                        new ColumnValue("last_name", "Feld"),
+                        new ColumnValue("age", "34"),
+                        new ColumnValue("money", "5306.60")
+                ))
+        ));
+        assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().getLast(), actual.rows().getLast(), "Should match");
+    }
+
+    @Test
+    void test_findEqual_decimal() throws SQLException, FileNotFoundException {
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findEqual_testdata.sql"));
+
+        final List<String> columns = Arrays.asList("id", "age", "money");
+
+        final String tableName = "account";
+        final double number = 0.50;
+        final Table actual = repository.findEqual(tableName, columns, number);
+        final Table expected = new Table(tableName, List.of(
+                new Row(Arrays.asList(
+                        new ColumnValue("id", "4"),
+                        new ColumnValue("first_name", "Malinde"),
+                        new ColumnValue("last_name", "Ketchen"),
+                        new ColumnValue("age", "94"),
+                        new ColumnValue("money", "0.50")
+                )),
+                new Row(Arrays.asList(
+                        new ColumnValue("id", "6"),
+                        new ColumnValue("first_name", "Ardelis"),
+                        new ColumnValue("last_name", "Coundley"),
+                        new ColumnValue("age", "61"),
+                        new ColumnValue("money", "0.50")
+                ))
+        ));
+        assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().getLast(), actual.rows().getLast(), "Should match");
     }
 
     @Test
@@ -307,7 +379,7 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
     }
 
     @Test
@@ -361,7 +433,9 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().get(1), actual.rows().get(1), "Should match");
+        assertEquals(expected.rows().getLast(), actual.rows().getLast(), "Should match");
     }
 
     @Test
@@ -396,7 +470,7 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
     }
 
     @Test
@@ -422,7 +496,7 @@ public class TestPostgresRepository {
                         new ColumnValue("first_name", "Conni"),
                         new ColumnValue("last_name", "Jennemann"),
                         new ColumnValue("account_created", "2023-06-13"),
-                        new ColumnValue("last_updated", "2024-05-03 11:06:29"),
+                        new ColumnValue("last_updated", "2024-05-04 11:06:29"),
                         new ColumnValue("last_login", "2023-06-13 03:20:04+02")
                 )),
                 new Row(Arrays.asList(
@@ -435,7 +509,108 @@ public class TestPostgresRepository {
                 ))
         ));
         assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
-        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Maps should match");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().get(1), actual.rows().get(1), "Should match");
+        assertEquals(expected.rows().getLast(), actual.rows().getLast(), "Should match");
+    }
+
+    @Test
+    void test_findInRangeNumeric_no_match() throws SQLException, FileNotFoundException {
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findInRangeNumeric_test_data.sql"));
+
+        final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
+
+        final String tableName = "account";
+        final BigDecimal from = BigDecimal.valueOf(98278675);
+        final BigDecimal to = BigDecimal.valueOf(100000000);
+        final Table actual = repository.findInRangeNumeric(tableName, columns, from, to);
+        assertTrue(actual.rows().isEmpty(), "should be empty");
+    }
+
+    @Test
+    void test_findInRangeNumeric_one_match() throws SQLException, FileNotFoundException {
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findInRangeNumeric_test_data.sql"));
+
+        final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
+
+        final String tableName = "account";
+        final BigDecimal from = BigDecimal.valueOf(80);
+        final BigDecimal to = BigDecimal.valueOf(100);
+        final Table actual = repository.findInRangeNumeric(tableName, columns, from, to);
+        final Table expected = new Table(tableName, List.of(
+                new Row(Arrays.asList(
+                        new ColumnValue("id", "4"),
+                        new ColumnValue("first_name", "Conni"),
+                        new ColumnValue("last_name", "Jennemann"),
+                        new ColumnValue("account_created", "2024-05-03 11:06:29"),
+                        new ColumnValue("username", "cjennemann3"),
+                        new ColumnValue("email", "cjennemann3@whitehouse.gov"),
+                        new ColumnValue("password", "sJ3@y)c|`w{ku"),
+                        new ColumnValue("zipcode", "88"),
+                        new ColumnValue("balance", "$1,958,874.00"),
+                        new ColumnValue("votes", "474797"),
+                        new ColumnValue("bought_books", "546353")
+                ))
+        ));
+        assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+    }
+
+    @Test
+    void test_findInRangeNumeric_multiple_match() throws SQLException, FileNotFoundException {
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findInRangeNumeric_test_data.sql"));
+
+        final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
+
+        final String tableName = "account";
+        final BigDecimal from = BigDecimal.valueOf(90000000);
+        final BigDecimal to = BigDecimal.valueOf(100000000);
+        final Table actual = repository.findInRangeNumeric(tableName, columns, from, to);
+        final Table expected = new Table(tableName, List.of(
+                new Row(Arrays.asList(
+                        new ColumnValue("id", "7"),
+                        new ColumnValue("first_name", "Yvonne"),
+                        new ColumnValue("last_name", "Biaggetti"),
+                        new ColumnValue("account_created", "2024-01-04 01:24:35"),
+                        new ColumnValue("username", "ybiaggetti6"),
+                        new ColumnValue("email", "ybiaggetti6@ning.com"),
+                        new ColumnValue("password", "bB5$4''AkxnC>uK("),
+                        new ColumnValue("zipcode", "11247"),
+                        new ColumnValue("balance", "$94,935,074.00"),
+                        new ColumnValue("votes", "479981"),
+                        new ColumnValue("bought_books", "107847")
+                )),
+                new Row(Arrays.asList(
+                        new ColumnValue("id", "9"),
+                        new ColumnValue("first_name", "Tye"),
+                        new ColumnValue("last_name", "Heintzsch"),
+                        new ColumnValue("account_created", "2024-03-01 18:11:51"),
+                        new ColumnValue("username", "theintzsch8"),
+                        new ColumnValue("email", "theintzsch8@newyorker.com"),
+                        new ColumnValue("password", "hE1#zsv=P0"),
+                        new ColumnValue("zipcode", "24442"),
+                        new ColumnValue("balance", "$96,443,590.00"),
+                        new ColumnValue("votes", "827467"),
+                        new ColumnValue("bought_books", "928780")
+                )),
+                new Row(Arrays.asList(
+                        new ColumnValue("id", "10"),
+                        new ColumnValue("first_name", "Claudianus"),
+                        new ColumnValue("last_name", "Hirsch"),
+                        new ColumnValue("account_created", "2023-10-22 13:53:38"),
+                        new ColumnValue("username", "chirsch9"),
+                        new ColumnValue("email", "chirsch9@fc2.com"),
+                        new ColumnValue("password", "fR1`C=>yQCP"),
+                        new ColumnValue("zipcode", "618"),
+                        new ColumnValue("balance", "$97,278,675.00"),
+                        new ColumnValue("votes", "316616"),
+                        new ColumnValue("bought_books", "358568")
+                ))
+        ));
+        assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+        assertEquals(expected.rows().get(1), actual.rows().get(1), "Should match");
+        assertEquals(expected.rows().getLast(), actual.rows().getLast(), "Should match");
     }
 
     @Test
@@ -499,80 +674,5 @@ public class TestPostgresRepository {
         assertEquals(expected.size(), actual.size(), "Wrong number of columns");
         assertTrue(expected.containsAll(actual));
         assertTrue(actual.containsAll(expected));
-    }
-
-    @Test
-    void test_findEqual() throws SQLException, FileNotFoundException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findEqual_testdata.sql"));
-
-        final List<String> columns = Arrays.asList("id", "age", "money");
-
-
-        final String tableName1 = "account";
-        final double number1 = 74;
-        final Table actual1 = repository.findEqual(tableName1, columns, number1);
-        final Table expected1 = new Table(tableName1, List.of(
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "1"),
-                        new ColumnValue("first_name", "Tucker"),
-                        new ColumnValue("last_name", "Blumire"),
-                        new ColumnValue("age", "74"),
-                        new ColumnValue("money", "9432.00")
-                ))
-        ));
-        assertEquals(expected1.rows().size(), actual1.rows().size(), "Wrong number of rows");
-        assertEquals(expected1.rows().getFirst(), actual1.rows().getFirst(), "Maps should match");
-
-        final String tableName2 = "account";
-        final double number2 = 34;
-        final Table actual2 = repository.findEqual(tableName2, columns, number2);
-        final Table expected2 = new Table(tableName1, List.of(
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "5"),
-                        new ColumnValue("first_name", "Onfroi"),
-                        new ColumnValue("last_name", "Martignoni"),
-                        new ColumnValue("age", "34"),
-                        new ColumnValue("money", "2830.37")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "8"),
-                        new ColumnValue("first_name", "Binnie"),
-                        new ColumnValue("last_name", "Feld"),
-                        new ColumnValue("age", "34"),
-                        new ColumnValue("money", "5306.60")
-                ))
-        ));
-        assertEquals(expected2.rows().size(), actual2.rows().size(), "Wrong number of rows");
-        assertEquals(expected2.rows().getFirst(), actual2.rows().getFirst(), "Maps should match");
-        assertEquals(expected2.rows().getLast(), actual2.rows().getLast(), "Maps should match");
-
-        final String tableName3 = "account";
-        final double number3 = 0.50;
-        final Table actual3 = repository.findEqual(tableName2, columns, number3);
-        final Table expected3 = new Table(tableName1, List.of(
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "4"),
-                        new ColumnValue("first_name", "Malinde"),
-                        new ColumnValue("last_name", "Ketchen"),
-                        new ColumnValue("age", "94"),
-                        new ColumnValue("money", "0.50")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("id", "6"),
-                        new ColumnValue("first_name", "Ardelis"),
-                        new ColumnValue("last_name", "Coundley"),
-                        new ColumnValue("age", "61"),
-                        new ColumnValue("money", "0.50")
-                ))
-        ));
-        assertEquals(expected3.rows().size(), actual3.rows().size(), "Wrong number of rows");
-        assertEquals(expected3.rows().getFirst(), actual3.rows().getFirst(), "Maps should match");
-        assertEquals(expected3.rows().getLast(), actual3.rows().getLast(), "Maps should match");
-
-
-        final String tableName4 = "account";
-        final double number4 = 11;
-        final Table actual4 = repository.findEqual(tableName4, columns, number4);
-        assertTrue(actual4.rows().isEmpty(), "should be empty");
     }
 }

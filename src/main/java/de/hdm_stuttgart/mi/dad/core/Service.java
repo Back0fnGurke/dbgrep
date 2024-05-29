@@ -21,6 +21,11 @@ public class Service implements ServicePort {
     }
 
     @Override
+    public List<Table> searchColumns(List<String> tableNames, List<String> columnNames, Property property) throws SQLException {
+        return List.of();
+    }
+
+    @Override
     public List<Table> searchTables(final List<String> tableNames, final Property property) throws SQLException {
 
 //        log.debug("table names: {}, search pattern: {}", tableNames, pattern.pattern());
@@ -55,6 +60,11 @@ public class Service implements ServicePort {
 //        log.debug("found table results: {}", results);
 //
 //        return results;
+        return List.of();
+    }
+
+    @Override
+    public List<Table> searchWholeDatabase(Property property) throws SQLException {
         return List.of();
     }
 }

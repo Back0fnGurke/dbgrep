@@ -31,16 +31,6 @@ class PostgresRepository implements RepositoryPort {
     }
 
     @Override
-    public void findInWholeDatabase() {
-        // do stuff
-    }
-
-    @Override
-    public void findInColumn() {
-        // do stuff
-    }
-
-    @Override
     public Table findPattern(final String tableName, final List<String> columnNames, final Pattern pattern) throws SQLException {
         log.debug("table name: {}, column names: {}, search pattern: {}", tableName, columnNames, pattern);
 
@@ -150,7 +140,7 @@ class PostgresRepository implements RepositoryPort {
 
     @Override
     public Table findGreaterDate(final String tableName, final List<String> columnNames, final LocalDate date) throws SQLException {
-        log.debug("table name: {}, column names: {}, number: {}", tableName, columnNames, date);
+        log.debug("table name: {}, column names: {}, date: {}", tableName, columnNames, date);
 
         final int columnNamesCount = columnNames.size();
         String query = "SELECT * FROM " + tableName + " WHERE ";
@@ -167,6 +157,34 @@ class PostgresRepository implements RepositoryPort {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             for (int i = 0; i < columnNamesCount; i++) {
                 statement.setObject(i + 1, date);
+            }
+
+            log.debug("sql query string: {}", statement);
+
+            return getResultTable(statement, tableName);
+        }
+    }
+
+    @Override
+    public Table findInRangeNumeric(String tableName, List<String> columnNames, BigDecimal from, BigDecimal to) throws SQLException {
+        log.debug("table name: {}, column names: {}, from: {}, to: {}", tableName, columnNames, from, to);
+
+        final int columnNamesCount = columnNames.size();
+        String query = "SELECT * FROM " + tableName + " WHERE ";
+        for (int i = 0; i < columnNamesCount; i++) {
+            if (i + 1 == columnNamesCount) {
+                query += columnNames.get(i) + "::numeric BETWEEN ?::numeric AND ?::numeric;";
+            } else {
+                query += columnNames.get(i) + "::numeric BETWEEN ?::numeric AND ?::numeric OR ";
+            }
+        }
+
+        log.debug("sql query string with placeholders: {}", query);
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            for (int i = 0; i < columnNamesCount * 2; i += 2) {
+                statement.setBigDecimal(i + 1, from);
+                statement.setBigDecimal(i + 2, to);
             }
 
             log.debug("sql query string: {}", statement);

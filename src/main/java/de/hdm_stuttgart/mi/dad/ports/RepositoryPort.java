@@ -12,9 +12,6 @@ import java.util.regex.Pattern;
  * Defines database query methods needed for functionality of the Service classes.
  */
 public interface RepositoryPort {
-    void findInWholeDatabase();
-
-    void findInColumn();
 
     /**
      * Find rows in provided table that have column values which match the provided search pattern.
@@ -43,7 +40,7 @@ public interface RepositoryPort {
      *
      * @param tableName   the table name to search in
      * @param columnNames column names of the table to match against the provided pattern
-     * @param number     the number to match the columns against
+     * @param number      the number to match the columns against
      * @return a Table containing all rows with matching column values. List of Rows is Empty if none where found.
      * @throws SQLException if a database access error occurs
      */
@@ -70,6 +67,18 @@ public interface RepositoryPort {
      * @throws SQLException if a database access error occurs
      */
     Table findGreaterDate(final String tableName, final List<String> columnNames, final LocalDate date) throws SQLException;
+
+    /**
+     * Find rows in provided table that have numeric column values which are in the provided range.
+     *
+     * @param tableName   the table name to search in
+     * @param columnNames column names of the table to match against the provided pattern
+     * @param from        the start of the range (included)
+     * @param to          the end of the range (included)
+     * @return a Table containing all rows with matching column values. List of Rows is Empty if none where found.
+     * @throws SQLException if a database access error occurs
+     */
+    Table findInRangeNumeric(final String tableName, final List<String> columnNames, final BigDecimal from, final BigDecimal to) throws SQLException;
 
     /**
      * Find all column names of a table regardless of column type.
