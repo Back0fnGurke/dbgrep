@@ -9,9 +9,6 @@ public class OutputHandler {
 
         //find largest String for each column
         int[] longest = new int[numberOfColumns];
-        for (int i = 0; i < numberOfColumns; i++) {
-            longest[i] = 0;
-        }
 
         for (int row = 0; row < table.rows().size(); row++) {
             for (int column = 0; column < numberOfColumns; column++) {
