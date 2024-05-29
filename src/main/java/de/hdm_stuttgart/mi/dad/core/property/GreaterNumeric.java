@@ -2,7 +2,7 @@ package de.hdm_stuttgart.mi.dad.core.property;
 
 import java.math.BigDecimal;
 
-public class GreaterNumeric implements Property<BigDecimal> {
+class GreaterNumeric implements Property<BigDecimal> {
 
     private final BigDecimal value;
 

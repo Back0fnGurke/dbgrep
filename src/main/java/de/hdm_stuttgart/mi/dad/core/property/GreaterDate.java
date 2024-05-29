@@ -2,7 +2,7 @@ package de.hdm_stuttgart.mi.dad.core.property;
 
 import java.time.LocalDate;
 
-public class GreaterDate implements Property<LocalDate> {
+class GreaterDate implements Property<LocalDate> {
 
     private final LocalDate value;
 

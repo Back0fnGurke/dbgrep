@@ -3,7 +3,7 @@ package de.hdm_stuttgart.mi.dad.core.property;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
-public class RangeNumeric implements Property<BigDecimal[]> {
+class RangeNumeric implements Property<BigDecimal[]> {
 
     private final BigDecimal[] value;
 

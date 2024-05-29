@@ -2,7 +2,7 @@ package de.hdm_stuttgart.mi.dad.core.property;
 
 import java.util.regex.Pattern;
 
-public class Regex implements Property<String> {
+class Regex implements Property<String> {
 
     private final Pattern value;
 
