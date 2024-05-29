@@ -16,6 +16,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
+        <surefireArgLine>-Dnet.bytebuddy.experimental=true -Duser.timezone=GMT+2</surefireArgLine>
     </properties>
 
     <dependencies>
@@ -196,7 +197,6 @@
                 <configuration>
                     <!--suppress UnresolvedMavenProperty -->
                     <argLine>${surefireArgLine}</argLine>
-                    <argLine>-Dnet.bytebuddy.experimental=true</argLine>
                     <excludes>
                         <exclude>**/*IT.java</exclude>
                     </excludes>

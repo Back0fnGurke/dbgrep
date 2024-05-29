@@ -2,8 +2,9 @@ package de.hdm_stuttgart.mi.dad.ports;
 
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
 
-import java.sql.PreparedStatement;
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -48,14 +49,52 @@ public interface RepositoryPort {
      */
     Table findEqual(final String tableName, final List<String> columnNames, final double number) throws SQLException;
 
-    Table getResultTable(PreparedStatement statement, String tableName);
+    /**
+     * Find rows in provided table that have numeric column values which are greater than the provided numeric value.
+     *
+     * @param tableName   the table name to search in
+     * @param columnNames column names of the table to match against the provided pattern
+     * @param number      the number to match the columns against
+     * @return a Table containing all rows with matching column values. List of Rows is Empty if none where found.
+     * @throws SQLException if a database access error occurs
+     */
+    Table findGreaterNumeric(final String tableName, final List<String> columnNames, final BigDecimal number) throws SQLException;
 
     /**
-     * Find column names of a table.
+     * Find rows in provided table that have date column values which are greater than the provided date value.
+     *
+     * @param tableName   the table name to search in
+     * @param columnNames column names of the table to match against the provided pattern
+     * @param date        the date to match the columns against
+     * @return a Table containing all rows with matching column values. List of Rows is Empty if none where found.
+     * @throws SQLException if a database access error occurs
+     */
+    Table findGreaterDate(final String tableName, final List<String> columnNames, final LocalDate date) throws SQLException;
+
+    /**
+     * Find all column names of a table regardless of column type.
      *
      * @param tableName the table name to search the columns for
      * @return List<String> containing all found column names of the table, empty if none where found
      * @throws SQLException if a database access error occurs
      */
-    List<String> findTableColumnNames(final String tableName) throws SQLException;
+    List<String> findTableColumnNamesAll(final String tableName) throws SQLException;
+
+    /**
+     * Find column names of a table with column type numeric.
+     *
+     * @param tableName the table name to search the columns for
+     * @return List<String> containing all found column names of the table, empty if none where found
+     * @throws SQLException if a database access error occurs
+     */
+    List<String> findTableColumnNamesNumeric(final String tableName) throws SQLException;
+
+    /**
+     * Find column names of a table with a date related column type.
+     *
+     * @param tableName the table name to search the columns for
+     * @return List<String> containing all found column names of the table, empty if none where found
+     * @throws SQLException if a database access error occurs
+     */
+    List<String> findTableColumnNamesDate(final String tableName) throws SQLException;
 }
