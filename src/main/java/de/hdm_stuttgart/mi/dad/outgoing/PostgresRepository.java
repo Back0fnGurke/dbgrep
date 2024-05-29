@@ -39,7 +39,7 @@ class PostgresRepository implements RepositoryPort {
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             int index = 1;
-            for (String ignored : columnNames) {
+            for (int i = 0; i < columnNames.size(); i++) {
                 for (Property property : properties) {
                     if (property.getType().equals(RANGENUMERIC)) {
                         BigDecimal[] range = (BigDecimal[]) property.getValue();
