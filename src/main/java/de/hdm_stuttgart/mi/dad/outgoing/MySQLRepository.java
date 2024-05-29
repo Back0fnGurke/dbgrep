@@ -139,7 +139,7 @@ class MySQLRepository implements RepositoryPort {
                 case GREATERNUMERIC -> statement.append(" AS DECIMAL) > ?");
                 case GREATERDATE -> statement.append(" AS DATE) > CAST(? AS DATE)");
                 case RANGENUMERIC -> statement.append(" AS DECIMAL) BETWEEN ? AND ?");
-                default -> throw new IllegalStateException("Unexpected value: " + properties.get(j).getType());
+                default -> throw new IllegalArgumentException("Unexpected value: " + properties.get(j).getType());
             }
 
             if (j + 1 < properties.size()) {

@@ -2,13 +2,7 @@ package de.hdm_stuttgart.mi.dad.core.property;
 
 import java.math.BigDecimal;
 
-class GreaterNumeric implements Property<BigDecimal> {
-
-    private final BigDecimal value;
-
-    public GreaterNumeric(final BigDecimal value) {
-        this.value = value;
-    }
+record GreaterNumeric(BigDecimal value) implements Property<BigDecimal> {
 
     @Override
     public PropertyType getType() {

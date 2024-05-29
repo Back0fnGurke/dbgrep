@@ -31,7 +31,7 @@ class PostgresRepository implements RepositoryPort {
     }
 
     @Override
-    public Table findTableRowsWithProperties(String tableName, List<String> columnNames, List<Property> properties) throws SQLException {
+    public Table findTableRowsWithProperties(final String tableName, final List<String> columnNames, final List<Property> properties) throws SQLException {
         log.debug("table name: {}, column names: {}, properties: {}", tableName, columnNames, properties);
 
         String query = "SELECT * FROM " + tableName + " WHERE " + getWhereClause(columnNames, properties);
@@ -138,7 +138,7 @@ class PostgresRepository implements RepositoryPort {
                 case GREATERNUMERIC -> statement.append("::numeric > ?::numeric");
                 case GREATERDATE -> statement.append("::date > ?::date");
                 case RANGENUMERIC -> statement.append("::numeric BETWEEN ?::numeric AND ?::numeric");
-                default -> throw new IllegalStateException("Unexpected value: " + properties.get(j).getType());
+                default -> throw new IllegalArgumentException("Unexpected value: " + properties.get(j).getType());
             }
 
             if (j + 1 < properties.size()) {

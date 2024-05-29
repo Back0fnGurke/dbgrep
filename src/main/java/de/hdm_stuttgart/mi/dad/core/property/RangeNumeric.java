@@ -3,16 +3,10 @@ package de.hdm_stuttgart.mi.dad.core.property;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
-class RangeNumeric implements Property<BigDecimal[]> {
+record RangeNumeric(BigDecimal[] value) implements Property<BigDecimal[]> {
 
-    private final BigDecimal[] value;
-
-    public RangeNumeric(final BigDecimal[] value) {
+    RangeNumeric(BigDecimal[] value) {
         this.value = Arrays.copyOf(value, value.length);
-    }
-
-    public RangeNumeric(final BigDecimal from, final BigDecimal to) {
-        this.value = new BigDecimal[]{from, to};
     }
 
     @Override
@@ -22,6 +16,6 @@ class RangeNumeric implements Property<BigDecimal[]> {
 
     @Override
     public BigDecimal[] getValue() {
-        return Arrays.copyOf(value, value.length);
+        return new BigDecimal[]{value[0], value[1]};
     }
 }
