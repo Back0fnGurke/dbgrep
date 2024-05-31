@@ -23,6 +23,8 @@ import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.RANGENUMERIC;
  */
 class MySQLRepository implements RepositoryPort {
 
+    private static final String ERRTABLENAMENULL = "Parameter tableName must not be null.";
+
     final Connection connection;
 
     final Logger log = LoggerFactory.getLogger(MySQLRepository.class);
@@ -32,18 +34,28 @@ class MySQLRepository implements RepositoryPort {
     }
 
     @Override
-    public Table findTableRowsWithProperties(String tableName, List<String> columnNames, List<Property> properties) throws SQLException {
+    public Table findTableRowsWithProperties(final String tableName, final List<String> columnNames, final List<Property> properties) throws SQLException {
         log.debug("table name: {}, column names: {}, properties: {}", tableName, columnNames, properties);
 
-        String query = "SELECT * FROM " + tableName + " WHERE " + getWhereClause(columnNames, properties);
+        if (tableName == null) {
+            throw new IllegalArgumentException(ERRTABLENAMENULL);
+        }
+        if (columnNames == null || columnNames.isEmpty()) {
+            throw new IllegalArgumentException("Parameter columnNames must not be null or empty. columnNames is: " + columnNames);
+        }
+        if (properties == null || properties.isEmpty()) {
+            throw new IllegalArgumentException("Parameter properties must not be null or empty. properties is: " + properties);
+        }
+
+        final String query = "SELECT * FROM " + tableName + " WHERE " + getWhereClause(columnNames, properties);
         log.debug("sql query string with placeholders: {}", query);
 
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        try (final PreparedStatement statement = connection.prepareStatement(query)) {
             int index = 1;
             for (int i = 0; i < columnNames.size(); i++) {
-                for (Property property : properties) {
+                for (final Property property : properties) {
                     if (property.getType().equals(RANGENUMERIC)) {
-                        BigDecimal[] range = (BigDecimal[]) property.getValue();
+                        final BigDecimal[] range = (BigDecimal[]) property.getValue();
                         statement.setObject(index++, range[0]);
                         statement.setObject(index++, range[1]);
                     } else {
@@ -60,29 +72,44 @@ class MySQLRepository implements RepositoryPort {
     @Override
     public List<String> findTableColumnNamesAll(final String tableName) throws SQLException {
         log.debug("table name: {}", tableName);
-        String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ?";
+
+        if (tableName == null) {
+            throw new IllegalArgumentException(ERRTABLENAMENULL);
+        }
+
+        final String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ?";
         return findTableColumnNames(query, tableName);
     }
 
     @Override
     public List<String> findTableColumnNamesNumeric(final String tableName) throws SQLException {
         log.debug("table name: {}", tableName);
-        String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ? AND data_type IN ('tinyint', 'smallint', 'mediumint', 'int', 'bigint', 'decimal', 'bit', 'float', 'double')";
+
+        if (tableName == null) {
+            throw new IllegalArgumentException(ERRTABLENAMENULL);
+        }
+
+        final String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ? AND data_type IN ('tinyint', 'smallint', 'mediumint', 'int', 'bigint', 'decimal', 'bit', 'float', 'double')";
         return findTableColumnNames(query, tableName);
     }
 
     @Override
     public List<String> findTableColumnNamesDate(final String tableName) throws SQLException {
         log.debug("table name: {}", tableName);
-        String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ? AND data_type IN ('date', 'datetime', 'timestamp')";
+
+        if (tableName == null) {
+            throw new IllegalArgumentException(ERRTABLENAMENULL);
+        }
+
+        final String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ? AND data_type IN ('date', 'datetime', 'timestamp')";
         return findTableColumnNames(query, tableName);
     }
 
     private Table getResultTable(final PreparedStatement statement, final String tableName) throws SQLException {
-        List<Row> result = new ArrayList<>();
-        try (ResultSet tableSet = statement.executeQuery()) {
+        final List<Row> result = new ArrayList<>();
+        try (final ResultSet tableSet = statement.executeQuery()) {
             while (tableSet.next()) {
-                List<ColumnValue> columnValues = new ArrayList<>();
+                final List<ColumnValue> columnValues = new ArrayList<>();
                 for (int i = 1; i <= tableSet.getMetaData().getColumnCount(); i++) {
                     columnValues.add(new ColumnValue(tableSet.getMetaData().getColumnLabel(i), tableSet.getString(i)));
                 }
@@ -94,7 +121,7 @@ class MySQLRepository implements RepositoryPort {
     }
 
     private List<String> findTableColumnNames(final String query, final String tableName) throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        try (final PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, tableName);
             log.debug("query string: {}", statement);
             return getColumnNames(statement);
@@ -102,8 +129,8 @@ class MySQLRepository implements RepositoryPort {
     }
 
     private List<String> getColumnNames(final PreparedStatement statement) throws SQLException {
-        List<String> columnNames = new ArrayList<>();
-        try (ResultSet columnNamesSet = statement.executeQuery()) {
+        final List<String> columnNames = new ArrayList<>();
+        try (final ResultSet columnNamesSet = statement.executeQuery()) {
             while (columnNamesSet.next()) {
                 columnNames.add(columnNamesSet.getString(1));
             }
@@ -112,8 +139,8 @@ class MySQLRepository implements RepositoryPort {
     }
 
     String getWhereClause(final List<String> columnNames, final List<Property> properties) {
-        StringBuilder clause = new StringBuilder();
-        int columnNamesCount = columnNames.size();
+        final StringBuilder clause = new StringBuilder();
+        final int columnNamesCount = columnNames.size();
 
         for (int i = 0; i < columnNamesCount; i++) {
             clause.append(getStatementForColumn(columnNames.get(i), properties));
@@ -128,7 +155,7 @@ class MySQLRepository implements RepositoryPort {
     }
 
     String getStatementForColumn(final String columnName, final List<Property> properties) {
-        StringBuilder statement = new StringBuilder();
+        final StringBuilder statement = new StringBuilder();
         statement.append("((CAST(").append(columnName);
 
         for (int j = 0; j < properties.size(); j++) {
