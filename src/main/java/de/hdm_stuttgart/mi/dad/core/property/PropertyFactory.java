@@ -56,44 +56,4 @@ public class PropertyFactory {
             default -> throw new IllegalArgumentException("Can not use String value with type: " + type);
         }
     }
-
-//    public static Property<String> getProperty(PropertyType type, Pattern value) {
-//        switch (type) {
-//            case REGEX -> {
-//                return new Regex(value);
-//            }
-//            case LIKE -> {
-//                return new Like(value);
-//            }
-//            default -> throw new IllegalArgumentException("Can not use String value with type: " + type);
-//        }
-//    }
-//
-//    public static Property<BigDecimal> getProperty(PropertyType type, BigDecimal value) {
-//        switch (type) {
-//            case EQUAL -> {
-//                return new Equal(value);
-//            }
-//            case GREATERNUMERIC -> {
-//                return new GreaterNumeric(value);
-//            }
-//            default -> throw new IllegalArgumentException("Can not use BigDecimal value with type: " + type);
-//        }
-//    }
-//
-//    public static Property<LocalDate> getProperty(PropertyType type, LocalDate value) {
-//        if (type != PropertyType.GREATERDATE) {
-//            throw new IllegalArgumentException("Can not use LocalDate value with type: " + type);
-//        }
-//
-//        return new GreaterDate(value);
-//    }
-//
-//    public static Property<BigDecimal[]> getProperty(PropertyType type, BigDecimal[] value) {
-//        if (type != PropertyType.RANGENUMERIC) {
-//            throw new IllegalArgumentException("Can not use BigDecimal[] value with type: " + type);
-//        }
-//
-//        return new RangeNumeric(value);
-//    }
 }
