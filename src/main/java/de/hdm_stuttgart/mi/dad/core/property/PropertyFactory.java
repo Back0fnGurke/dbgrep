@@ -11,7 +11,7 @@ public class PropertyFactory {
 
     public static Property getProperty(PropertyType type, Object value) {
         if (!((value instanceof Pattern) || (value instanceof BigDecimal) || (value instanceof BigDecimal[]) || (value instanceof LocalDate))) {
-            throw new IllegalArgumentException("Provided value argument is not of allowed type. Type was: " + value.getClass().getName());
+            throw new IllegalArgumentException("Provided value parameter is not of allowed type. Type was: " + value.getClass().getName());
         }
 
         switch (type) {
