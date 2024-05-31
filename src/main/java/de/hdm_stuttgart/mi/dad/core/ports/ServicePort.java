@@ -15,28 +15,28 @@ public interface ServicePort {
      *
      * @param tableNames  the table names to search in
      * @param columnNames the column names of the tables to search in
-     * @param property    the property to search for in the column values
+     * @param properties  the properties to search for in the column values
      * @return a List of Tables. List of Rows in Table is Empty if none where found.
      * @throws SQLException if a database access error occurs
      */
-    List<Table> searchColumns(final List<String> tableNames, final List<String> columnNames, final Property property) throws SQLException;
+    List<Table> searchColumns(final List<String> tableNames, final List<String> columnNames, final List<Property> properties) throws SQLException;
 
     /**
      * Find rows in provided tables that have column values which match the provided search pattern.
      *
      * @param tableNames the table names to search in
-     * @param property   the property to search for in the column values
+     * @param properties the properties to search for in the column values
      * @return a List of Tables. List of Rows in Table is Empty if none where found.
      * @throws SQLException if a database access error occurs
      */
-    List<Table> searchTables(final List<String> tableNames, final Property property) throws SQLException;
+    List<Table> searchTables(final List<String> tableNames, final List<Property> properties) throws SQLException;
 
     /**
      * Find rows in tables of database whose columns have values that match the provided search pattern.
      *
-     * @param property the property to search for in the column values
+     * @param properties the properties to search for in the column value
      * @return a List of Tables. List of Rows in Table is Empty if none where found.
      * @throws SQLException if a database access error occurs
      */
-    List<Table> searchWholeDatabase(final Property property) throws SQLException;
+    List<Table> searchWholeDatabase(final List<Property> properties) throws SQLException;
 }
