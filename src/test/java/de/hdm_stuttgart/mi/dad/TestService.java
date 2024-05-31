@@ -1,7 +1,7 @@
 package de.hdm_stuttgart.mi.dad;
 
 import de.hdm_stuttgart.mi.dad.core.Service;
-import de.hdm_stuttgart.mi.dad.ports.RepositoryPort;
+import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

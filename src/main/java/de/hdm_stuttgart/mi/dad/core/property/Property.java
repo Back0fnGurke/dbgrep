@@ -1,8 +1,8 @@
 package de.hdm_stuttgart.mi.dad.core.property;
 
-import de.hdm_stuttgart.mi.dad.core.entity.Table;
+public interface Property<T> {
 
-public interface Property {
+    PropertyType getType();
 
-    Table searchWithProperty();
+    T getValue();
 }

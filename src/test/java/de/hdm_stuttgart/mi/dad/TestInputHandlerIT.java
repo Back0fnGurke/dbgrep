@@ -2,10 +2,10 @@ package de.hdm_stuttgart.mi.dad;
 
 import de.hdm_stuttgart.mi.dad.connectionprofile.ConnectionProfile;
 import de.hdm_stuttgart.mi.dad.core.Service;
+import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
+import de.hdm_stuttgart.mi.dad.core.ports.ServicePort;
 import de.hdm_stuttgart.mi.dad.incoming.SearchLevelHandler;
 import de.hdm_stuttgart.mi.dad.outgoing.RepositoryFactory;
-import de.hdm_stuttgart.mi.dad.ports.RepositoryPort;
-import de.hdm_stuttgart.mi.dad.ports.ServicePort;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
