@@ -1,8 +1,8 @@
 package de.hdm_stuttgart.mi.dad.connectionprofile;
 
-import de.hdm_stuttgart.mi.dad.core.exception.IllegalFileExtensionException;
-import de.hdm_stuttgart.mi.dad.core.exception.MultipleProfileException;
-import de.hdm_stuttgart.mi.dad.core.exception.NoProfileException;
+import de.hdm_stuttgart.mi.dad.connectionprofile.exception.IllegalFileExtensionException;
+import de.hdm_stuttgart.mi.dad.connectionprofile.exception.MultipleProfileException;
+import de.hdm_stuttgart.mi.dad.connectionprofile.exception.NoProfileException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
