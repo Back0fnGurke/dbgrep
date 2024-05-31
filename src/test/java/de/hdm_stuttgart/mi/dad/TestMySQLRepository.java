@@ -55,7 +55,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findPattern_no_match() throws SQLException, FileNotFoundException {
+    void test_Regex_no_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findPattern_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
@@ -68,7 +68,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findPattern_one_match() throws SQLException, FileNotFoundException {
+    void test_Regex_one_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findPattern_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
@@ -95,7 +95,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findPattern_multiple_match() throws SQLException, FileNotFoundException {
+    void test_Regex_multiple_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findPattern_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
@@ -130,7 +130,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findPattern_number_match() throws SQLException, FileNotFoundException {
+    void test_Regex_number_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findPattern_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
@@ -165,7 +165,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findLikePattern_no_match() throws SQLException, FileNotFoundException {
+    void test_Like_no_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findPattern_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
@@ -178,7 +178,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findLikePattern_one_match() throws SQLException, FileNotFoundException {
+    void test_Like_one_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findPattern_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
@@ -203,7 +203,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findLikePattern_multiple_match() throws SQLException, FileNotFoundException {
+    void test_Like_multiple_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findPattern_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
@@ -238,7 +238,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findLikePattern_date_match() throws SQLException, FileNotFoundException {
+    void test_Like_date_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findPattern_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
@@ -283,7 +283,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findEqual_no_match() throws SQLException, FileNotFoundException {
+    void test_Equal_no_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findEqual_testdata.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "age", "money");
@@ -296,7 +296,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findEqual_integer() throws SQLException, FileNotFoundException {
+    void test_Equal_integer_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findEqual_testdata.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "age", "money");
@@ -327,7 +327,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findEqual_decimal() throws SQLException, FileNotFoundException {
+    void test_Equal_decimal_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findEqual_testdata.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "age", "money");
@@ -358,7 +358,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findGreaterNumeric_no_match() throws FileNotFoundException, SQLException {
+    void test_Greater_Numeric_no_match_findTableRowsWithProperties() throws FileNotFoundException, SQLException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findGreaterNumeric_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
@@ -371,7 +371,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findGreaterNumeric_one_match() throws SQLException, FileNotFoundException {
+    void test_Greater_Numeric_one_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findGreaterNumeric_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
@@ -400,7 +400,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findGreaterNumeric_multiple_match() throws FileNotFoundException, SQLException {
+    void test_Greater_Numeric_multiple_match_findTableRowsWithProperties() throws FileNotFoundException, SQLException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findGreaterNumeric_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
@@ -457,7 +457,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findGreaterDate_no_match() throws FileNotFoundException, SQLException {
+    void test_Greater_Date_no_match_findTableRowsWithProperties() throws FileNotFoundException, SQLException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findGreaterDate_test_data.sql"));
 
         final List<String> columns = Arrays.asList("account_created", "last_updated", "last_login");
@@ -470,7 +470,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findGreaterDate_one_match() throws SQLException, FileNotFoundException {
+    void test_Greater_Date_one_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findGreaterDate_test_data.sql"));
 
         final List<String> columns = Arrays.asList("account_created", "last_updated", "last_login");
@@ -494,7 +494,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findGreaterDate_multiple_match() throws FileNotFoundException, SQLException {
+    void test_Greater_Date_multiple_match_findTableRowsWithProperties() throws FileNotFoundException, SQLException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findGreaterDate_test_data.sql"));
 
         final List<String> columns = Arrays.asList("account_created", "last_updated", "last_login");
@@ -536,7 +536,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findInRangeNumeric_no_match() throws SQLException, FileNotFoundException {
+    void test_Range_Numeric_no_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findInRangeNumeric_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
@@ -550,7 +550,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findInRangeNumeric_one_match() throws SQLException, FileNotFoundException {
+    void test_Range_Numeric_one_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findInRangeNumeric_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
@@ -580,7 +580,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findInRangeNumeric_multiple_match() throws SQLException, FileNotFoundException {
+    void test_Range_Numeric_multiple_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findInRangeNumeric_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
