@@ -56,7 +56,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Regex_no_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findPattern_test_data.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_Regex_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
 
@@ -69,7 +69,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Regex_one_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findPattern_test_data.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_Regex_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
 
@@ -95,7 +95,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Regex_multiple_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findPattern_test_data.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_Regex_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
 
@@ -130,7 +130,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Regex_number_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findPattern_test_data.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_Regex_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
 
@@ -165,7 +165,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Like_no_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findPattern_test_data.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_Regex_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
 
@@ -178,7 +178,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Like_one_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findPattern_test_data.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_Regex_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
 
@@ -203,7 +203,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Like_multiple_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findPattern_test_data.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_Regex_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
 
@@ -238,7 +238,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Like_date_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findPattern_test_data.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_Regex_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
 
@@ -283,7 +283,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Equal_no_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findEqual_testdata.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_Equal_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "age", "money");
 
@@ -296,7 +296,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Equal_integer_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findEqual_testdata.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_Equal_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "age", "money");
 
@@ -327,7 +327,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Equal_decimal_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findEqual_testdata.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_Equal_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "age", "money");
 
@@ -358,7 +358,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Greater_Numeric_no_match_findTableRowsWithProperties() throws FileNotFoundException, SQLException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findGreaterNumeric_test_data.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_GreaterNumeric_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
 
@@ -371,7 +371,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Greater_Numeric_one_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findGreaterNumeric_test_data.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_GreaterNumeric_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
 
@@ -400,7 +400,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Greater_Numeric_multiple_match_findTableRowsWithProperties() throws FileNotFoundException, SQLException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findGreaterNumeric_test_data.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_GreaterNumeric_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
 
@@ -457,7 +457,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Greater_Date_no_match_findTableRowsWithProperties() throws FileNotFoundException, SQLException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findGreaterDate_test_data.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_GreaterDate_test_data.sql"));
 
         final List<String> columns = Arrays.asList("account_created", "last_updated", "last_login");
 
@@ -470,7 +470,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Greater_Date_one_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findGreaterDate_test_data.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_GreaterDate_test_data.sql"));
 
         final List<String> columns = Arrays.asList("account_created", "last_updated", "last_login");
 
@@ -494,7 +494,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Greater_Date_multiple_match_findTableRowsWithProperties() throws FileNotFoundException, SQLException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findGreaterDate_test_data.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_GreaterDate_test_data.sql"));
 
         final List<String> columns = Arrays.asList("account_created", "last_updated", "last_login");
 
@@ -536,7 +536,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Range_Numeric_no_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findInRangeNumeric_test_data.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_RangeNumeric_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
 
@@ -550,7 +550,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Range_Numeric_one_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findInRangeNumeric_test_data.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_RangeNumeric_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
 
@@ -580,7 +580,7 @@ public class TestPostgresRepository {
 
     @Test
     void test_Range_Numeric_multiple_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
-        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findInRangeNumeric_test_data.sql"));
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_RangeNumeric_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
 
@@ -634,6 +634,18 @@ public class TestPostgresRepository {
         assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
         assertEquals(expected.rows().get(1), actual.rows().get(1), "Should match");
         assertEquals(expected.rows().getLast(), actual.rows().getLast(), "Should match");
+    }
+
+    @Test
+    void test_findTableNames() throws SQLException, FileNotFoundException {
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findTableNames_test_data.sql"));
+
+        final List<String> expected = Arrays.asList("account", "user_data", "book");
+        final List<String> actual = repository.findTableNames();
+
+        assertEquals(expected.size(), actual.size(), "Wrong number of tables");
+        assertTrue(expected.containsAll(actual));
+        assertTrue(actual.containsAll(expected));
     }
 
     @Test

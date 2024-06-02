@@ -23,6 +23,14 @@ public interface RepositoryPort {
     Table findTableRowsWithProperties(final String tableName, final List<String> columnNames, final List<Property> properties) throws SQLException;
 
     /**
+     * Find table names of tables existing in database.
+     *
+     * @return List<String> containing all found table names of the database, empty if none where found
+     * @throws SQLException if a database access error occurs
+     */
+    List<String> findTableNames() throws SQLException;
+
+    /**
      * Find all column names of a table regardless of column type.
      *
      * @param tableName the table name to search the columns for

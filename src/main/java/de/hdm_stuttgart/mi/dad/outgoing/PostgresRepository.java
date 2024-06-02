@@ -23,7 +23,7 @@ import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.RANGENUMERIC;
  */
 class PostgresRepository implements RepositoryPort {
 
-    private static final String ERRTABLENAMENULL = "Parameter tableName must not be null.";
+    private static final String ERRTABLENAMENULL = "Parameter tableName must not be null or empty.";
 
     final Connection connection;
     final Logger log = LoggerFactory.getLogger(PostgresRepository.class);
@@ -40,10 +40,10 @@ class PostgresRepository implements RepositoryPort {
             throw new IllegalArgumentException(ERRTABLENAMENULL);
         }
         if (columnNames == null || columnNames.isEmpty()) {
-            throw new IllegalArgumentException("Parameter columnNames must not be null or empty. columnNames is: " + columnNames);
+            throw new IllegalArgumentException("Parameter columnNames must not be null or empty.");
         }
         if (properties == null || properties.isEmpty()) {
-            throw new IllegalArgumentException("Parameter properties must not be null or empty. properties is: " + properties);
+            throw new IllegalArgumentException("Parameter properties must not be null or empty.");
         }
 
         final String query = "SELECT * FROM " + tableName + " WHERE " + getWhereClause(columnNames, properties);
@@ -69,10 +69,21 @@ class PostgresRepository implements RepositoryPort {
     }
 
     @Override
+    public List<String> findTableNames() throws SQLException {
+        final String query = "SELECT table_name FROM information_schema.tables WHERE table_schema NOT IN ('pg_catalog', 'information_schema')";
+
+        log.debug("query: {}", query);
+
+        try (final PreparedStatement statement = connection.prepareStatement(query)) {
+            return getNames(statement);
+        }
+    }
+
+    @Override
     public List<String> findTableColumnNamesAll(final String tableName) throws SQLException {
         log.debug("table name: {}", tableName);
 
-        if (tableName == null) {
+        if (tableName == null || tableName.isEmpty()) {
             throw new IllegalArgumentException(ERRTABLENAMENULL);
         }
 
@@ -84,7 +95,7 @@ class PostgresRepository implements RepositoryPort {
     public List<String> findTableColumnNamesNumeric(final String tableName) throws SQLException {
         log.debug("table name: {}", tableName);
 
-        if (tableName == null) {
+        if (tableName == null || tableName.isEmpty()) {
             throw new IllegalArgumentException(ERRTABLENAMENULL);
         }
 
@@ -96,7 +107,7 @@ class PostgresRepository implements RepositoryPort {
     public List<String> findTableColumnNamesDate(final String tableName) throws SQLException {
         log.debug("table name: {}", tableName);
 
-        if (tableName == null) {
+        if (tableName == null || tableName.isEmpty()) {
             throw new IllegalArgumentException(ERRTABLENAMENULL);
         }
 
@@ -123,18 +134,18 @@ class PostgresRepository implements RepositoryPort {
         try (final PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, tableName);
             log.debug("query string: {}", statement);
-            return getColumnNames(statement);
+            return getNames(statement);
         }
     }
 
-    private List<String> getColumnNames(final PreparedStatement statement) throws SQLException {
-        final List<String> columnNames = new ArrayList<>();
-        try (final ResultSet columnNamesSet = statement.executeQuery()) {
-            while (columnNamesSet.next()) {
-                columnNames.add(columnNamesSet.getString(1));
+    private List<String> getNames(final PreparedStatement statement) throws SQLException {
+        final List<String> names = new ArrayList<>();
+        try (final ResultSet namesSet = statement.executeQuery()) {
+            while (namesSet.next()) {
+                names.add(namesSet.getString(1));
             }
         }
-        return columnNames;
+        return names;
     }
 
     String getWhereClause(final List<String> columnNames, final List<Property> properties) {
