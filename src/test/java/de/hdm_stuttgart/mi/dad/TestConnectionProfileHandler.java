@@ -2,7 +2,6 @@ package de.hdm_stuttgart.mi.dad;
 
 import de.hdm_stuttgart.mi.dad.connectionprofile.ConnectionProfile;
 import de.hdm_stuttgart.mi.dad.connectionprofile.ConnectionProfileHandler;
-import de.hdm_stuttgart.mi.dad.core.exception.IllegalFileExtensionException;
 import de.hdm_stuttgart.mi.dad.core.exception.MultipleProfileException;
 import de.hdm_stuttgart.mi.dad.core.exception.NoProfileException;
 import org.junit.jupiter.api.Test;
@@ -41,7 +40,7 @@ public class TestConnectionProfileHandler {
     @Test
     void testGetSelectedProfileWithExistingFile() {
         ConnectionProfileHandler handler = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/multiple_profile");
-        assertThrows(IllegalFileExtensionException.class, () -> handler.getSelectedProfile("test2.txt"));
+        assertDoesNotThrow(() -> handler.getSelectedProfile("test2.txt"));
 
         ConnectionProfile profile1 = assertDoesNotThrow(() -> handler.getSelectedProfile("test1.cnf"));
         assertEquals(profile1.getUser(), "user1");

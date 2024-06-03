@@ -1,6 +1,5 @@
 package de.hdm_stuttgart.mi.dad.connectionprofile;
 
-import de.hdm_stuttgart.mi.dad.core.exception.IllegalFileExtensionException;
 import de.hdm_stuttgart.mi.dad.core.exception.MultipleProfileException;
 import de.hdm_stuttgart.mi.dad.core.exception.NoProfileException;
 
@@ -51,10 +50,7 @@ public class ConnectionProfileHandler {
      * @param fileName the file name of the connection profile
      * @return a connection profile object of the file
      */
-    public ConnectionProfile getSelectedProfile(String fileName) throws IOException, IllegalFileExtensionException {
-        if (!hasConfigExtension(fileName)) {
-            throw new IllegalFileExtensionException("A profile file has to end with '.cnf'.");
-        }
+    public ConnectionProfile getSelectedProfile(String fileName) throws IOException {
         Path pathOfProfile = getDirectory().resolve(fileName);
         if (Files.exists(pathOfProfile) && !Files.isDirectory(pathOfProfile)) {
             return readProfileFile(pathOfProfile);
@@ -85,7 +81,7 @@ public class ConnectionProfileHandler {
     private List<Path> getListOfProfilesPath() throws IOException {
         try (Stream<Path> stream = Files.list(getDirectory())) {
             return stream
-                    .filter(file -> !Files.isDirectory(file) && hasConfigExtension(file.getFileName().toString()))
+                    .filter(file -> !Files.isDirectory(file))
                     .toList();
         }
     }
@@ -106,7 +102,4 @@ public class ConnectionProfileHandler {
         return new ConnectionProfile(driver, host, port, user, password, database);
     }
 
-    private boolean hasConfigExtension(String file) {
-        return file.endsWith(".cnf");
-    }
 }
