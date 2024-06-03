@@ -23,8 +23,6 @@ import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.RANGENUMERIC;
  */
 class MySQLRepository implements RepositoryPort {
 
-    private static final String ERRTABLENAMENULL = "Parameter tableName must not be null.";
-
     final Connection connection;
 
     final Logger log = LoggerFactory.getLogger(MySQLRepository.class);
@@ -36,16 +34,6 @@ class MySQLRepository implements RepositoryPort {
     @Override
     public Table findTableRowsWithProperties(final String tableName, final List<String> columnNames, final List<Property> properties) throws SQLException {
         log.debug("table name: {}, column names: {}, properties: {}", tableName, columnNames, properties);
-
-        if (tableName == null) {
-            throw new IllegalArgumentException(ERRTABLENAMENULL);
-        }
-        if (columnNames == null || columnNames.isEmpty()) {
-            throw new IllegalArgumentException("Parameter columnNames must not be null or empty. columnNames is: " + columnNames);
-        }
-        if (properties == null || properties.isEmpty()) {
-            throw new IllegalArgumentException("Parameter properties must not be null or empty. properties is: " + properties);
-        }
 
         final String query = "SELECT * FROM " + tableName + " WHERE " + getWhereClause(columnNames, properties);
         log.debug("sql query string with placeholders: {}", query);
@@ -84,10 +72,6 @@ class MySQLRepository implements RepositoryPort {
     public List<String> findTableColumnNamesAll(final String tableName) throws SQLException {
         log.debug("table name: {}", tableName);
 
-        if (tableName == null) {
-            throw new IllegalArgumentException(ERRTABLENAMENULL);
-        }
-
         final String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ?";
         return findTableColumnNames(query, tableName);
     }
@@ -96,10 +80,6 @@ class MySQLRepository implements RepositoryPort {
     public List<String> findTableColumnNamesNumeric(final String tableName) throws SQLException {
         log.debug("table name: {}", tableName);
 
-        if (tableName == null) {
-            throw new IllegalArgumentException(ERRTABLENAMENULL);
-        }
-
         final String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ? AND data_type IN ('tinyint', 'smallint', 'mediumint', 'int', 'bigint', 'decimal', 'bit', 'float', 'double')";
         return findTableColumnNames(query, tableName);
     }
@@ -107,10 +87,6 @@ class MySQLRepository implements RepositoryPort {
     @Override
     public List<String> findTableColumnNamesDate(final String tableName) throws SQLException {
         log.debug("table name: {}", tableName);
-
-        if (tableName == null) {
-            throw new IllegalArgumentException(ERRTABLENAMENULL);
-        }
 
         final String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ? AND data_type IN ('date', 'datetime', 'timestamp')";
         return findTableColumnNames(query, tableName);

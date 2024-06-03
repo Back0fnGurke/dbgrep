@@ -32,13 +32,6 @@ public class Service implements ServicePort {
         try {
             log.debug("columnNamesOfTables: {}, properties: {}", columnNamesOfTables, properties);
 
-            if (columnNamesOfTables == null || columnNamesOfTables.isEmpty()) {
-                throw new IllegalArgumentException("Parameter columnNamesOfTables must not be null or empty.");
-            }
-            if (properties == null || properties.isEmpty()) {
-                throw new IllegalArgumentException(ERRPROPERTIESNULL);
-            }
-
             if (properties.size() != 1) {
                 validatePropertyCombination(properties);
             }
@@ -58,13 +51,6 @@ public class Service implements ServicePort {
         try {
             log.debug("tableNames: {}, properties: {}", tableNames, properties);
 
-            if (tableNames == null || tableNames.isEmpty()) {
-                throw new IllegalArgumentException("Parameter tableNames must not be null or empty.");
-            }
-            if (properties == null || properties.isEmpty()) {
-                throw new IllegalArgumentException(ERRPROPERTIESNULL);
-            }
-
             if (properties.size() != 1) {
                 validatePropertyCombination(properties);
             }
@@ -80,10 +66,6 @@ public class Service implements ServicePort {
     public List<Table> searchThroughWholeDatabase(final List<Property> properties) throws ServiceException {
         try {
             log.debug("properties: {}", properties);
-
-            if (properties == null || properties.isEmpty()) {
-                throw new IllegalArgumentException(ERRPROPERTIESNULL);
-            }
 
             if (properties.size() != 1) {
                 validatePropertyCombination(properties);
