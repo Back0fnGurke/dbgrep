@@ -3,8 +3,10 @@ package de.hdm_stuttgart.mi.dad;
 import de.hdm_stuttgart.mi.dad.core.entity.ColumnValue;
 import de.hdm_stuttgart.mi.dad.core.entity.Row;
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
+import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
+import de.hdm_stuttgart.mi.dad.core.property.Property;
+import de.hdm_stuttgart.mi.dad.core.property.PropertyFactory;
 import de.hdm_stuttgart.mi.dad.outgoing.RepositoryFactory;
-import de.hdm_stuttgart.mi.dad.ports.RepositoryPort;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -52,19 +55,20 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findPattern_no_match() throws SQLException, FileNotFoundException {
+    void test_Regex_no_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findPattern_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("test");
-        final Table actual = repository.findPattern(tableName, columns, pattern);
+        final Property property = PropertyFactory.getProperty(REGEX, pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
 
     @Test
-    void test_findPattern_one_match() throws SQLException, FileNotFoundException {
+    void test_Regex_one_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findPattern_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
@@ -72,7 +76,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("Dorian");
-        final Table actual = repository.findPattern(tableName, columns, pattern);
+        final Property property = PropertyFactory.getProperty(REGEX, pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         System.out.println(actual.rows());
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
@@ -90,14 +95,15 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findPattern_multiple_match() throws SQLException, FileNotFoundException {
+    void test_Regex_multiple_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findPattern_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("^c");
-        final Table actual = repository.findPattern(tableName, columns, pattern);
+        final Property property = PropertyFactory.getProperty(REGEX, pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, Arrays.asList(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "4"),
@@ -124,14 +130,15 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findPattern_number_match() throws SQLException, FileNotFoundException {
+    void test_Regex_number_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findPattern_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("10");
-        final Table actual = repository.findPattern(tableName, columns, pattern);
+        final Property property = PropertyFactory.getProperty(REGEX, pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, Arrays.asList(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "5"),
@@ -158,26 +165,28 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findLikePattern_no_match() throws SQLException, FileNotFoundException {
+    void test_Like_no_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findPattern_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("test");
-        final Table actual = repository.findPattern(tableName, columns, pattern);
+        final Property property = PropertyFactory.getProperty(LIKE, pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
 
     @Test
-    void test_findLikePattern_one_match() throws SQLException, FileNotFoundException {
+    void test_Like_one_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findPattern_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("Dorian");
-        final Table actual = repository.findLikePattern(tableName, columns, pattern);
+        final Property property = PropertyFactory.getProperty(LIKE, pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "1"),
@@ -194,14 +203,15 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findLikePattern_multiple_match() throws SQLException, FileNotFoundException {
+    void test_Like_multiple_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findPattern_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("c%");
-        final Table actual = repository.findLikePattern(tableName, columns, pattern);
+        final Property property = PropertyFactory.getProperty(LIKE, pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, Arrays.asList(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "4"),
@@ -228,14 +238,15 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findLikePattern_date_match() throws SQLException, FileNotFoundException {
+    void test_Like_date_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findPattern_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("2018-__-__ __:__:__");
-        final Table actual = repository.findLikePattern(tableName, columns, pattern);
+        final Property property = PropertyFactory.getProperty(LIKE, pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, Arrays.asList(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "1"),
@@ -272,26 +283,28 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findEqual_no_match() throws SQLException, FileNotFoundException {
+    void test_Equal_no_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findEqual_testdata.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "age", "money");
 
         final String tableName = "account";
-        final double number = 11;
-        final Table actual = repository.findEqual(tableName, columns, number);
+        final BigDecimal number = BigDecimal.valueOf(11);
+        final Property property = PropertyFactory.getProperty(EQUAL, number);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
 
     @Test
-    void test_findEqual_integer() throws SQLException, FileNotFoundException {
+    void test_Equal_integer_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findEqual_testdata.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "age", "money");
 
         final String tableName = "account";
-        final double number = 34;
-        final Table actual = repository.findEqual(tableName, columns, number);
+        final BigDecimal number = BigDecimal.valueOf(34);
+        final Property property = PropertyFactory.getProperty(EQUAL, number);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "5"),
@@ -314,14 +327,15 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findEqual_decimal() throws SQLException, FileNotFoundException {
+    void test_Equal_decimal_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findEqual_testdata.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "age", "money");
 
         final String tableName = "account";
-        final double number = 0.50;
-        final Table actual = repository.findEqual(tableName, columns, number);
+        final BigDecimal number = BigDecimal.valueOf(0.50);
+        final Property property = PropertyFactory.getProperty(EQUAL, number);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "4"),
@@ -344,26 +358,28 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findGreaterNumeric_no_match() throws FileNotFoundException, SQLException {
+    void test_Greater_Numeric_no_match_findTableRowsWithProperties() throws FileNotFoundException, SQLException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findGreaterNumeric_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
 
         final String tableName = "account";
         final BigDecimal number = BigDecimal.valueOf(98278675);
-        final Table actual = repository.findGreaterNumeric(tableName, columns, number);
+        final Property property = PropertyFactory.getProperty(GREATERNUMERIC, number);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
 
     @Test
-    void test_findGreaterNumeric_one_match() throws SQLException, FileNotFoundException {
+    void test_Greater_Numeric_one_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findGreaterNumeric_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
 
         final String tableName = "account";
         final BigDecimal number = BigDecimal.valueOf(97278674);
-        final Table actual = repository.findGreaterNumeric(tableName, columns, number);
+        final Property property = PropertyFactory.getProperty(GREATERNUMERIC, number);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "10"),
@@ -384,14 +400,15 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findGreaterNumeric_multiple_match() throws FileNotFoundException, SQLException {
+    void test_Greater_Numeric_multiple_match_findTableRowsWithProperties() throws FileNotFoundException, SQLException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findGreaterNumeric_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
 
         final String tableName = "account";
         final BigDecimal number = BigDecimal.valueOf(94935073);
-        final Table actual = repository.findGreaterNumeric(tableName, columns, number);
+        final Property property = PropertyFactory.getProperty(GREATERNUMERIC, number);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "7"),
@@ -440,26 +457,28 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findGreaterDate_no_match() throws FileNotFoundException, SQLException {
+    void test_Greater_Date_no_match_findTableRowsWithProperties() throws FileNotFoundException, SQLException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findGreaterDate_test_data.sql"));
 
         final List<String> columns = Arrays.asList("account_created", "last_updated", "last_login");
 
         final String tableName = "account";
         final LocalDate date = LocalDate.parse("2024-12-12");
-        final Table actual = repository.findGreaterDate(tableName, columns, date);
+        final Property property = PropertyFactory.getProperty(GREATERDATE, date);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
 
     @Test
-    void test_findGreaterDate_one_match() throws SQLException, FileNotFoundException {
+    void test_Greater_Date_one_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findGreaterDate_test_data.sql"));
 
         final List<String> columns = Arrays.asList("account_created", "last_updated", "last_login");
 
         final String tableName = "account";
         final LocalDate date = LocalDate.parse("2024-05-03");
-        final Table actual = repository.findGreaterDate(tableName, columns, date);
+        final Property property = PropertyFactory.getProperty(GREATERDATE, date);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "4"),
@@ -475,14 +494,15 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findGreaterDate_multiple_match() throws FileNotFoundException, SQLException {
+    void test_Greater_Date_multiple_match_findTableRowsWithProperties() throws FileNotFoundException, SQLException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findGreaterDate_test_data.sql"));
 
         final List<String> columns = Arrays.asList("account_created", "last_updated", "last_login");
 
         final String tableName = "account";
         final LocalDate date = LocalDate.parse("2024-04-03");
-        final Table actual = repository.findGreaterDate(tableName, columns, date);
+        final Property property = PropertyFactory.getProperty(GREATERDATE, date);
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "1"),
@@ -516,7 +536,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findInRangeNumeric_no_match() throws SQLException, FileNotFoundException {
+    void test_Range_Numeric_no_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findInRangeNumeric_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
@@ -524,12 +544,13 @@ class TestMySQLRepository {
         final String tableName = "account";
         final BigDecimal from = BigDecimal.valueOf(98278675);
         final BigDecimal to = BigDecimal.valueOf(100000000);
-        final Table actual = repository.findInRangeNumeric(tableName, columns, from, to);
+        final Property property = PropertyFactory.getProperty(RANGENUMERIC, new BigDecimal[]{from, to});
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
 
     @Test
-    void test_findInRangeNumeric_one_match() throws SQLException, FileNotFoundException {
+    void test_Range_Numeric_one_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findInRangeNumeric_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
@@ -537,7 +558,8 @@ class TestMySQLRepository {
         final String tableName = "account";
         final BigDecimal from = BigDecimal.valueOf(80);
         final BigDecimal to = BigDecimal.valueOf(100);
-        final Table actual = repository.findInRangeNumeric(tableName, columns, from, to);
+        final Property property = PropertyFactory.getProperty(RANGENUMERIC, new BigDecimal[]{from, to});
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "4"),
@@ -558,7 +580,7 @@ class TestMySQLRepository {
     }
 
     @Test
-    void test_findInRangeNumeric_multiple_match() throws SQLException, FileNotFoundException {
+    void test_Range_Numeric_multiple_match_findTableRowsWithProperties() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestMySQLRepository/test_findInRangeNumeric_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "zipcode", "balance", "votes", "bought_books");
@@ -566,7 +588,8 @@ class TestMySQLRepository {
         final String tableName = "account";
         final BigDecimal from = BigDecimal.valueOf(90000000);
         final BigDecimal to = BigDecimal.valueOf(100000000);
-        final Table actual = repository.findInRangeNumeric(tableName, columns, from, to);
+        final Property property = PropertyFactory.getProperty(RANGENUMERIC, new BigDecimal[]{from, to});
+        final Table actual = repository.findTableRowsWithProperties(tableName, columns, List.of(property));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "7"),

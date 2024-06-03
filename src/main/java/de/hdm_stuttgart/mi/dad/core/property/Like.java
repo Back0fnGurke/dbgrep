@@ -1,10 +1,16 @@
 package de.hdm_stuttgart.mi.dad.core.property;
 
-import de.hdm_stuttgart.mi.dad.core.entity.Table;
+import java.util.regex.Pattern;
 
-public class Like implements Property {
+record Like(Pattern value) implements Property<String> {
+
     @Override
-    public Table searchWithProperty() {
-        return null;
+    public PropertyType getType() {
+        return PropertyType.LIKE;
+    }
+
+    @Override
+    public String getValue() {
+        return value.pattern();
     }
 }
