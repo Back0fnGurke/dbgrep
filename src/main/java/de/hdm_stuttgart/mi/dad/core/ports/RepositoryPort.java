@@ -15,9 +15,7 @@ public interface RepositoryPort {
     /**
      * Find rows in the provided table whose columns match the given properties.
      *
-     * @param tableName   the table name to search in
-     * @param columnNames column names of the table to match against the provided pattern
-     * @param properties  a List of Properties to search for
+     * @param tableName the table name to search in
      * @return a Table containing all rows with matching column values. List of Rows is Empty if none where found.
      * @throws SQLException if a database access error occurs
      */
