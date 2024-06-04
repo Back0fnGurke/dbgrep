@@ -55,6 +55,11 @@ Use following command to check your code quality locally:
 
 ``mvn -Pcicdprofile checkstyle:check pmd:check``
 
+For test coverage:
+
+``mvn -Pcicdprofile install``
+(Test coverage can be viewed in target/site/jacoco-it or jacoco-ut/index.html)
+
 For separate execution:
 
 - ``mvn -Pcicdprofile checkstyle:check``

@@ -11,8 +11,14 @@ public enum PropertyType {
     REGEX,
     RANGENUMERIC;
 
-    public static final List<List<PropertyType>> validPropertyCombinations = Arrays.asList(
-            Arrays.asList(GREATERNUMERIC, RANGENUMERIC, REGEX, LIKE, EQUAL),
-            Arrays.asList(REGEX, LIKE, GREATERDATE)
-    );
+    static final List<PropertyType> numericTypes = Arrays.asList(GREATERNUMERIC, RANGENUMERIC, EQUAL);
+    static final List<PropertyType> dateTypes = List.of(GREATERDATE);
+
+    public static List<PropertyType> getNumericTypes() {
+        return List.copyOf(numericTypes);
+    }
+
+    public static List<PropertyType> getDateTypes() {
+        return List.copyOf(dateTypes);
+    }
 }
