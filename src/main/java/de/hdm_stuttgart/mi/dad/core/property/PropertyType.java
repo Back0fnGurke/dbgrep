@@ -3,6 +3,8 @@ package de.hdm_stuttgart.mi.dad.core.property;
 import java.util.Arrays;
 import java.util.List;
 
+//TODO: doku
+
 public enum PropertyType {
     GREATERNUMERIC,
     GREATERDATE,

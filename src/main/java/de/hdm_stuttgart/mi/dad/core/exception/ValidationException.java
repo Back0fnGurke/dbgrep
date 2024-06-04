@@ -1,5 +1,7 @@
 package de.hdm_stuttgart.mi.dad.core.exception;
 
+//TODO: doku
+
 public class ValidationException extends ServiceException {
 
     private final String invalidValue;

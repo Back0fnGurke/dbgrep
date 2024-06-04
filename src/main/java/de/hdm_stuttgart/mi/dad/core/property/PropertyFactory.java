@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
 
+//TODO: doku
+
 public class PropertyFactory {
 
     private PropertyFactory() {

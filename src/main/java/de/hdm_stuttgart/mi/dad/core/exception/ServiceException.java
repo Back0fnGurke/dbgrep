@@ -1,5 +1,7 @@
 package de.hdm_stuttgart.mi.dad.core.exception;
 
+//TODO: doku
+
 public class ServiceException extends Exception {
 
     public ServiceException(String message) {
