@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.getDateTypes;
 import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.getNumericTypes;
 
+//TODO: mutable parameter vor bearbeitung kopieren
+
 public class Service implements ServicePort {
 
     private static final String ERRSQL = "Failed to find matching pattern in column values of table rows.";

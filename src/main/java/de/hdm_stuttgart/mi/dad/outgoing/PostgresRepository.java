@@ -21,6 +21,8 @@ import java.util.Map;
 
 import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.*;
 
+//TODO: doku für private methoden schreiben
+
 /**
  * Implementation of the RepositoryPort Interface for postgresql databases.
  */
