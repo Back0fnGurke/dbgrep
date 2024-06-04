@@ -1,42 +1,14 @@
 CREATE TABLE IF NOT EXISTS account
 (
-    id
-    INTEGER
-    NOT
-    NULL
-    UNIQUE,
-    first_name
-    TEXT
-    NOT
-    NULL,
-    last_name
-    TEXT
-    NOT
-    NULL,
-    account_created
-    TIMESTAMP
-    NOT
-    NULL,
-    username
-    TEXT
-    NOT
-    NULL,
-    email
-    TEXT
-    NOT
-    NULL,
-    password
-    TEXT
-    NOT
-    NULL,
-    CONSTRAINT
-    pk_account_id
-    PRIMARY
-    KEY
-(
-    id
-)
-    );
+    id              INTEGER   NOT NULL UNIQUE,
+    first_name      TEXT      NOT NULL,
+    last_name       TEXT      NOT NULL,
+    account_created TIMESTAMP NOT NULL,
+    username        TEXT      NOT NULL,
+    email           TEXT      NOT NULL,
+    password        TEXT      NOT NULL,
+    CONSTRAINT pk_account_id PRIMARY KEY (id)
+);
 
 INSERT INTO account (id, first_name, last_name, account_created, username, email, password)
 VALUES (1, 'Dorian', 'Sporner', '2018-03-30 00:59:12', 'dsporner0', 'dsporner0@51.la', 'jY0\EZ&/9<X0.t');

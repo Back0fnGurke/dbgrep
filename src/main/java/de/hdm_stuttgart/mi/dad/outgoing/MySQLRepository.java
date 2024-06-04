@@ -3,22 +3,27 @@ package de.hdm_stuttgart.mi.dad.outgoing;
 import de.hdm_stuttgart.mi.dad.core.entity.ColumnValue;
 import de.hdm_stuttgart.mi.dad.core.entity.Row;
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
-import de.hdm_stuttgart.mi.dad.ports.RepositoryPort;
+import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
+import de.hdm_stuttgart.mi.dad.core.property.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
+
+import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.RANGENUMERIC;
 
 /**
  * Implementation of the RepositoryPort Interface for mysql databases.
  */
 class MySQLRepository implements RepositoryPort {
+
+    private static final String ERRTABLENAMENULL = "Parameter tableName must not be null.";
 
     final Connection connection;
 
@@ -29,146 +34,149 @@ class MySQLRepository implements RepositoryPort {
     }
 
     @Override
-    public void findInWholeDatabase() {
+    public Table findTableRowsWithProperties(final String tableName, final List<String> columnNames, final List<Property> properties) throws SQLException {
+        log.debug("table name: {}, column names: {}, properties: {}", tableName, columnNames, properties);
 
-    }
-
-    @Override
-    public void findInColumn() {
-
-    }
-
-
-    @Override
-    public Table findPattern(final String tableName, final List<String> columnNames, final Pattern pattern) throws SQLException {
-
-        log.debug("table name: {}, column names: {}, search pattern: {}", tableName, columnNames, pattern);
-
-        final int columnNamesCount = columnNames.size();
-        String query = "SELECT * FROM " + tableName + " WHERE ";
-        for (int i = 0; i < columnNamesCount; i++) {
-            if (i + 1 == columnNamesCount) {
-                query += "CAST(" + columnNames.get(i) + " AS CHAR) REGEXP ?;";
-            } else {
-                query += "CAST(" + columnNames.get(i) + " AS CHAR) REGEXP ? OR ";
-            }
+        if (tableName == null) {
+            throw new IllegalArgumentException(ERRTABLENAMENULL);
+        }
+        if (columnNames == null || columnNames.isEmpty()) {
+            throw new IllegalArgumentException("Parameter columnNames must not be null or empty. columnNames is: " + columnNames);
+        }
+        if (properties == null || properties.isEmpty()) {
+            throw new IllegalArgumentException("Parameter properties must not be null or empty. properties is: " + properties);
         }
 
+        final String query = "SELECT * FROM " + tableName + " WHERE " + getWhereClause(columnNames, properties);
         log.debug("sql query string with placeholders: {}", query);
 
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            for (int i = 0; i < columnNamesCount; i++) {
-                statement.setString(i + 1, pattern.pattern());
-            }
-
-            log.debug("sql query string: {}", statement);
-
-            return getResultTable(statement, tableName);
-        }
-    }
-
-    @Override
-    public Table findLikePattern(String tableName, List<String> columnNames, Pattern pattern) throws SQLException {
-        log.debug("table name: {}, column names: {}, search pattern: {}", tableName, columnNames, pattern);
-
-        final int columnNamesCount = columnNames.size();
-        String query = "SELECT * FROM " + tableName + " WHERE ";
-        for (int i = 0; i < columnNamesCount; i++) {
-            if (i + 1 == columnNamesCount) {
-                query += "CAST(" + columnNames.get(i) + " AS CHAR) LIKE ?;";
-            } else {
-                query += "CAST(" + columnNames.get(i) + " AS CHAR) LIKE ? OR ";
-            }
-        }
-
-        log.debug("sql query string with placeholders: {}", query);
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            for (int i = 0; i < columnNamesCount; i++) {
-                statement.setString(i + 1, pattern.pattern());
-            }
-
-            log.debug("sql query string: {}", statement);
-
-            return getResultTable(statement, tableName);
-        }
-    }
-
-    @Override
-    public Table findEqual(String tableName, List<String> columnNames, final double number) throws SQLException {
-        log.debug("table name: {}, column names: {}, search pattern: {}", tableName, columnNames, number);
-
-        final int columnNamesCount = columnNames.size();
-        String query = "SELECT * FROM " + tableName + " WHERE ";
-        for (int i = 0; i < columnNamesCount; i++) {
-            if (i + 1 == columnNamesCount) {
-                query += "CAST(" + columnNames.get(i) + " AS CHAR) = ?;";
-            } else {
-                query += "CAST(" + columnNames.get(i) + " AS CHAR) = ? OR ";
-            }
-        }
-
-        log.debug("sql query string with placeholders: {}", query);
-
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            for (int i = 0; i < columnNamesCount; i++) {
-                statement.setDouble(i + 1, number);
-            }
-
-            log.debug("sql query string: {}", statement);
-
-            return getResultTable(statement, tableName);
-        }
-    }
-
-    @Override
-    public Table getResultTable(PreparedStatement statement, final String tableName){
-
-        final List<Row> result = new ArrayList<>();
-        try (final ResultSet tableSet = statement.executeQuery()) {
-
-            while (tableSet.next()) {
-
-                final int columnCount = tableSet.getMetaData().getColumnCount();
-                final List<ColumnValue> columnValues = new ArrayList<>(columnCount);
-
-                for (int i = 1; i <= columnCount; i++) {
-                    columnValues.add(new ColumnValue(tableSet.getMetaData().getColumnLabel(i), tableSet.getString(i)));
+        try (final PreparedStatement statement = connection.prepareStatement(query)) {
+            int index = 1;
+            for (int i = 0; i < columnNames.size(); i++) {
+                for (final Property property : properties) {
+                    if (property.getType().equals(RANGENUMERIC)) {
+                        final BigDecimal[] range = (BigDecimal[]) property.getValue();
+                        statement.setObject(index++, range[0]);
+                        statement.setObject(index++, range[1]);
+                    } else {
+                        statement.setObject(index++, property.getValue());
+                    }
                 }
-
-                log.debug("column count in found row: {}, columns: {}", columnCount, columnValues);
-
-                result.add(new Row(columnValues));
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+            log.debug("sql query string: {}", statement);
+            return getResultTable(statement, tableName);
         }
-
-        return new Table(tableName, result);
-
     }
 
     @Override
-    public List<String> findTableColumnNames(final String tableName) throws SQLException {
-
+    public List<String> findTableColumnNamesAll(final String tableName) throws SQLException {
         log.debug("table name: {}", tableName);
 
-        final String query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = ?";
-        final List<String> columnNames = new ArrayList<>();
-        try (final PreparedStatement statement = connection.prepareStatement(query)) {
+        if (tableName == null) {
+            throw new IllegalArgumentException(ERRTABLENAMENULL);
+        }
 
-            statement.setString(1, tableName);
+        final String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ?";
+        return findTableColumnNames(query, tableName);
+    }
 
-            log.debug("query string: {}", statement);
+    @Override
+    public List<String> findTableColumnNamesNumeric(final String tableName) throws SQLException {
+        log.debug("table name: {}", tableName);
 
-            try (final ResultSet columnNamesSet = statement.executeQuery()) {
+        if (tableName == null) {
+            throw new IllegalArgumentException(ERRTABLENAMENULL);
+        }
 
-                while (columnNamesSet.next()) {
-                    columnNames.add(columnNamesSet.getString(1));
+        final String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ? AND data_type IN ('tinyint', 'smallint', 'mediumint', 'int', 'bigint', 'decimal', 'bit', 'float', 'double')";
+        return findTableColumnNames(query, tableName);
+    }
+
+    @Override
+    public List<String> findTableColumnNamesDate(final String tableName) throws SQLException {
+        log.debug("table name: {}", tableName);
+
+        if (tableName == null) {
+            throw new IllegalArgumentException(ERRTABLENAMENULL);
+        }
+
+        final String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ? AND data_type IN ('date', 'datetime', 'timestamp')";
+        return findTableColumnNames(query, tableName);
+    }
+
+    private Table getResultTable(final PreparedStatement statement, final String tableName) throws SQLException {
+        final List<Row> result = new ArrayList<>();
+        try (final ResultSet tableSet = statement.executeQuery()) {
+            while (tableSet.next()) {
+                final List<ColumnValue> columnValues = new ArrayList<>();
+                for (int i = 1; i <= tableSet.getMetaData().getColumnCount(); i++) {
+                    columnValues.add(new ColumnValue(tableSet.getMetaData().getColumnLabel(i), tableSet.getString(i)));
                 }
+                log.debug("column count in found row: {}, columns: {}", columnValues.size(), columnValues);
+                result.add(new Row(columnValues));
+            }
+        }
+        return new Table(tableName, result);
+    }
+
+    private List<String> findTableColumnNames(final String query, final String tableName) throws SQLException {
+        try (final PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, tableName);
+            log.debug("query string: {}", statement);
+            return getColumnNames(statement);
+        }
+    }
+
+    private List<String> getColumnNames(final PreparedStatement statement) throws SQLException {
+        final List<String> columnNames = new ArrayList<>();
+        try (final ResultSet columnNamesSet = statement.executeQuery()) {
+            while (columnNamesSet.next()) {
+                columnNames.add(columnNamesSet.getString(1));
+            }
+        }
+        return columnNames;
+    }
+
+    String getWhereClause(final List<String> columnNames, final List<Property> properties) {
+        final StringBuilder clause = new StringBuilder();
+        final int columnNamesCount = columnNames.size();
+
+        for (int i = 0; i < columnNamesCount; i++) {
+            clause.append(getStatementForColumn(columnNames.get(i), properties));
+            if (i + 1 < columnNamesCount) {
+                clause.append(" OR ");
+            } else {
+                clause.append(";");
             }
         }
 
-        return columnNames;
+        return clause.toString();
+    }
+
+    String getStatementForColumn(final String columnName, final List<Property> properties) {
+        final StringBuilder statement = new StringBuilder();
+        statement.append("((CAST(").append(columnName);
+
+        for (int j = 0; j < properties.size(); j++) {
+            switch (properties.get(j).getType()) {
+                case REGEX -> statement.append(" AS CHAR) REGEXP ?");
+                case LIKE -> statement.append(" AS CHAR) LIKE ?");
+                case EQUAL -> statement.append(" AS CHAR) = ?");
+                case GREATERNUMERIC -> statement.append(" AS DECIMAL) > ?");
+                case GREATERDATE -> statement.append(" AS DATE) > CAST(? AS DATE)");
+                case RANGENUMERIC -> statement.append(" AS DECIMAL) BETWEEN ? AND ?");
+                default -> throw new IllegalArgumentException("Unexpected value: " + properties.get(j).getType());
+            }
+
+            if (j + 1 < properties.size()) {
+                statement.append(" AND (CAST(").append(columnName);
+            } else {
+                statement.append(")");
+            }
+        }
+
+        statement.append(")");
+        return statement.toString();
     }
 }

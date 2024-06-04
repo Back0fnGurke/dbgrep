@@ -1,15 +1,14 @@
 package de.hdm_stuttgart.mi.dad.core;
 
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
-import de.hdm_stuttgart.mi.dad.ports.RepositoryPort;
-import de.hdm_stuttgart.mi.dad.ports.ServicePort;
+import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
+import de.hdm_stuttgart.mi.dad.core.ports.ServicePort;
+import de.hdm_stuttgart.mi.dad.core.property.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class Service implements ServicePort {
 
@@ -22,39 +21,50 @@ public class Service implements ServicePort {
     }
 
     @Override
-    public List<Table> searchTables(final List<String> tableNames, final Pattern pattern) throws SQLException {
+    public List<Table> searchColumns(List<String> tableNames, List<String> columnNames, Property property) throws SQLException {
+        return List.of();
+    }
 
-        log.debug("table names: {}, search pattern: {}", tableNames, pattern.pattern());
+    @Override
+    public List<Table> searchTables(final List<String> tableNames, final Property property) throws SQLException {
 
-        final List<Table> results = new ArrayList<>(tableNames.size());
+//        log.debug("table names: {}, search pattern: {}", tableNames, pattern.pattern());
+//
+//        final List<Table> results = new ArrayList<>(tableNames.size());
+//
+//        for (final String tableName : tableNames) {
+//
+//            log.debug("table name: {}", tableName);
+//
+//            final List<String> columnNames;
+//            try {
+//                columnNames = repository.findTableColumnNamesAll(tableName);
+//            } catch (final SQLException e) {
+//                throw new SQLException("failed to find column names of table: " + e.getMessage(), e);
+//            }
+//
+//            log.debug("column names of table: {}", columnNames);
+//
+//            final Table table;
+//            try {
+//                table = repository.findPattern(tableName, columnNames, pattern);
+//            } catch (final SQLException e) {
+//                throw new SQLException("failed to find matching pattern in table rows: " + e.getMessage(), e);
+//            }
+//
+//            log.debug("found rows in table: {}", table);
+//
+//            results.add(table);
+//        }
+//
+//        log.debug("found table results: {}", results);
+//
+//        return results;
+        return List.of();
+    }
 
-        for (final String tableName : tableNames) {
-
-            log.debug("table name: {}", tableName);
-
-            final List<String> columnNames;
-            try {
-                columnNames = repository.findTableColumnNames(tableName);
-            } catch (final SQLException e) {
-                throw new SQLException("failed to find column names of table: " + e.getMessage(), e);
-            }
-
-            log.debug("column names of table: {}", columnNames);
-
-            final Table table;
-            try {
-                table = repository.findPattern(tableName, columnNames, pattern);
-            } catch (final SQLException e) {
-                throw new SQLException("failed to find matching pattern in table rows: " + e.getMessage(), e);
-            }
-
-            log.debug("found rows in table: {}", table);
-
-            results.add(table);
-        }
-
-        log.debug("found table results: {}", results);
-
-        return results;
+    @Override
+    public List<Table> searchWholeDatabase(Property property) throws SQLException {
+        return List.of();
     }
 }
