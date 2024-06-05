@@ -1,6 +1,6 @@
-package de.hdm_stuttgart.mi.dad.core.exception;
+package de.hdm_stuttgart.mi.dad.connectionprofile.exception;
 
-public class NoProfileException extends Exception{
+public class NoProfileException extends Exception {
     public NoProfileException() {
     }
 

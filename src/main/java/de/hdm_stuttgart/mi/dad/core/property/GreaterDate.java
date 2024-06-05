@@ -2,6 +2,8 @@ package de.hdm_stuttgart.mi.dad.core.property;
 
 import java.time.LocalDate;
 
+//TODO: doku
+
 record GreaterDate(LocalDate value) implements Property<LocalDate> {
 
     @Override

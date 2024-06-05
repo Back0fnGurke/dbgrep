@@ -1,7 +1,8 @@
 package de.hdm_stuttgart.mi.dad.connectionprofile;
 
-import de.hdm_stuttgart.mi.dad.core.exception.MultipleProfileException;
-import de.hdm_stuttgart.mi.dad.core.exception.NoProfileException;
+import de.hdm_stuttgart.mi.dad.connectionprofile.exception.IllegalFileExtensionException;
+import de.hdm_stuttgart.mi.dad.connectionprofile.exception.MultipleProfileException;
+import de.hdm_stuttgart.mi.dad.connectionprofile.exception.NoProfileException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -42,7 +43,7 @@ public class ConnectionProfileHandler {
             throw new MultipleProfileException("There are multiply profile files in '" + directoryOfProfiles + "'.");
         }
 
-        return readProfileFile(profiles.get(0));
+        return readProfileFile(profiles.getFirst());
     }
 
     /**
@@ -112,5 +113,4 @@ public class ConnectionProfileHandler {
             return getDefaultProfile();
         }
     }
-
 }
