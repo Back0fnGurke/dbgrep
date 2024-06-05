@@ -8,7 +8,7 @@ record GreaterDate(LocalDate value) implements Property<LocalDate> {
 
     @Override
     public PropertyType getType() {
-        return PropertyType.GREATERDATE;
+        return PropertyType.GREATER_DATE;
     }
 
     @Override

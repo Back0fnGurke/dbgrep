@@ -8,7 +8,7 @@ record GreaterNumeric(BigDecimal value) implements Property<BigDecimal> {
 
     @Override
     public PropertyType getType() {
-        return PropertyType.GREATERNUMERIC;
+        return PropertyType.GREATER_NUMERIC;
     }
 
     @Override

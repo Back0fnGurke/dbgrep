@@ -13,7 +13,7 @@ record RangeNumeric(BigDecimal[] value) implements Property<BigDecimal[]> {
 
     @Override
     public PropertyType getType() {
-        return PropertyType.RANGENUMERIC;
+        return PropertyType.RANGE_NUMERIC;
     }
 
     @Override

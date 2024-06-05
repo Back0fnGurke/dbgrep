@@ -33,9 +33,9 @@ class MySQLRepository implements RepositoryPort {
             REGEX, "CAST(%s AS CHAR) REGEXP ?",
             LIKE, "CAST(%s AS CHAR) LIKE ?",
             EQUAL, "CAST(%s AS CHAR) = ?", //cast to Decimal causes false positives
-            GREATERNUMERIC, "CAST(%s AS DECIMAL) > ?",
-            GREATERDATE, "CAST(%s AS DATE) > CAST(? AS DATE)",
-            RANGENUMERIC, "CAST(%s AS DECIMAL) BETWEEN ? AND ?"
+            GREATER_NUMERIC, "CAST(%s AS DECIMAL) > ?",
+            GREATER_DATE, "CAST(%s AS DATE) > CAST(? AS DATE)",
+            RANGE_NUMERIC, "CAST(%s AS DECIMAL) BETWEEN ? AND ?"
     ));
 
     private final Connection connection;
@@ -68,7 +68,7 @@ class MySQLRepository implements RepositoryPort {
             for (Map.Entry<Property, List<String>> entry : propertyColumns.entrySet()) {
                 Property property = entry.getKey();
                 for (int i = 0; i < entry.getValue().size(); i++) {
-                    if (property.getType().equals(RANGENUMERIC)) {
+                    if (property.getType().equals(RANGE_NUMERIC)) {
                         final BigDecimal[] range = (BigDecimal[]) property.getValue();
                         statement.setObject(index++, range[0]);
                         statement.setObject(index++, range[1]);

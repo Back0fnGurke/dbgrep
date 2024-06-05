@@ -6,15 +6,15 @@ import java.util.List;
 //TODO: doku
 
 public enum PropertyType {
-    GREATERNUMERIC,
-    GREATERDATE,
+    GREATER_NUMERIC,
+    GREATER_DATE,
     EQUAL,
     LIKE,
     REGEX,
-    RANGENUMERIC;
+    RANGE_NUMERIC;
 
-    static final List<PropertyType> numericTypes = Arrays.asList(GREATERNUMERIC, RANGENUMERIC, EQUAL);
-    static final List<PropertyType> dateTypes = List.of(GREATERDATE);
+    static final List<PropertyType> numericTypes = Arrays.asList(GREATER_NUMERIC, RANGE_NUMERIC, EQUAL);
+    static final List<PropertyType> dateTypes = List.of(GREATER_DATE);
 
     public static List<PropertyType> getNumericTypes() {
         return List.copyOf(numericTypes);

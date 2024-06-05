@@ -35,20 +35,20 @@ public class PropertyFactory {
                 }
                 throw new IllegalArgumentException("EQUAL needs value type BigDecimal. Type was: " + value.getClass().getName());
             }
-            case GREATERNUMERIC -> {
+            case GREATER_NUMERIC -> {
                 if (value instanceof BigDecimal num) {
                     return new GreaterNumeric(num);
                 }
                 throw new IllegalArgumentException("GREATERNUMERIC needs value type BigDecimal. Type was: " + value.getClass().getName());
             }
-            case GREATERDATE -> {
+            case GREATER_DATE -> {
                 if (value instanceof LocalDate date) {
                     return new GreaterDate(date);
                 }
                 throw new IllegalArgumentException("GREATERDATE needs value type LocalDate. Type was: " + value.getClass().getName());
 
             }
-            case RANGENUMERIC -> {
+            case RANGE_NUMERIC -> {
                 if (value instanceof BigDecimal[] nums) {
                     return new RangeNumeric(nums);
                 }

@@ -33,9 +33,9 @@ class PostgresRepository implements RepositoryPort {
             REGEX, "%s::text ~ ?",
             LIKE, "%s::text LIKE ?",
             EQUAL, "%s::numeric = ?::numeric",
-            GREATERNUMERIC, "%s::numeric > ?::numeric",
-            GREATERDATE, "%s::date > ?::date",
-            RANGENUMERIC, "%s::numeric BETWEEN ?::numeric AND ?::numeric"
+            GREATER_NUMERIC, "%s::numeric > ?::numeric",
+            GREATER_DATE, "%s::date > ?::date",
+            RANGE_NUMERIC, "%s::numeric BETWEEN ?::numeric AND ?::numeric"
     ));
 
     private final Connection connection;
@@ -68,7 +68,7 @@ class PostgresRepository implements RepositoryPort {
             for (Map.Entry<Property, List<String>> entry : propertyColumns.entrySet()) {
                 Property property = entry.getKey();
                 for (int i = 0; i < entry.getValue().size(); i++) {
-                    if (property.getType().equals(RANGENUMERIC)) {
+                    if (property.getType().equals(RANGE_NUMERIC)) {
                         final BigDecimal[] range = (BigDecimal[]) property.getValue();
                         statement.setObject(index++, range[0]);
                         statement.setObject(index++, range[1]);

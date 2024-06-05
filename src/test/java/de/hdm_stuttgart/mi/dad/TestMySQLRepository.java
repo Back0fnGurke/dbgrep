@@ -366,7 +366,7 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final BigDecimal number = BigDecimal.valueOf(98278675);
-        final Property property = PropertyFactory.getProperty(GREATERNUMERIC, number);
+        final Property property = PropertyFactory.getProperty(GREATER_NUMERIC, number);
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
@@ -379,7 +379,7 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final BigDecimal number = BigDecimal.valueOf(97278674);
-        final Property property = PropertyFactory.getProperty(GREATERNUMERIC, number);
+        final Property property = PropertyFactory.getProperty(GREATER_NUMERIC, number);
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
@@ -408,7 +408,7 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final BigDecimal number = BigDecimal.valueOf(94935073);
-        final Property property = PropertyFactory.getProperty(GREATERNUMERIC, number);
+        final Property property = PropertyFactory.getProperty(GREATER_NUMERIC, number);
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
@@ -465,7 +465,7 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final LocalDate date = LocalDate.parse("2024-12-12");
-        final Property property = PropertyFactory.getProperty(GREATERDATE, date);
+        final Property property = PropertyFactory.getProperty(GREATER_DATE, date);
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
@@ -478,7 +478,7 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final LocalDate date = LocalDate.parse("2024-05-03");
-        final Property property = PropertyFactory.getProperty(GREATERDATE, date);
+        final Property property = PropertyFactory.getProperty(GREATER_DATE, date);
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
@@ -502,7 +502,7 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final LocalDate date = LocalDate.parse("2024-04-03");
-        final Property property = PropertyFactory.getProperty(GREATERDATE, date);
+        final Property property = PropertyFactory.getProperty(GREATER_DATE, date);
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
@@ -545,7 +545,7 @@ class TestMySQLRepository {
         final String tableName = "account";
         final BigDecimal from = BigDecimal.valueOf(98278675);
         final BigDecimal to = BigDecimal.valueOf(100000000);
-        final Property property = PropertyFactory.getProperty(RANGENUMERIC, new BigDecimal[]{from, to});
+        final Property property = PropertyFactory.getProperty(RANGE_NUMERIC, new BigDecimal[]{from, to});
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
@@ -559,7 +559,7 @@ class TestMySQLRepository {
         final String tableName = "account";
         final BigDecimal from = BigDecimal.valueOf(80);
         final BigDecimal to = BigDecimal.valueOf(100);
-        final Property property = PropertyFactory.getProperty(RANGENUMERIC, new BigDecimal[]{from, to});
+        final Property property = PropertyFactory.getProperty(RANGE_NUMERIC, new BigDecimal[]{from, to});
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
@@ -589,7 +589,7 @@ class TestMySQLRepository {
         final String tableName = "account";
         final BigDecimal from = BigDecimal.valueOf(90000000);
         final BigDecimal to = BigDecimal.valueOf(100000000);
-        final Property property = PropertyFactory.getProperty(RANGENUMERIC, new BigDecimal[]{from, to});
+        final Property property = PropertyFactory.getProperty(RANGE_NUMERIC, new BigDecimal[]{from, to});
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(

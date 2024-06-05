@@ -121,8 +121,8 @@ class TestService {
         final List<String> columnNames2 = List.of(columnName1, columnName2, columnName3, columnName4);
         final List<String> columnNames3 = List.of(columnName1, columnName2, columnName3, columnName4, columnName5);
         final Property property1 = PropertyFactory.getProperty(REGEX, Pattern.compile(""));
-        final Property property2 = PropertyFactory.getProperty(GREATERDATE, LocalDate.now());
-        final Property property3 = PropertyFactory.getProperty(GREATERNUMERIC, BigDecimal.valueOf(0));
+        final Property property2 = PropertyFactory.getProperty(GREATER_DATE, LocalDate.now());
+        final Property property3 = PropertyFactory.getProperty(GREATER_NUMERIC, BigDecimal.valueOf(0));
         final List<Property> properties1 = List.of(property1, property2);
         final List<Property> properties2 = List.of(property1, property3);
 
@@ -200,8 +200,8 @@ class TestService {
         final List<String> columnNames2 = List.of(columnName1, columnName2, columnName3, columnName4);
         final List<String> columnNames3 = List.of(columnName1, columnName2, columnName3, columnName4, columnName5);
         final Property property1 = PropertyFactory.getProperty(REGEX, Pattern.compile(""));
-        final Property property2 = PropertyFactory.getProperty(GREATERDATE, LocalDate.now());
-        final Property property3 = PropertyFactory.getProperty(GREATERNUMERIC, BigDecimal.valueOf(0));
+        final Property property2 = PropertyFactory.getProperty(GREATER_DATE, LocalDate.now());
+        final Property property3 = PropertyFactory.getProperty(GREATER_NUMERIC, BigDecimal.valueOf(0));
         final List<Property> properties1 = List.of(property1, property2);
         final List<Property> properties2 = List.of(property2);
         final List<Property> properties3 = List.of(property3);
@@ -298,8 +298,8 @@ class TestService {
         final List<String> columnNames2 = List.of(columnName1, columnName2, columnName3, columnName4);
         final List<String> columnNames3 = List.of(columnName1, columnName2, columnName3, columnName4, columnName5);
         final Property property1 = PropertyFactory.getProperty(REGEX, Pattern.compile(""));
-        final Property property2 = PropertyFactory.getProperty(GREATERDATE, LocalDate.now());
-        final Property property3 = PropertyFactory.getProperty(GREATERNUMERIC, BigDecimal.valueOf(0));
+        final Property property2 = PropertyFactory.getProperty(GREATER_DATE, LocalDate.now());
+        final Property property3 = PropertyFactory.getProperty(GREATER_NUMERIC, BigDecimal.valueOf(0));
         final List<Property> properties1 = List.of(property1, property2);
         final List<Property> properties2 = List.of(property1, property3);
 
@@ -368,8 +368,8 @@ class TestService {
         final String columnName3 = "column3";
         final List<String> columnNames1 = List.of(columnName1, columnName2, columnName3);
         final Property property1 = PropertyFactory.getProperty(REGEX, Pattern.compile(""));
-        final Property property2 = PropertyFactory.getProperty(GREATERDATE, LocalDate.now());
-        final Property property3 = PropertyFactory.getProperty(GREATERNUMERIC, BigDecimal.valueOf(0));
+        final Property property2 = PropertyFactory.getProperty(GREATER_DATE, LocalDate.now());
+        final Property property3 = PropertyFactory.getProperty(GREATER_NUMERIC, BigDecimal.valueOf(0));
         final Property property4 = PropertyFactory.getProperty(LIKE, Pattern.compile(""));
         final List<Property> properties2 = List.of(property1, property3);
         final List<Property> properties3 = List.of(property1, property2);
@@ -466,8 +466,8 @@ class TestService {
         final List<String> columnNames2 = List.of(columnName1, columnName2, columnName3, columnName4);
         final List<String> columnNames3 = List.of(columnName1, columnName2, columnName3, columnName4, columnName5);
         final Property property1 = PropertyFactory.getProperty(REGEX, Pattern.compile(""));
-        final Property property2 = PropertyFactory.getProperty(GREATERDATE, LocalDate.now());
-        final Property property3 = PropertyFactory.getProperty(GREATERNUMERIC, BigDecimal.valueOf(0));
+        final Property property2 = PropertyFactory.getProperty(GREATER_DATE, LocalDate.now());
+        final Property property3 = PropertyFactory.getProperty(GREATER_NUMERIC, BigDecimal.valueOf(0));
         final List<Property> properties1 = List.of(property1, property2);
         final List<Property> properties2 = List.of(property1, property3);
 
@@ -534,8 +534,8 @@ class TestService {
         final String columnName3 = "column3";
         final List<String> columnNames1 = List.of(columnName1, columnName2, columnName3);
         final Property property1 = PropertyFactory.getProperty(REGEX, Pattern.compile(""));
-        final Property property2 = PropertyFactory.getProperty(GREATERDATE, LocalDate.now());
-        final Property property3 = PropertyFactory.getProperty(GREATERNUMERIC, BigDecimal.valueOf(0));
+        final Property property2 = PropertyFactory.getProperty(GREATER_DATE, LocalDate.now());
+        final Property property3 = PropertyFactory.getProperty(GREATER_NUMERIC, BigDecimal.valueOf(0));
         final List<Property> properties1 = List.of(property1);
         final List<Property> properties2 = List.of(property1, property3);
         final List<Property> properties3 = List.of(property1, property2);
