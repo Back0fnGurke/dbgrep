@@ -4,16 +4,23 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Record storing data of a single row column
+ * storing data of a single row column with information if it is a match
  *
- * @param name  the name of the column
- * @param value value of the column
  */
-public record ColumnValueOutput(String name, String value, List<Property> properties) {
+public class ColumnValueOutput {
+
+    String name;
+    String value;
+    boolean isMatch;
+
+    public ColumnValueOutput(String name, String value, List<Property> properties){
+        this.name = name;
+        this.value = value;
+        this.isMatch = isMatch(value, properties);
+    }
 
     private boolean isMatch(String value, List<Property> properties){
         for (Property property : properties) {
@@ -41,5 +48,17 @@ public record ColumnValueOutput(String name, String value, List<Property> proper
             }
         }
         return false;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isMatch() {
+        return isMatch;
+    }
+
+    public String getValue() {
+        return value;
     }
 }
