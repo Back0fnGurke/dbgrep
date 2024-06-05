@@ -16,21 +16,30 @@ import java.util.regex.Pattern;
 public record ColumnValueOutput(String name, String value, List<Property> properties) {
 
     private boolean isMatch(String value, List<Property> properties){
-        for (int j = 0; j < properties.size(); j++) {
-            Property property = properties.get(j);
+        for (Property property : properties) {
             switch (property.getType()) {
-                case REGEX: return ((Pattern) property.getValue()).matcher(value).find();break;
-                case LIKE: ;
-                case EQUAL: return ((String) property.getValue()).equals(value);break;
-                case GREATERNUMERIC: return ((BigDecimal) property.getValue()).compareTo(new BigDecimal(value)) > 0 ;break;
-                case GREATERDATE: ;return ((LocalDate) property.getValue()).isAfter(LocalDate.parse(value));break;
+                case REGEX:
+                    return ((Pattern) property.getValue()).matcher(value).find();
+                case LIKE:
+                    String regex = property.toString();
+                    regex = regex.replace("_", ".").replace("%", ".*?");
+                    Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+                    return p.matcher(value).matches();
+                case EQUAL:
+                    return ((String) property.getValue()).equals(value);
+                case GREATERNUMERIC:
+                    return ((BigDecimal) property.getValue()).compareTo(new BigDecimal(value)) > 0;
+                case GREATERDATE:
+                    return ((LocalDate) property.getValue()).isAfter(LocalDate.parse(value));
                 case RANGENUMERIC:
                     final BigDecimal[] range = (BigDecimal[]) property.getValue();
                     return
-                        range[0].compareTo(new BigDecimal(value)) > 0
-                                && range[1].compareTo(new BigDecimal(value)) < 0;break; ;
-                default: throw new IllegalArgumentException("Unexpected value: " + properties.get(j).getType());
+                            range[0].compareTo(new BigDecimal(value)) > 0
+                                    && range[1].compareTo(new BigDecimal(value)) < 0;
+                default:
+                    throw new IllegalArgumentException("Unexpected value: " + property.getType());
             }
         }
+        return false;
     }
 }
