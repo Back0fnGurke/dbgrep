@@ -26,7 +26,7 @@ public record ColumnValueOutput(String name, String value, List<Property> proper
                     Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
                     return p.matcher(value).matches();
                 case EQUAL:
-                    return ((String) property.getValue()).equals(value);
+                    return property.getValue().equals(value);
                 case GREATERNUMERIC:
                     return ((BigDecimal) property.getValue()).compareTo(new BigDecimal(value)) > 0;
                 case GREATERDATE:
