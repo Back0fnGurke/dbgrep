@@ -2,9 +2,9 @@ package de.hdm_stuttgart.mi.dad;
 
 import de.hdm_stuttgart.mi.dad.connectionprofile.ConnectionProfile;
 import de.hdm_stuttgart.mi.dad.connectionprofile.ConnectionProfileHandler;
-import de.hdm_stuttgart.mi.dad.core.exception.IllegalFileExtensionException;
-import de.hdm_stuttgart.mi.dad.core.exception.MultipleProfileException;
-import de.hdm_stuttgart.mi.dad.core.exception.NoProfileException;
+import de.hdm_stuttgart.mi.dad.connectionprofile.exception.IllegalFileExtensionException;
+import de.hdm_stuttgart.mi.dad.connectionprofile.exception.MultipleProfileException;
+import de.hdm_stuttgart.mi.dad.connectionprofile.exception.NoProfileException;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
