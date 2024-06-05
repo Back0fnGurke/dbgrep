@@ -26,9 +26,9 @@ public class ColumnValueOutput {
         for (Property property : properties) {
             switch (property.getType()) {
                 case REGEX:
-                    return ((Pattern) property.getValue()).matcher(value).find();
+                    return Pattern.compile(property.getValue().toString()).matcher(value).matches();
                 case LIKE:
-                    String regex = property.toString();
+                    String regex = property.getValue().toString();
                     regex = regex.replace("_", ".").replace("%", ".*?");
                     Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
                     return p.matcher(value).matches();
