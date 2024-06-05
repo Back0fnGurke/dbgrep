@@ -1,8 +1,8 @@
 package de.hdm_stuttgart.mi.dad.connectionprofile;
 
-import de.hdm_stuttgart.mi.dad.connectionprofile.exception.IllegalFileExtensionException;
 import de.hdm_stuttgart.mi.dad.connectionprofile.exception.MultipleProfileException;
 import de.hdm_stuttgart.mi.dad.connectionprofile.exception.NoProfileException;
+import de.hdm_stuttgart.mi.dad.incoming.ArgumentType;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -105,8 +105,8 @@ public class ConnectionProfileHandler {
     }
 
     public ConnectionProfile getConnectionProfile(String[] args) throws IOException, NoProfileException, MultipleProfileException {
-        if (Arrays.asList(args).contains("--profile")) {
-            int indexProfileArgument = Arrays.asList(args).indexOf("--profile") + 1;
+        if (Arrays.asList(args).contains(ArgumentType.PROFILE.toString())) {
+            int indexProfileArgument = Arrays.asList(args).indexOf(ArgumentType.PROFILE.toString()) + 1;
             String profileArgument = args[indexProfileArgument];
             return getSelectedProfile(profileArgument);
         } else {

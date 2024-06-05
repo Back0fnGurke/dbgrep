@@ -2,6 +2,7 @@ package de.hdm_stuttgart.mi.dad;
 
 import de.hdm_stuttgart.mi.dad.connectionprofile.ConnectionProfile;
 import de.hdm_stuttgart.mi.dad.core.Service;
+import de.hdm_stuttgart.mi.dad.core.exception.ServiceException;
 import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
 import de.hdm_stuttgart.mi.dad.core.ports.ServicePort;
 import de.hdm_stuttgart.mi.dad.incoming.SearchLevelHandler;
@@ -28,6 +29,8 @@ class TestInputHandlerIT {
             final SearchLevelHandler searchLevelHandler = new SearchLevelHandler(service);
 
             searchLevelHandler.handleInput(new String[]{});
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
         }
         assertTrue(true);
     }

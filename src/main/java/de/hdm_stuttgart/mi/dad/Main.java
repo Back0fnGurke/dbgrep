@@ -18,7 +18,6 @@ public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     public static void main(final String[] args) {
-        System.out.println(args[0]);
         start(args);
     }
 
