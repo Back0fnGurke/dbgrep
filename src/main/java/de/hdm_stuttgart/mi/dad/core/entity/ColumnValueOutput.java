@@ -33,7 +33,7 @@ public class ColumnValueOutput {
                     Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
                     return p.matcher(value).matches();
                 case EQUAL:
-                    return property.getValue().equals(value);
+                    return property.getValue().equals(new BigDecimal(value));
                 case GREATERNUMERIC:
                     return ((BigDecimal) property.getValue()).compareTo(new BigDecimal(value)) > 0;
                 case GREATERDATE:
