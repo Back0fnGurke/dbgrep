@@ -4,8 +4,6 @@ import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.core.exception.ServiceException;
 import de.hdm_stuttgart.mi.dad.core.ports.ServicePort;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
-import de.hdm_stuttgart.mi.dad.core.property.PropertyFactory;
-import de.hdm_stuttgart.mi.dad.core.property.PropertyType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,8 +26,13 @@ public class SearchLevelHandler {
 
         if (!hasArgument(args, ArgumentType.COLUMN) && !hasArgument(args, ArgumentType.TABLE)) {
             resultTables = service.searchThroughWholeDatabase(propertyList);
-
-        } else if (!hasArgument(args, ArgumentType.COLUMN)){
+            return;
+        }
+        if (hasArgument(args, ArgumentType.TABLE)){
+            List<String> tableValues = findAllValuesOfArgument(args, ArgumentType.TABLE);
+            resultTables = service.searchThroughTables(tableValues, propertyList);
+        }
+        if (hasArgument(args,  ArgumentType.COLUMN)){
             List<String> tableValues = findAllValuesOfArgument(args, ArgumentType.TABLE);
             resultTables = service.searchThroughTables(tableValues, propertyList);
         }
@@ -38,19 +41,14 @@ public class SearchLevelHandler {
     private List<Property> createPropertyList(final String[] args) {
         List<Property> propertyList = new ArrayList<>();
 
-        for (ArgumentType argumentType : ArgumentType.values()) {
-            if (argumentType.isProperty && hasArgument(args, argumentType)) {
-                propertyList.addAll(createAllPropertiesToArgumentType(args, argumentType));
+        for (int i = 0; i < args.length - 1; i++) {
+            for (ArgumentType argumentType : ArgumentType.values()) {
+                if (argumentType.isProperty && argumentType.argumentString.equals(args[i])) {
+                    propertyList.add(ArgumentType.createPropertyFromArgumentType(argumentType, args[i + 1]));
+                    i++;
+                }
             }
         }
-        return propertyList;
-    }
-
-    private List<Property> createAllPropertiesToArgumentType(final String[] args, ArgumentType propertyArgument) {
-        List<Property> propertyList = new ArrayList<>();
-        int indexPropertyValue = Arrays.asList(args).indexOf(propertyArgument.toString()) + 1;
-        String propertyValue = args[indexPropertyValue];
-        PropertyFactory.getProperty(PropertyType.EQUAL, propertyValue); //TODO switch case
         return propertyList;
     }
 

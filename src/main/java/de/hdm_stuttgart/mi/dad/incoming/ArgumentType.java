@@ -1,5 +1,9 @@
 package de.hdm_stuttgart.mi.dad.incoming;
 
+import de.hdm_stuttgart.mi.dad.core.property.Property;
+import de.hdm_stuttgart.mi.dad.core.property.PropertyFactory;
+import de.hdm_stuttgart.mi.dad.core.property.PropertyType;
+
 public enum ArgumentType {
     PROFILE("--profile", false),
 
@@ -20,6 +24,28 @@ public enum ArgumentType {
     ArgumentType(String argumentString, boolean isProperty){
         this.argumentString = argumentString;
         this.isProperty = isProperty;
+    }
+
+    public static Property createPropertyFromArgumentType(ArgumentType argumentType, String stringValue) {
+        switch (argumentType){
+            case LIKE -> {
+                return PropertyFactory.getProperty(PropertyType.LIKE, stringValue);
+            }
+            case EQUAL -> {
+                return PropertyFactory.getProperty(PropertyType.EQUAL, stringValue);
+            }
+            case GREATER -> {
+                return PropertyFactory.getProperty(PropertyType.GREATER_DATE, stringValue);
+            }
+            case REGEX -> {
+                return PropertyFactory.getProperty(PropertyType.REGEX, stringValue);
+            }
+            case RANGE -> {
+                return PropertyFactory.getProperty(PropertyType.RANGE_NUMERIC, stringValue);
+            }
+            default -> throw new IllegalArgumentException();
+
+        }
     }
 
     @Override
