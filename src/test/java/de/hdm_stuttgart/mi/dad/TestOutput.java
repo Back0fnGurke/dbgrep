@@ -3,8 +3,14 @@ package de.hdm_stuttgart.mi.dad;
 import de.hdm_stuttgart.mi.dad.core.entity.ColumnValue;
 import de.hdm_stuttgart.mi.dad.core.entity.Row;
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
+import de.hdm_stuttgart.mi.dad.core.property.Property;
+import de.hdm_stuttgart.mi.dad.core.property.PropertyFactory;
 import de.hdm_stuttgart.mi.dad.outgoing.OutputHandler;
 import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.*;
 
 public class TestOutput {
 
@@ -24,7 +30,11 @@ public class TestOutput {
                 ))
         ));
 
-        outputHandler.printTable(table);
+        List<Property> properties = List.of(
+                PropertyFactory.getProperty(LIKE, Pattern.compile("Harry"))
+        );
+
+        outputHandler.printTable(table, properties);
 
     }
 }

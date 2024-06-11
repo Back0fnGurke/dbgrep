@@ -16,12 +16,18 @@ public class ColumnValueOutput {
     String value;
     boolean isMatch;
 
-    public ColumnValueOutput(String name, String value, List<Property> properties){
-        this.name = name;
-        this.value = value;
+    public ColumnValueOutput(ColumnValue column, List<Property> properties){
+        this.name = column.name();
+        this.value = column.value();
         this.isMatch = isMatch(value, properties);
     }
 
+    /**
+     * evaluates if the value is a match for the properties
+     * @param value
+     * @param properties
+     * @return
+     */
     private boolean isMatch(String value, List<Property> properties){
         for (Property property : properties) {
             switch (property.getType()) {
@@ -35,14 +41,14 @@ public class ColumnValueOutput {
                 case EQUAL:
                     return property.getValue().equals(new BigDecimal(value));
                 case GREATERNUMERIC:
-                    return ((BigDecimal) property.getValue()).compareTo(new BigDecimal(value)) > 0;
+                    return ((BigDecimal) property.getValue()).compareTo(new BigDecimal(value)) < 0;
                 case GREATERDATE:
-                    return ((LocalDate) property.getValue()).isAfter(LocalDate.parse(value));
+                    return ((LocalDate) property.getValue()).isBefore(LocalDate.parse(value));
                 case RANGENUMERIC:
                     final BigDecimal[] range = (BigDecimal[]) property.getValue();
                     return
-                            range[0].compareTo(new BigDecimal(value)) > 0
-                                    && range[1].compareTo(new BigDecimal(value)) < 0;
+                            range[0].compareTo(new BigDecimal(value)) <= 0
+                                    && range[1].compareTo(new BigDecimal(value)) >= 0;
                 default:
                     throw new IllegalArgumentException("Unexpected value: " + property.getType());
             }
