@@ -4,6 +4,9 @@ import de.hdm_stuttgart.mi.dad.core.property.Property;
 import de.hdm_stuttgart.mi.dad.core.property.PropertyFactory;
 import de.hdm_stuttgart.mi.dad.core.property.PropertyType;
 
+import java.math.BigDecimal;
+import java.util.regex.Pattern;
+
 public enum ArgumentType {
     PROFILE("--profile", false),
 
@@ -29,16 +32,20 @@ public enum ArgumentType {
     public static Property createPropertyFromArgumentType(ArgumentType argumentType, String stringValue) {
         switch (argumentType){
             case LIKE -> {
-                return PropertyFactory.getProperty(PropertyType.LIKE, stringValue);
+                Pattern likeValue = Pattern.compile(stringValue);
+                return PropertyFactory.getProperty(PropertyType.LIKE, likeValue);
             }
             case EQUAL -> {
-                return PropertyFactory.getProperty(PropertyType.EQUAL, stringValue);
+                BigDecimal equalValue = new BigDecimal(stringValue);
+                return PropertyFactory.getProperty(PropertyType.EQUAL, equalValue);
             }
             case GREATER -> {
-                return PropertyFactory.getProperty(PropertyType.GREATER_DATE, stringValue);
+                BigDecimal greaterValue = new BigDecimal(stringValue);
+                return PropertyFactory.getProperty(PropertyType.GREATER_DATE, greaterValue);
             }
             case REGEX -> {
-                return PropertyFactory.getProperty(PropertyType.REGEX, stringValue);
+                Pattern regexValue = Pattern.compile(stringValue);
+                return PropertyFactory.getProperty(PropertyType.REGEX, regexValue);
             }
             case RANGE -> {
                 return PropertyFactory.getProperty(PropertyType.RANGE_NUMERIC, stringValue);
