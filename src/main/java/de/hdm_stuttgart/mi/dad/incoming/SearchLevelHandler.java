@@ -22,24 +22,29 @@ public class SearchLevelHandler {
 
     public void handleInput(final String[] args) throws ServiceException {
         List<Table> resultTables;
-        List<Property> propertyList = createPropertyList(args);
+        try {
+            List<Property<?>> propertyList = createPropertyList(args);
 
-        if (!hasArgument(args, ArgumentType.COLUMN) && !hasArgument(args, ArgumentType.TABLE)) {
-            resultTables = service.searchThroughWholeDatabase(propertyList);
-            return;
+            if (!hasArgument(args, ArgumentType.COLUMN) && !hasArgument(args, ArgumentType.TABLE)) {
+                resultTables = service.searchThroughWholeDatabase(propertyList);
+                return;
+            }
+            if (hasArgument(args, ArgumentType.TABLE)){
+                List<String> tableValues = findAllValuesOfArgument(args, ArgumentType.TABLE);
+                resultTables = service.searchThroughTables(tableValues, propertyList);
+            }
+            if (hasArgument(args,  ArgumentType.COLUMN)){
+                List<String> tableValues = findAllValuesOfArgument(args, ArgumentType.TABLE);
+                resultTables = service.searchThroughTables(tableValues, propertyList);
+            }
+        } catch (IllegalArgumentException e){
+            System.out.println(e);
         }
-        if (hasArgument(args, ArgumentType.TABLE)){
-            List<String> tableValues = findAllValuesOfArgument(args, ArgumentType.TABLE);
-            resultTables = service.searchThroughTables(tableValues, propertyList);
-        }
-        if (hasArgument(args,  ArgumentType.COLUMN)){
-            List<String> tableValues = findAllValuesOfArgument(args, ArgumentType.TABLE);
-            resultTables = service.searchThroughTables(tableValues, propertyList);
-        }
+
     }
 
-    private List<Property> createPropertyList(final String[] args) {
-        List<Property> propertyList = new ArrayList<>();
+    private List<Property<?>> createPropertyList(final String[] args) {
+        List<Property<?>> propertyList = new ArrayList<>();
 
         for (int i = 0; i < args.length - 1; i++) {
             for (ArgumentType argumentType : ArgumentType.values()) {

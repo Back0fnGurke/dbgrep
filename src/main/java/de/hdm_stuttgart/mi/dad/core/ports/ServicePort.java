@@ -19,7 +19,7 @@ public interface ServicePort {
      * @return a List of Tables. List of Rows in Table is Empty if none where found.
      * @throws ServiceException if Repository throws SQLException
      */
-    List<Table> searchThroughColumns(final Map<String, List<String>> columnNamesOfTables, final List<Property> properties) throws ServiceException;
+    List<Table> searchThroughColumns(final Map<String, List<String>> columnNamesOfTables, final List<Property<?>> properties) throws ServiceException;
 
     /**
      * Find rows in provided tables that have column values which match the provided search pattern. Use validateTableNames to prevent sql injection and cast errors in database.
@@ -29,7 +29,7 @@ public interface ServicePort {
      * @return a List of Tables. List of Rows in Table is Empty if none where found.
      * @throws ServiceException if Repository throws SQLException
      */
-    List<Table> searchThroughTables(final List<String> tableNames, final List<Property> properties) throws ServiceException;
+    List<Table> searchThroughTables(final List<String> tableNames, final List<Property<?>> properties) throws ServiceException;
 
     /**
      * Find rows in non system tables of database whose columns have values that match the provided search pattern.
@@ -38,7 +38,7 @@ public interface ServicePort {
      * @return a List of Tables. List of Rows in Table is Empty if none where found.
      * @throws ServiceException if Repository throws SQLException
      */
-    List<Table> searchThroughWholeDatabase(final List<Property> properties) throws ServiceException;
+    List<Table> searchThroughWholeDatabase(final List<Property<?>> properties) throws ServiceException;
 
     /**
      * Checks whether the provided table names exist in the database or not.

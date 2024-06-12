@@ -5,7 +5,10 @@ import de.hdm_stuttgart.mi.dad.core.property.PropertyFactory;
 import de.hdm_stuttgart.mi.dad.core.property.PropertyType;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public enum ArgumentType {
     PROFILE("--profile", false),
@@ -29,29 +32,64 @@ public enum ArgumentType {
         this.isProperty = isProperty;
     }
 
-    public static Property createPropertyFromArgumentType(ArgumentType argumentType, String stringValue) {
+    public static Property<?> createPropertyFromArgumentType(ArgumentType argumentType, String stringValue) {
         switch (argumentType){
             case LIKE -> {
-                Pattern likeValue = Pattern.compile(stringValue);
-                return PropertyFactory.getProperty(PropertyType.LIKE, likeValue);
+                return createPropertyWithPattern(LIKE, PropertyType.LIKE, stringValue);
             }
             case EQUAL -> {
-                BigDecimal equalValue = new BigDecimal(stringValue);
-                return PropertyFactory.getProperty(PropertyType.EQUAL, equalValue);
+                return createPropertyWithBigDecimal(EQUAL, PropertyType.EQUAL, stringValue);
             }
             case GREATER -> {
-                BigDecimal greaterValue = new BigDecimal(stringValue);
-                return PropertyFactory.getProperty(PropertyType.GREATER_DATE, greaterValue);
+                try {
+                    LocalDate date = LocalDate.parse(stringValue);
+                    return PropertyFactory.getProperty(PropertyType.GREATER_DATE, date);
+                } catch (DateTimeParseException e1){
+                    try {
+                       return createPropertyWithBigDecimal(GREATER, PropertyType.GREATER_NUMERIC, stringValue);
+                    } catch (IllegalArgumentException e2){
+                        throw new IllegalArgumentException(GREATER.argumentString + " argument " + stringValue + " is neither a date nor a number.");
+                    }
+                }
             }
             case REGEX -> {
-                Pattern regexValue = Pattern.compile(stringValue);
-                return PropertyFactory.getProperty(PropertyType.REGEX, regexValue);
+                return createPropertyWithPattern(REGEX, PropertyType.REGEX, stringValue);
             }
             case RANGE -> {
-                return PropertyFactory.getProperty(PropertyType.RANGE_NUMERIC, stringValue);
+                String[] rangeNumberStrings = stringValue.split(",");
+                if (rangeNumberStrings.length != 2){
+                    throw new IllegalArgumentException(RANGE.argumentString + " can only have two numbers as arguments not " + rangeNumberStrings.length
+                            + ". You can separate numbers through ','.");
+                }
+                try {
+                    BigDecimal[] rangeNumbers = new BigDecimal[2];
+                    rangeNumbers[0] = new BigDecimal(rangeNumberStrings[0]);
+                    rangeNumbers[1] = new BigDecimal(rangeNumberStrings[1]);
+                    return PropertyFactory.getProperty(PropertyType.RANGE_NUMERIC, rangeNumbers);
+                } catch (NumberFormatException e){
+                    throw new IllegalArgumentException(RANGE.argumentString + " numbers " + rangeNumberStrings[0] + " or " + rangeNumberStrings[1] +
+                            " has wrong format. You have to separate the numbers through ','. Example: '--range 2.55,5.67'");
+                }
             }
             default -> throw new IllegalArgumentException();
+        }
+    }
 
+    private static Property<?> createPropertyWithBigDecimal(ArgumentType argumentType, PropertyType propertyType, String stringValue){
+        try {
+            BigDecimal value = new BigDecimal(stringValue);
+            return PropertyFactory.getProperty(propertyType, value);
+        } catch (NumberFormatException e){
+            throw new IllegalArgumentException(argumentType.argumentString + " number " + stringValue + "is invalid. Example of valid number: 13.554");
+        }
+    }
+
+    private static Property<?> createPropertyWithPattern(ArgumentType argumentType, PropertyType propertyType, String stringValue){
+        try {
+            Pattern value = Pattern.compile(stringValue);
+            return PropertyFactory.getProperty(propertyType, value);
+        } catch (PatternSyntaxException e) {
+            throw new IllegalArgumentException(argumentType.argumentString + " pattern " + stringValue + "is invalid.");
         }
     }
 

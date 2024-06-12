@@ -57,7 +57,7 @@ class MySQLRepository implements RepositoryPort {
     }
 
     @Override
-    public Table findTableRowsWithProperties(final String tableName, final Map<Property, List<String>> propertyColumns) throws SQLException {
+    public Table findTableRowsWithProperties(final String tableName, final Map<Property<?>, List<String>> propertyColumns) throws SQLException {
         log.debug("tableName: {}, propertyColumns: {}", tableName, propertyColumns);
 
         final String query = queryBuilder.buildQuerryString(tableName, propertyColumns);
@@ -65,8 +65,8 @@ class MySQLRepository implements RepositoryPort {
 
         try (final PreparedStatement statement = connection.prepareStatement(query)) {
             int index = 1;
-            for (Map.Entry<Property, List<String>> entry : propertyColumns.entrySet()) {
-                Property property = entry.getKey();
+            for (Map.Entry<Property<?>, List<String>> entry : propertyColumns.entrySet()) {
+                Property<?> property = entry.getKey();
                 for (int i = 0; i < entry.getValue().size(); i++) {
                     if (property.getType().equals(RANGE_NUMERIC)) {
                         final BigDecimal[] range = (BigDecimal[]) property.getValue();
