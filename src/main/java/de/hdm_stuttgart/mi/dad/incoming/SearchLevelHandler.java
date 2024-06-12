@@ -5,9 +5,7 @@ import de.hdm_stuttgart.mi.dad.core.exception.ServiceException;
 import de.hdm_stuttgart.mi.dad.core.ports.ServicePort;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Handles user input from command line and executes corresponding methods of service
@@ -21,23 +19,26 @@ public class SearchLevelHandler {
     }
 
     public void handleInput(final String[] args) throws ServiceException {
-        List<Table> resultTables;
+        List<Table> resultTables = new ArrayList<>();
         try {
             List<Property<?>> propertyList = createPropertyList(args);
 
-            if (!hasArgument(args, ArgumentType.COLUMN) && !hasArgument(args, ArgumentType.TABLE)) {
-                resultTables = service.searchThroughWholeDatabase(propertyList);
-                return;
+            //TODO commit
+            List<String> tableValues = findAllValuesOfArgument(args, ArgumentType.TABLE);
+            resultTables.addAll(service.searchThroughTables(tableValues, propertyList));
+
+            //TODO commit
+            List<String> columnValues = findAllValuesOfArgument(args, ArgumentType.COLUMN);
+            Map<String, List<String>> columnsByTable = createColumnsByTable(columnValues);
+            resultTables.addAll(service.searchThroughColumns(columnsByTable, propertyList));
+
+            //TODO commit
+            if (hasNotArgument(args, ArgumentType.COLUMN) && hasNotArgument(args, ArgumentType.TABLE)) {
+                resultTables.addAll(service.searchThroughWholeDatabase(propertyList));
             }
-            if (hasArgument(args, ArgumentType.TABLE)){
-                List<String> tableValues = findAllValuesOfArgument(args, ArgumentType.TABLE);
-                resultTables = service.searchThroughTables(tableValues, propertyList);
-            }
-            if (hasArgument(args,  ArgumentType.COLUMN)){
-                List<String> tableValues = findAllValuesOfArgument(args, ArgumentType.TABLE);
-                resultTables = service.searchThroughTables(tableValues, propertyList);
-            }
-        } catch (IllegalArgumentException e){
+            //TODO OutputFormatter
+            System.out.println(resultTables);
+        } catch (IllegalArgumentException e) {
             System.out.println(e);
         }
 
@@ -68,7 +69,25 @@ public class SearchLevelHandler {
         return values;
     }
 
-    private boolean hasArgument(final String[] args, ArgumentType argument) {
-        return Arrays.asList(args).contains(argument.toString());
+    private Map<String, List<String>> createColumnsByTable(List<String> columnValues) {
+        Map<String, List<String>> columnsByTable = new HashMap<>();
+        for (String columnValue : columnValues) {
+            String[] tableAndColumn = columnValue.split("\\.");
+            if (tableAndColumn.length != 2) {
+                throw new IllegalArgumentException(columnValue + "is not a valid " + ArgumentType.COLUMN.argumentString + " argument.");
+            }
+            if (columnsByTable.containsKey(tableAndColumn[0])){
+                columnsByTable.get(tableAndColumn[0]).add(tableAndColumn[1]);
+            } else {
+                List<String> columns = new ArrayList<>();
+                columns.add(tableAndColumn[1]);
+                columnsByTable.put(tableAndColumn[0], columns);
+            }
+        }
+        return columnsByTable;
+    }
+
+    private boolean hasNotArgument(final String[] args, ArgumentType argument) {
+        return !Arrays.asList(args).contains(argument.toString());
     }
 }
