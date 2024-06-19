@@ -5,17 +5,34 @@ import de.hdm_stuttgart.mi.dad.core.entity.ColumnValueOutput;
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.PrintStream;
 import java.util.List;
 
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
+import java.util.Objects;
+import java.util.Scanner;
+
+import static java.awt.event.KeyEvent.VK_ENTER;
+import static java.awt.event.KeyEvent.VK_ESCAPE;
+
 public class OutputHandler {
 
+    Table table;
+    List<Property> properties;
+    int[] longest;
+    boolean programEnd = false;
+
     public void printTable(Table table, List<Property> properties){
+        this.table = table;
+        this.properties = properties;
+
         int numberOfColumns = table.rows().getFirst().columns().size();
 
         //find largest String for each column
-        int[] longest = new int[numberOfColumns];
+        longest = new int[numberOfColumns];
 
         for (int row = 0; row < table.rows().size(); row++) {
             for (int column = 0; column < numberOfColumns; column++) {
@@ -32,7 +49,6 @@ public class OutputHandler {
             }
         }
 
-        //print
         String divider = "";
         for (int i = 0; i < numberOfColumns; i++) {
             divider += "-".repeat(longest[i] + numberOfColumns);
@@ -44,13 +60,46 @@ public class OutputHandler {
             System.out.printf("%-"+longest[column]+"s | ", table.rows().getFirst().columns().get(column).name());
         }
         System.out.println();
-        System.out.print(divider);
-        System.out.println();
-        System.out.print(divider);
-        System.out.println();
+        System.out.println(divider);
+
+        printRange(0, 9);
+        int index = 10;
+        if(table.rows().size()> 10) {
+            System.out.println("Type m for more results. Type q to quit program.");
+
+            Scanner in = new Scanner(System.in);;
+            String s;
+
+            while (!programEnd) {
+                s = in.nextLine();
+                if(s.equals("m")){
+                    printRange(index, index+9);
+                    index += 9;
+                    if(index > table.rows().size()){
+                        programEnd = true;
+                    }else{
+                        System.out.println("Type m for more results. Type q to quit program.");
+                    }
+                }
+                if(s.equals("q")){
+                    programEnd = true;
+                }
+            }
+        }
+
+    }
+
+    private void printRange(int start, int end){
+        int numberOfColumns = table.rows().getFirst().columns().size();
+
+        String divider = "";
+        for (int i = 0; i < numberOfColumns; i++) {
+            divider += "-".repeat(longest[i] + numberOfColumns);
+        }
+        System.out.println(divider);
 
         ColumnValue columnValue;
-        for (int row = 0; row < table.rows().size(); row++) {
+        for (int row = start; row < table.rows().size() && row <= end; row++) {
             for (int column = 0; column < table.rows().get(row).columns().size(); column++) {
                 columnValue = table.rows().get(row).columns().get(column);
                 if(new ColumnValueOutput(columnValue, properties).isMatch()){
@@ -65,4 +114,5 @@ public class OutputHandler {
             System.out.println();
         }
     }
+
 }
