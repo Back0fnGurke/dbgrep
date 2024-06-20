@@ -4,19 +4,8 @@ import de.hdm_stuttgart.mi.dad.core.entity.ColumnValue;
 import de.hdm_stuttgart.mi.dad.core.entity.ColumnValueOutput;
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
-
-import javax.swing.*;
-import java.awt.*;
-import java.io.PrintStream;
 import java.util.List;
-
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
-import java.util.Objects;
 import java.util.Scanner;
-
-import static java.awt.event.KeyEvent.VK_ENTER;
-import static java.awt.event.KeyEvent.VK_ESCAPE;
 
 public class OutputHandler {
 
@@ -25,6 +14,14 @@ public class OutputHandler {
     int[] longest;
     boolean programEnd = false;
 
+
+    /**
+     * prints a Table into the console
+     * values that are a match to the given properties will be displayed in red
+     *
+     * @param table a String value
+     * @param properties a list with values of type Property
+     */
     public void printTable(Table table, List<Property> properties){
         this.table = table;
         this.properties = properties;
@@ -89,6 +86,11 @@ public class OutputHandler {
 
     }
 
+    /**
+     * prints only a given range of rows from the Output Table
+     * @param start
+     * @param end
+     */
     private void printRange(int start, int end){
         int numberOfColumns = table.rows().getFirst().columns().size();
 
@@ -110,8 +112,7 @@ public class OutputHandler {
                 }
             }
             System.out.println();
-            System.out.print(divider);
-            System.out.println();
+            System.out.println(divider);
         }
     }
 

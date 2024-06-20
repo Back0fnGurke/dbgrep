@@ -7,7 +7,7 @@ import de.hdm_stuttgart.mi.dad.core.property.Property;
 import java.util.regex.Pattern;
 
 /**
- * storing data of a single row column with information if it is a match
+ * storing data of a single row column with the information if it is a match
  *
  */
 public class ColumnValueOutput {
@@ -24,8 +24,8 @@ public class ColumnValueOutput {
 
     /**
      * evaluates if the value is a match for the properties
-     * @param value
-     * @param properties
+     * @param value a String value
+     * @param properties a list with values of type Property
      * @return
      */
     private boolean isMatch(String value, List<Property> properties){
