@@ -6,15 +6,36 @@ import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
 import de.hdm_stuttgart.mi.dad.core.property.PropertyFactory;
 import de.hdm_stuttgart.mi.dad.outgoing.OutputHandler;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestOutput {
 
-    public static void main(final String[] args) {
+    private final PrintStream standardOut = System.out;
+    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+
+    @BeforeEach
+    public void setUp() {
+        System.setOut(new PrintStream(outputStreamCaptor));
+    }
+
+    @AfterEach
+    public void tearDown() {
+        System.setOut(standardOut);
+    }
+
+    @Test
+    public void testOutput() {
 
         OutputHandler outputHandler = new OutputHandler();
         Table table = new Table("Test", Arrays.asList(
@@ -30,17 +51,17 @@ public class TestOutput {
                 )),
                 new Row(Arrays.asList(
                         new ColumnValue("ID", "3"),
-                        new ColumnValue("Name", "Sarah-Jane Lillian Long Long Long "),
+                        new ColumnValue("Name", "Sarah-Jane Lillian Long Long Long"),
                         new ColumnValue("Age", "22")
                 )),
                 new Row(Arrays.asList(
                         new ColumnValue("ID", "4"),
-                        new ColumnValue("Name", "Matt "),
+                        new ColumnValue("Name", "Matt"),
                         new ColumnValue("Age", "22")
                 )),
                 new Row(Arrays.asList(
                         new ColumnValue("ID", "5"),
-                        new ColumnValue("Name", "Xanxia "),
+                        new ColumnValue("Name", "Xanxia"),
                         new ColumnValue("Age", "22")
                 )),
                 new Row(Arrays.asList(
@@ -50,48 +71,23 @@ public class TestOutput {
                 )),
                 new Row(Arrays.asList(
                         new ColumnValue("ID", "7"),
-                        new ColumnValue("Name", "Flora "),
+                        new ColumnValue("Name", "Flora"),
                         new ColumnValue("Age", "22")
                 )),
                 new Row(Arrays.asList(
                         new ColumnValue("ID", "8"),
-                        new ColumnValue("Name", "Bloom "),
+                        new ColumnValue("Name", "Bloom"),
                         new ColumnValue("Age", "22")
                 )),
                 new Row(Arrays.asList(
                         new ColumnValue("ID", "9"),
-                        new ColumnValue("Name", "Aisha "),
+                        new ColumnValue("Name", "Aisha"),
                         new ColumnValue("Age", "22")
                 )),
                 new Row(Arrays.asList(
                         new ColumnValue("ID", "10"),
-                        new ColumnValue("Name", "Musa "),
+                        new ColumnValue("Name", "Musa"),
                         new ColumnValue("Age", "22")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("ID", "11"),
-                        new ColumnValue("Name", "Stella "),
-                        new ColumnValue("Age", "22")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("ID", "12"),
-                        new ColumnValue("Name", "Tecna "),
-                        new ColumnValue("Age", "22")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("ID", "13"),
-                        new ColumnValue("Name", "Susan "),
-                        new ColumnValue("Age", "22")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("ID", "14"),
-                        new ColumnValue("Name", "Suthek "),
-                        new ColumnValue("Age", "10000")
-                )),
-                new Row(Arrays.asList(
-                        new ColumnValue("ID", "15"),
-                        new ColumnValue("Name", "Anubis "),
-                        new ColumnValue("Age", "100")
                 ))
 
         ));
@@ -102,5 +98,33 @@ public class TestOutput {
 
         outputHandler.printTable(table, properties);
 
+        String exspected =
+                "-----------------------------------------------" + System.lineSeparator()
+                + "ID | Name                              | Age | " + System.lineSeparator()
+                + "-----------------------------------------------" + System.lineSeparator()
+                        + "-----------------------------------------------" + System.lineSeparator()
+                + "1  | \u001B[31mHarry\u001b[0m                             | 30  | " + System.lineSeparator()
+                        + "-----------------------------------------------" + System.lineSeparator()
+                + "2  | Barry                             | 25  | " + System.lineSeparator()
+                        + "-----------------------------------------------" + System.lineSeparator()
+                + "3  | Sarah-Jane Lillian Long Long Long | 22  | " + System.lineSeparator()
+                        + "-----------------------------------------------" + System.lineSeparator()
+                + "4  | Matt                              | 22  | " + System.lineSeparator()
+                        + "-----------------------------------------------" + System.lineSeparator()
+                + "5  | Xanxia                            | 22  | " + System.lineSeparator()
+                        + "-----------------------------------------------" + System.lineSeparator()
+                + "6  | Kate                              | 22  | " + System.lineSeparator()
+                        + "-----------------------------------------------" + System.lineSeparator()
+                + "7  | Flora                             | 22  | " + System.lineSeparator()
+                        + "-----------------------------------------------" + System.lineSeparator()
+                + "8  | Bloom                             | 22  | " + System.lineSeparator()
+                        + "-----------------------------------------------" + System.lineSeparator()
+                + "9  | Aisha                             | 22  | " + System.lineSeparator()
+                        + "-----------------------------------------------" + System.lineSeparator()
+                + "10 | Musa                              | 22  | " + System.lineSeparator()
+                        + "-----------------------------------------------";
+
+        assertEquals(exspected, outputStreamCaptor.toString()
+                .trim());
     }
 }
