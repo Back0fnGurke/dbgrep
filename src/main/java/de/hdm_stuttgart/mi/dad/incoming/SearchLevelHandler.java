@@ -18,21 +18,26 @@ public class SearchLevelHandler {
         this.service = service;
     }
 
+    /**
+     * First, a list is created using the properties specified.
+     * It then checks whether the search is tables-specifically and/or column-specifically.
+     * If neither variant is available, the entire database is searched.
+     * The output is then print using the OutputFormatter.
+     *
+     * @param args whole user input
+     */
     public void handleInput(final String[] args) throws ServiceException {
         List<Table> resultTables = new ArrayList<>();
         try {
             List<Property<?>> propertyList = createPropertyList(args);
 
-            //TODO commit
             List<String> tableValues = findAllValuesOfArgument(args, ArgumentType.TABLE);
             resultTables.addAll(service.searchThroughTables(tableValues, propertyList));
 
-            //TODO commit
             List<String> columnValues = findAllValuesOfArgument(args, ArgumentType.COLUMN);
             Map<String, List<String>> columnsByTable = createColumnsByTable(columnValues);
             resultTables.addAll(service.searchThroughColumns(columnsByTable, propertyList));
 
-            //TODO commit
             if (hasNotArgument(args, ArgumentType.COLUMN) && hasNotArgument(args, ArgumentType.TABLE)) {
                 resultTables.addAll(service.searchThroughWholeDatabase(propertyList));
             }
@@ -44,6 +49,12 @@ public class SearchLevelHandler {
 
     }
 
+    /**
+     * Creates a list of all properties specified by the user.
+     *
+     * @param args whole user input
+     * @return list of properties
+     */
     private List<Property<?>> createPropertyList(final String[] args) {
         List<Property<?>> propertyList = new ArrayList<>();
 
@@ -58,6 +69,13 @@ public class SearchLevelHandler {
         return propertyList;
     }
 
+    /**
+     * Creates a list of strings that are all arguments of a certain argument type.
+     *
+     * @param args whole user input
+     * @param argument argument type which arguments are searched for
+     * @return list of strings that are all arguments of a certain argument type
+     */
     private List<String> findAllValuesOfArgument(final String[] args, ArgumentType argument) {
         List<String> values = new ArrayList<>();
         for (int i = 0; i < args.length - 1; i++) {

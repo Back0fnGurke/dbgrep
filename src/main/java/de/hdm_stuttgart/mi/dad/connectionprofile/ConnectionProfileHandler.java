@@ -76,10 +76,21 @@ public class ConnectionProfileHandler {
         return profileList.toString();
     }
 
+    /**
+     * Returns the path where the connection profiles are located
+     *
+     * @return the path
+     */
     private Path getDirectory() {
         return Paths.get(directoryOfProfiles);
     }
 
+    /**
+     * Returns a list of paths from the existing profiles.
+     * These are located in the specified directory.
+     *
+     * @return a list of paths
+     */
     private List<Path> getListOfProfilesPath() throws IOException {
         try (Stream<Path> stream = Files.list(getDirectory())) {
             return stream
@@ -88,6 +99,12 @@ public class ConnectionProfileHandler {
         }
     }
 
+    /**
+     * Read the connection profile file and filter for certain properties and pass this value to the ConnectionProfile
+     *
+     * @param pathOfProfile of readed connection profile file
+     * @return ConnectionProfile from the read connection profile file
+     */
     private ConnectionProfile readProfileFile(Path pathOfProfile) throws IOException {
         Properties configProperties = new Properties();
         try (InputStream stream = Files.newInputStream(pathOfProfile)) {
@@ -104,6 +121,13 @@ public class ConnectionProfileHandler {
         return new ConnectionProfile(driver, host, port, user, password, database);
     }
 
+    /**
+     * Checks whether the --profile command is present
+     * and creates a ConnectionProfile from the specified connection profile file.
+     * If no --profile command is available, the default profile is searched for.
+     *
+     * @return ConnectionProfile from given file name or default profile
+     */
     public ConnectionProfile getConnectionProfile(String[] args) throws IOException, NoProfileException, MultipleProfileException {
         if (Arrays.asList(args).contains(ArgumentType.PROFILE.toString())) {
             int indexProfileArgument = Arrays.asList(args).indexOf(ArgumentType.PROFILE.toString()) + 1;
