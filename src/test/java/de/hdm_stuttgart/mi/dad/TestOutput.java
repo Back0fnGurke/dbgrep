@@ -98,7 +98,7 @@ public class TestOutput {
 
         ));
 
-        List<Property> properties = List.of(
+        List<Property<?>> properties = List.of(
                 PropertyFactory.getProperty(LIKE, Pattern.compile("Harry"))
         );
 
@@ -202,7 +202,7 @@ public class TestOutput {
 
         ));
 
-        List<Property> properties = List.of(
+        List<Property<?>> properties = List.of(
                 PropertyFactory.getProperty(LIKE, Pattern.compile("Harry"))
         );
 
@@ -313,7 +313,7 @@ public class TestOutput {
 
         ));
 
-        List<Property> properties = List.of(
+        List<Property<?>> properties = List.of(
                 PropertyFactory.getProperty(LIKE, Pattern.compile("Harry"))
         );
 

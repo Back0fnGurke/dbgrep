@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class OutputHandler {
 
     Table table;
-    List<Property> properties;
+    List<Property<?>> properties;
     int[] longest;
     boolean programEnd = false;
 
@@ -22,7 +22,7 @@ public class OutputHandler {
      * @param table a String value
      * @param properties a list with values of type Property
      */
-    public void printTable(Table table, List<Property> properties){
+    public void printTable(Table table, List<Property<?>> properties){
         this.table = table;
         this.properties = properties;
 
@@ -64,7 +64,7 @@ public class OutputHandler {
         if(table.rows().size()> 10) {
             System.out.println("Type m for more results. Type q to quit program.");
 
-            Scanner in = new Scanner(System.in);;
+            Scanner in = new Scanner(System.in);
             String s;
 
             while (!programEnd) {
