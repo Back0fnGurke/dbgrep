@@ -22,7 +22,7 @@ public class Main {
     }
 
     public static void start(String[] args) {
-        ConnectionProfileHandler profileHandler = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/one_profile");
+        ConnectionProfileHandler profileHandler = new ConnectionProfileHandler("src/main/resources/connection_profile");
 
         try {
             final ConnectionProfile profile = profileHandler.getConnectionProfile(args);
