@@ -30,7 +30,7 @@ public class Main {
             final String url = String.format("jdbc:%s://%s:%s/%s", profile.getDriver(), profile.getHost(), profile.getPort(), profile.getDatabase());
 
             try (final Connection connection = DriverManager.getConnection(url, profile.getUser(), profile.getPassword())) {
-
+                log.debug("build connection");
                 final RepositoryPort repository = RepositoryFactory.newRepository(connection, profile.getDriver());
                 final ServicePort service = new Service(repository);
                 final SearchLevelHandler searchLevelHandler = new SearchLevelHandler(service);
@@ -39,6 +39,6 @@ public class Main {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
+        log.debug("end programm");
     }
 }

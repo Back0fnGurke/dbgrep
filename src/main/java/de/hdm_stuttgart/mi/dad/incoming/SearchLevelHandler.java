@@ -5,6 +5,8 @@ import de.hdm_stuttgart.mi.dad.core.exception.ServiceException;
 import de.hdm_stuttgart.mi.dad.core.ports.ServicePort;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
 import de.hdm_stuttgart.mi.dad.outgoing.OutputHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -13,6 +15,7 @@ import java.util.*;
  */
 public class SearchLevelHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(SearchLevelHandler.class);
     final ServicePort service;
 
     public SearchLevelHandler(final ServicePort service) {
@@ -28,10 +31,11 @@ public class SearchLevelHandler {
      * @param args whole user input
      */
     public void handleInput(final String[] args) throws ServiceException {
+        log.debug("start handle input");
         List<Table> resultTables = new ArrayList<>();
         try {
             List<Property<?>> propertyList = createPropertyList(args);
-
+            log.debug("property liste erstellt:" + propertyList);
             List<String> tableValues = findAllValuesOfArgument(args, ArgumentType.TABLE);
             resultTables.addAll(service.searchThroughTables(tableValues, propertyList));
 
@@ -40,10 +44,12 @@ public class SearchLevelHandler {
             resultTables.addAll(service.searchThroughColumns(columnsByTable, propertyList));
 
             if (hasNotArgument(args, ArgumentType.COLUMN) && hasNotArgument(args, ArgumentType.TABLE)) {
+                log.debug("all databases are searched through");
                 resultTables.addAll(service.searchThroughWholeDatabase(propertyList));
             }
 
             OutputHandler outputHandler = new OutputHandler();
+            log.debug("result list" + resultTables + " size: " + resultTables.size());
             for (Table table : resultTables) {
                 outputHandler.printTable(table, propertyList);
             }
