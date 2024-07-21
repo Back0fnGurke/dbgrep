@@ -3,8 +3,6 @@ package de.hdm_stuttgart.mi.dad.core.property;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
-//TODO: doku
-
 record RangeNumeric(BigDecimal[] value) implements Property<BigDecimal[]> {
 
     RangeNumeric(BigDecimal[] value) {

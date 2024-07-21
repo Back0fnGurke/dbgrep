@@ -1,6 +1,8 @@
 package de.hdm_stuttgart.mi.dad.outgoing;
 
 import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -25,6 +27,11 @@ import java.sql.Connection;
 public class RepositoryFactory {
 
     /**
+     * Logger for this class.
+     */
+    private static final Logger log = LoggerFactory.getLogger(RepositoryFactory.class);
+
+    /**
      * Private constructor to prevent instantiation.
      */
     private RepositoryFactory() {
@@ -39,6 +46,8 @@ public class RepositoryFactory {
      * @throws IOException if an I/O error occurs.
      */
     public static RepositoryPort createRepository(final Connection connection, final String driver) throws IOException {
+        log.debug("Creating repository for driver: {}", driver);
+
         return switch (driver) {
             case "postgresql" ->
                     new PostgresRepository(connection, PropertyExpressionReader.readPropertyExpressions("postgres_property_expressions.json"));
