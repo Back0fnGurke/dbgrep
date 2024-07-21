@@ -243,9 +243,21 @@
                         <version>3.21.2</version>
                         <configuration>
                             <targetJdk>20</targetJdk>
-                            <includeTests>true</includeTests>
+                            <includeTests>false</includeTests>
                             <failOnViolation>true</failOnViolation>
                             <printFailingErrors>true</printFailingErrors>
+                        </configuration>
+                    </plugin>
+                    <!-- Code quality: Spotbugs -->
+                    <plugin>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs-maven-plugin</artifactId>
+                        <version>4.8.3.1</version>
+                        <configuration combine.self="append">
+                            <includeTests>false</includeTests>
+                            <effort>Max</effort>
+                            <threshold>Low</threshold>
+                            <failOnError>true</failOnError>
                         </configuration>
                     </plugin>
                     <!-- Source code style checking. -->
@@ -255,7 +267,7 @@
                         <version>3.3.1</version>
                         <configuration>
                             <configLocation>checkstyle.xml</configLocation>
-                            <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                            <includeTestSourceDirectory>false</includeTestSourceDirectory>
                             <excludes>module-info.java</excludes>
                             <failOnViolation>true</failOnViolation>
                             <failsOnError>true</failsOnError>
