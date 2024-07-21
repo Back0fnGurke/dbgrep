@@ -8,20 +8,47 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Map;
 
-//TODO: doku
-
+/**
+ * This class is responsible for building SQL query strings based on provided properties and their corresponding columns.
+ * It uses a map of property expressions to generate the WHERE clause of the SQL query.
+ * <p>
+ * The class is not meant to be instantiated multiple times for a single query. Instead, create a single instance and use it to build your query.
+ * <p>
+ * Example usage:
+ * <p>
+ * QueryBuilder builder = new QueryBuilder(propertyExpressions);
+ * String query = builder.buildQueryString("tableName", propertyColumns);
+ */
 public final class QueryBuilder {
 
+    /**
+     * Logger for this class.
+     */
     private static final Logger log = LoggerFactory.getLogger(QueryBuilder.class);
 
+    /**
+     * Map of property expressions used to generate the WHERE clause of the SQL query.
+     */
     private final Map<PropertyType, String> propertyExpressions;
 
 
+    /**
+     * Constructor for QueryBuilder.
+     *
+     * @param propertyExpressions a map of property expressions used to generate the WHERE clause of the SQL query.
+     */
     public QueryBuilder(final Map<PropertyType, String> propertyExpressions) {
         this.propertyExpressions = propertyExpressions;
     }
 
-    public String buildQuerryString(final String tableName, final Map<Property, List<String>> propertyColumns) {
+    /**
+     * Builds the SQL query string based on the provided table name and property columns.
+     *
+     * @param tableName       the name of the table to query.
+     * @param propertyColumns a map of properties and their corresponding columns.
+     * @return the SQL query string.
+     */
+    public String buildQueryString(final String tableName, final Map<Property, List<String>> propertyColumns) {
         log.debug("tableName: {}, propertyColumns: {}", tableName, propertyColumns);
 
         final StringBuilder query = new StringBuilder();
@@ -31,6 +58,12 @@ public final class QueryBuilder {
         return query.toString();
     }
 
+    /**
+     * Generates the WHERE clause of the SQL query based on the provided property columns.
+     *
+     * @param propertyColumns a map of properties and their corresponding columns.
+     * @return the WHERE clause of the SQL query.
+     */
     private String getWhereClause(final Map<Property, List<String>> propertyColumns) {
         final StringBuilder clause = new StringBuilder();
         final int propertyColumnsCount = propertyColumns.size();
@@ -49,6 +82,13 @@ public final class QueryBuilder {
         return clause.toString();
     }
 
+    /**
+     * Generates the SQL statement for a specific column based on the provided property.
+     *
+     * @param columnNames the names of the columns.
+     * @param property    the property to use when generating the SQL statement.
+     * @return the SQL statement for the column.
+     */
     private String getStatementForColumn(final List<String> columnNames, final Property property) {
         final StringBuilder statement = new StringBuilder();
         statement.append("(");

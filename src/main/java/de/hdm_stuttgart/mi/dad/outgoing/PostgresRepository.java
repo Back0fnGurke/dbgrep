@@ -60,7 +60,7 @@ class PostgresRepository implements RepositoryPort {
     public Table findTableRowsWithProperties(final String tableName, final Map<Property, List<String>> propertyColumns) throws SQLException {
         log.debug("tableName: {}, propertyColumns: {}", tableName, propertyColumns);
 
-        final String query = queryBuilder.buildQuerryString(tableName, propertyColumns);
+        final String query = queryBuilder.buildQueryString(tableName, propertyColumns);
         log.debug("sql query string with placeholders: {}", query);
 
         try (final PreparedStatement statement = connection.prepareStatement(query)) {
