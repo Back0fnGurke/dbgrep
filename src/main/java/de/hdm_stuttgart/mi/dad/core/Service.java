@@ -20,8 +20,6 @@ import java.util.stream.Collectors;
 import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.getDateTypes;
 import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.getNumericTypes;
 
-//TODO: mutable parameter vor bearbeitung kopieren
-
 /**
  * The Service class implements the ServicePort interface and provides the main business logic for the application.
  * <p>
