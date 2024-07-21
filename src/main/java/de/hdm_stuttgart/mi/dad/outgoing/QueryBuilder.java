@@ -49,11 +49,10 @@ public final class QueryBuilder {
      * @return the SQL query string.
      */
     public String buildQueryString(final String tableName, final Map<Property, List<String>> propertyColumns) {
-        final Map<Property, List<String>> copyPropertyColumns = Map.copyOf(propertyColumns);
-        log.debug("tableName: {}, propertyColumns: {}", tableName, copyPropertyColumns);
+        log.debug("tableName: {}, propertyColumns: {}", tableName, propertyColumns);
 
         final StringBuilder query = new StringBuilder();
-        query.append("SELECT * FROM ").append(tableName).append(" WHERE ").append(getWhereClause(copyPropertyColumns));
+        query.append("SELECT * FROM ").append(tableName).append(" WHERE ").append(getWhereClause(propertyColumns));
         log.debug("sql query string with placeholders: {}", query);
 
         return query.toString();
