@@ -15,11 +15,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.*;
+import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.RANGENUMERIC;
 
 //TODO: doku für private methoden schreiben
 
@@ -29,19 +28,11 @@ import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.*;
 class PostgresRepository implements RepositoryPort {
 
     private static final Logger log = LoggerFactory.getLogger(PostgresRepository.class);
-    private static final EnumMap<PropertyType, String> propertyExpressions = new EnumMap<>(Map.of(
-            REGEX, "%s::text ~ ?",
-            LIKE, "%s::text LIKE ?",
-            EQUAL, "%s::numeric = ?::numeric",
-            GREATERNUMERIC, "%s::numeric > ?::numeric",
-            GREATERDATE, "%s::date > ?::date",
-            RANGENUMERIC, "%s::numeric BETWEEN ?::numeric AND ?::numeric"
-    ));
 
     private final Connection connection;
     private final QueryBuilder queryBuilder;
 
-    public PostgresRepository(final Connection connection) {
+    public PostgresRepository(final Connection connection, final Map<PropertyType, String> propertyExpressions) {
         this.connection = connection;
         this.queryBuilder = new QueryBuilder(propertyExpressions);
     }

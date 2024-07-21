@@ -15,11 +15,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.*;
+import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.RANGENUMERIC;
 
 //TODO: doku für private methoden schreiben
 
@@ -29,19 +28,11 @@ import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.*;
 class MySQLRepository implements RepositoryPort {
 
     private static final Logger log = LoggerFactory.getLogger(MySQLRepository.class);
-    private static final EnumMap<PropertyType, String> propertyExpressions = new EnumMap<>(Map.of(
-            REGEX, "CAST(%s AS CHAR) REGEXP ?",
-            LIKE, "CAST(%s AS CHAR) LIKE ?",
-            EQUAL, "CAST(%s AS CHAR) = ?", //cast to Decimal causes false positives
-            GREATERNUMERIC, "CAST(%s AS DECIMAL) > ?",
-            GREATERDATE, "CAST(%s AS DATE) > CAST(? AS DATE)",
-            RANGENUMERIC, "CAST(%s AS DECIMAL) BETWEEN ? AND ?"
-    ));
 
     private final Connection connection;
     private final QueryBuilder queryBuilder;
 
-    public MySQLRepository(final Connection connection) {
+    public MySQLRepository(final Connection connection, final Map<PropertyType, String> propertyExpressions) {
         this.connection = connection;
         this.queryBuilder = new QueryBuilder(propertyExpressions);
     }

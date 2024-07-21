@@ -38,7 +38,7 @@ public final class QueryBuilder {
      * @param propertyExpressions a map of property expressions used to generate the WHERE clause of the SQL query.
      */
     public QueryBuilder(final Map<PropertyType, String> propertyExpressions) {
-        this.propertyExpressions = propertyExpressions;
+        this.propertyExpressions = Map.copyOf(propertyExpressions);
     }
 
     /**
@@ -49,10 +49,11 @@ public final class QueryBuilder {
      * @return the SQL query string.
      */
     public String buildQueryString(final String tableName, final Map<Property, List<String>> propertyColumns) {
-        log.debug("tableName: {}, propertyColumns: {}", tableName, propertyColumns);
+        final Map<Property, List<String>> copyPropertyColumns = Map.copyOf(propertyColumns);
+        log.debug("tableName: {}, propertyColumns: {}", tableName, copyPropertyColumns);
 
         final StringBuilder query = new StringBuilder();
-        query.append("SELECT * FROM ").append(tableName).append(" WHERE ").append(getWhereClause(propertyColumns));
+        query.append("SELECT * FROM ").append(tableName).append(" WHERE ").append(getWhereClause(copyPropertyColumns));
         log.debug("sql query string with placeholders: {}", query);
 
         return query.toString();

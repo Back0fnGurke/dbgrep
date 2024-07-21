@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,7 +37,7 @@ public class TestPostgresRepository {
     static ScriptRunner scriptRunner;
 
     @BeforeAll
-    public static void setUp() throws SQLException {
+    public static void setUp() throws SQLException, IOException {
         final String url = "jdbc:postgresql://localhost:5432/test";
         connection = DriverManager.getConnection(url, "test", "test");
         scriptRunner = new ScriptRunner(connection);

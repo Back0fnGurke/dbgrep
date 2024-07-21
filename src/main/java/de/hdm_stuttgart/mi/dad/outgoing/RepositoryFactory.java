@@ -2,6 +2,7 @@ package de.hdm_stuttgart.mi.dad.outgoing;
 
 import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
 
+import java.io.IOException;
 import java.sql.Connection;
 
 /**
@@ -35,12 +36,14 @@ public class RepositoryFactory {
      * @param connection the database connection.
      * @param driver     the driver of the repository to create.
      * @return the created repository.
-     * @throws IllegalArgumentException if the provided driver is not supported.
+     * @throws IOException if an I/O error occurs.
      */
-    public static RepositoryPort createRepository(final Connection connection, final String driver) {
+    public static RepositoryPort createRepository(final Connection connection, final String driver) throws IOException {
         return switch (driver) {
-            case "postgresql" -> new PostgresRepository(connection);
-            case "mysql" -> new MySQLRepository(connection);
+            case "postgresql" ->
+                    new PostgresRepository(connection, PropertyExpressionReader.readPropertyExpressions("postgres_property_expressions.json"));
+            case "mysql" ->
+                    new MySQLRepository(connection, PropertyExpressionReader.readPropertyExpressions("mysql_property_expressions.json"));
             default -> null;
         };
     }
