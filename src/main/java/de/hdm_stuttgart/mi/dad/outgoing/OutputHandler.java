@@ -28,7 +28,7 @@ public class OutputHandler {
      * prints a Table into the console
      * values that are a match to the given properties will be displayed in red
      *
-     * @param table a String value
+     * @param table the output table
      * @param properties a list with values of type Property
      */
     public void printTable(final Table table, final List<Property> properties){
