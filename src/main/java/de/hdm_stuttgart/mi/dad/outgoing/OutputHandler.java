@@ -4,8 +4,16 @@ import de.hdm_stuttgart.mi.dad.core.entity.ColumnValue;
 import de.hdm_stuttgart.mi.dad.core.entity.ColumnValueOutput;
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.Scanner;
+
+/**
+ * Handles displaying the Output Table
+ * For this create one OutputHandler and use the printTable method to print an Output Table
+ */
 
 public class OutputHandler {
 
@@ -14,6 +22,7 @@ public class OutputHandler {
     int[] longest;
     boolean programEnd = false;
 
+    private static final Logger log = LoggerFactory.getLogger(MySQLRepository.class);
 
     /**
      * prints a Table into the console
@@ -22,9 +31,11 @@ public class OutputHandler {
      * @param table a String value
      * @param properties a list with values of type Property
      */
-    public void printTable(Table table, List<Property> properties){
+    public void printTable(final Table table, final List<Property> properties){
         this.table = table;
         this.properties = properties;
+
+        log.debug("Output Table: {}, Properties: {}", table, properties);
 
         int numberOfColumns = table.rows().getFirst().columns().size();
 
@@ -46,12 +57,14 @@ public class OutputHandler {
             }
         }
 
+        //create divider String depending on longest entries
         String divider = "";
         for (int i = 0; i < numberOfColumns; i++) {
             divider += "-".repeat(longest[i] + numberOfColumns);
         }
         System.out.print(divider);
 
+        //Print first line with column names
         System.out.println();
         for (int column = 0; column < table.rows().getFirst().columns().size(); column++) {
             System.out.printf("%-"+longest[column]+"s | ", table.rows().getFirst().columns().get(column).name());
@@ -91,7 +104,7 @@ public class OutputHandler {
      * @param start
      * @param end
      */
-    private void printRange(int start, int end){
+    private void printRange(final int start,final int end){
         int numberOfColumns = table.rows().getFirst().columns().size();
 
         String divider = "";
