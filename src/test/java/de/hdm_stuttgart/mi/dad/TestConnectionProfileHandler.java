@@ -59,7 +59,7 @@ public class TestConnectionProfileHandler {
     void testGetStringOfProfileList() {
         ConnectionProfileHandler handler = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/multiple_profile");
         String string = assertDoesNotThrow(handler::getStringOfProfileList);
-        assertEquals(string, "test1.cnf\ntest3.cnf\n");
+        assertEquals("test1.cnf\ntest3.cnf\n", string);
 
         ConnectionProfileHandler handlerNoProfile = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/no_profile");
         String stringNoProfile = assertDoesNotThrow(handlerNoProfile::getStringOfProfileList);
