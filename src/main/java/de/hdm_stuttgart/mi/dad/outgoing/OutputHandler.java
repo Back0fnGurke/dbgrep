@@ -25,8 +25,10 @@ public class OutputHandler {
     private static final Logger log = LoggerFactory.getLogger(MySQLRepository.class);
 
     /**
-     * prints a Table into the console
-     * values that are a match to the given properties will be displayed in red
+     * This method prints a Table into the console.
+     * Values that are a match to the given properties will be displayed in red
+     * <p>
+     * This method will start an interaction in the console if there are more than 10 rows in the table.
      *
      * @param table the output table
      * @param properties a list with values of type Property
