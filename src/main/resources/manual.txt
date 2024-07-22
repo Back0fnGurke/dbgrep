@@ -1,0 +1,18 @@
+DESCRIPTION
+dbgrep is a database command, which searches a database for matching entries and displays them in the console.
+
+COMMAND
+dbgrep --profile {}
+
+OPTIONS
+--profile  the connections profile of the database, required for use of this command
+
+--column  the column to search
+--table  the table to search
+
+PARAMETERS FOR MATCHING
+--equal     finds equal values, works with String and Numbers
+--like      finds values that match the database LIKE pattern
+--greater   finds Number or Date values that is greater than given Number
+--range     finds values that match the number range
+--regex     finds values that matach the regex pattern
