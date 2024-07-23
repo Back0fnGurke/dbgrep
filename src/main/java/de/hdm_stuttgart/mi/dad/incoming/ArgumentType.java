@@ -10,6 +10,9 @@ import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+/**
+ * Argument types that the user can use. They always start with “--”.
+ */
 public enum ArgumentType {
     PROFILE("--profile", false),
 
@@ -32,6 +35,13 @@ public enum ArgumentType {
         this.isProperty = isProperty;
     }
 
+    /**
+     * Validates the string value for the property, parses it to the correct type and creates the property.
+     *
+     * @param argumentType argument type of the argument
+     * @param stringValue  value of the argument as string
+     * @return created property
+     */
     public static Property<?> createPropertyFromArgumentType(ArgumentType argumentType, String stringValue) {
         switch (argumentType){
             case LIKE -> {
@@ -75,6 +85,14 @@ public enum ArgumentType {
         }
     }
 
+    /**
+     * Validates the string value for the property that uses big decimal, parses it to BigDecimal and creates the property of property type.
+     *
+     * @param argumentType is used for exception message
+     * @param propertyType  property type of the created property
+     * @param stringValue  value of the argument as string
+     * @return created property
+     */
     private static Property<?> createPropertyWithBigDecimal(ArgumentType argumentType, PropertyType propertyType, String stringValue){
         try {
             BigDecimal value = new BigDecimal(stringValue);
@@ -84,6 +102,14 @@ public enum ArgumentType {
         }
     }
 
+    /**
+     * Validates the string value for the property that uses pattern like regex and like, parses it to Pattern and creates the property of property type.
+     *
+     * @param argumentType is used for exception message
+     * @param propertyType  property type of the created property
+     * @param stringValue  value of the argument as string
+     * @return created property
+     */
     private static Property<?> createPropertyWithPattern(ArgumentType argumentType, PropertyType propertyType, String stringValue){
         try {
             Pattern value = Pattern.compile(stringValue);

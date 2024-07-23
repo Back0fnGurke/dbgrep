@@ -97,6 +97,12 @@ public class SearchLevelHandler {
         return values;
     }
 
+    /**
+     * Separates the table name from the column values that the user enters.
+     *
+     * @param columnValues The names of the columns that the user has entered
+     * @return map that assigns the columns to each table
+     */
     private Map<String, List<String>> createColumnsByTable(List<String> columnValues) {
         Map<String, List<String>> columnsByTable = new HashMap<>();
         for (String columnValue : columnValues) {
@@ -115,6 +121,13 @@ public class SearchLevelHandler {
         return columnsByTable;
     }
 
+    /**
+     * Check if in the user input is no argument of a specific argument type.
+     *
+     * @param args     whole user input
+     * @param argument argument type which arguments are searched for
+     * @return true if there is no argument od argument type
+     */
     private boolean hasNotArgument(final String[] args, ArgumentType argument) {
         return !Arrays.asList(args).contains(argument.toString());
     }
