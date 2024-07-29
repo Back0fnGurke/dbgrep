@@ -2,9 +2,15 @@ package de.hdm_stuttgart.mi.dad.core.property;
 
 import java.time.LocalDate;
 
+
 //TODO: doku
 
-record GreaterDate(LocalDate value) implements Property<LocalDate> {
+final class GreaterDate extends Property<LocalDate> {
+    private final LocalDate value;
+
+    GreaterDate(LocalDate value) {
+        this.value = value;
+    }
 
     @Override
     public PropertyType getType() {

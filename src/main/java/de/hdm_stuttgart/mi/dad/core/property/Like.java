@@ -4,7 +4,12 @@ import java.util.regex.Pattern;
 
 //TODO: doku
 
-record Like(Pattern value) implements Property<String> {
+final class Like extends Property<String> {
+    private final Pattern value;
+
+    Like(Pattern value) {
+        this.value = value;
+    }
 
     @Override
     public PropertyType getType() {

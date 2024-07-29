@@ -4,7 +4,12 @@ import java.math.BigDecimal;
 
 //TODO: doku
 
-record GreaterNumeric(BigDecimal value) implements Property<BigDecimal> {
+final class GreaterNumeric extends Property<BigDecimal> {
+    private final BigDecimal value;
+
+    GreaterNumeric(BigDecimal value) {
+        this.value = value;
+    }
 
     @Override
     public PropertyType getType() {
@@ -15,4 +20,5 @@ record GreaterNumeric(BigDecimal value) implements Property<BigDecimal> {
     public BigDecimal getValue() {
         return value;
     }
+
 }
