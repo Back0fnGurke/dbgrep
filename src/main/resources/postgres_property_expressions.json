@@ -2,7 +2,7 @@
   "REGEX": "%s::text ~ ?",
   "LIKE": "%s::text LIKE ?",
   "EQUAL": "%s::numeric = ?::numeric",
-  "GREATERNUMERIC": "%s::numeric > ?::numeric",
-  "GREATERDATE": "%s::date > ?::date",
-  "RANGENUMERIC": "%s::numeric BETWEEN ?::numeric AND ?::numeric"
+  "GREATER_NUMERIC": "%s::numeric > ?::numeric",
+  "GREATER_DATE": "%s::date > ?::date",
+  "RANGE_NUMERIC": "%s::numeric BETWEEN ?::numeric AND ?::numeric"
 }

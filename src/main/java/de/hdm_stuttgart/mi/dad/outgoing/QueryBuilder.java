@@ -48,7 +48,7 @@ public final class QueryBuilder {
      * @param propertyColumns a map of properties and their corresponding columns.
      * @return the SQL query string.
      */
-    public String buildQuerryString(final String tableName, final Map<Property<?>, List<String>> propertyColumns) {
+    public String buildQueryString(final String tableName, final Map<Property<?>, List<String>> propertyColumns) {
         log.debug("tableName: {}, propertyColumns: {}", tableName, propertyColumns);
 
         final StringBuilder query = new StringBuilder();

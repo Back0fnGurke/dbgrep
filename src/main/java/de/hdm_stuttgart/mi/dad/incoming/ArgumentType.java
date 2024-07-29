@@ -53,7 +53,7 @@ public enum ArgumentType {
             case GREATER -> {
                 try {
                     LocalDate date = LocalDate.parse(stringValue);
-                    return PropertyFactory.getProperty(PropertyType.GREATER_DATE, date);
+                    return PropertyFactory.createProperty(PropertyType.GREATER_DATE, date);
                 } catch (DateTimeParseException e1){
                     try {
                        return createPropertyWithBigDecimal(GREATER, PropertyType.GREATER_NUMERIC, stringValue);
@@ -75,7 +75,7 @@ public enum ArgumentType {
                     BigDecimal[] rangeNumbers = new BigDecimal[2];
                     rangeNumbers[0] = new BigDecimal(rangeNumberStrings[0]);
                     rangeNumbers[1] = new BigDecimal(rangeNumberStrings[1]);
-                    return PropertyFactory.getProperty(PropertyType.RANGE_NUMERIC, rangeNumbers);
+                    return PropertyFactory.createProperty(PropertyType.RANGE_NUMERIC, rangeNumbers);
                 } catch (NumberFormatException e){
                     throw new IllegalArgumentException(RANGE.argumentString + " numbers " + rangeNumberStrings[0] + " or " + rangeNumberStrings[1] +
                             " has wrong format. You have to separate the numbers through ','. Example: '--range 2.55,5.67'");
@@ -96,7 +96,7 @@ public enum ArgumentType {
     private static Property<?> createPropertyWithBigDecimal(ArgumentType argumentType, PropertyType propertyType, String stringValue){
         try {
             BigDecimal value = new BigDecimal(stringValue);
-            return PropertyFactory.getProperty(propertyType, value);
+            return PropertyFactory.createProperty(propertyType, value);
         } catch (NumberFormatException e){
             throw new IllegalArgumentException(argumentType.argumentString + " number " + stringValue + "is invalid. Example of valid number: 13.554");
         }
@@ -113,7 +113,7 @@ public enum ArgumentType {
     private static Property<?> createPropertyWithPattern(ArgumentType argumentType, PropertyType propertyType, String stringValue){
         try {
             Pattern value = Pattern.compile(stringValue);
-            return PropertyFactory.getProperty(propertyType, value);
+            return PropertyFactory.createProperty(propertyType, value);
         } catch (PatternSyntaxException e) {
             throw new IllegalArgumentException(argumentType.argumentString + " pattern " + stringValue + "is invalid.");
         }

@@ -9,6 +9,7 @@ import de.hdm_stuttgart.mi.dad.incoming.SearchLevelHandler;
 import de.hdm_stuttgart.mi.dad.outgoing.RepositoryFactory;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -29,7 +30,7 @@ class TestInputHandlerIT {
             final SearchLevelHandler searchLevelHandler = new SearchLevelHandler(service);
 
             searchLevelHandler.handleInput(new String[]{});
-        } catch (ServiceException e) {
+        } catch (ServiceException | IOException e) {
             throw new RuntimeException(e);
         }
         assertTrue(true);

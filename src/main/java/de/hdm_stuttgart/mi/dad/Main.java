@@ -31,7 +31,7 @@ public class Main {
 
             try (final Connection connection = DriverManager.getConnection(url, profile.getUser(), profile.getPassword())) {
                 log.debug("build connection");
-                final RepositoryPort repository = RepositoryFactory.newRepository(connection, profile.getDriver());
+                final RepositoryPort repository = RepositoryFactory.createRepository(connection, profile.getDriver());
                 final ServicePort service = new Service(repository);
                 final SearchLevelHandler searchLevelHandler = new SearchLevelHandler(service);
                 searchLevelHandler.handleInput(args);

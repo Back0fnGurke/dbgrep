@@ -26,17 +26,17 @@ class TestQueryBuilder {
                 REGEX, "%s::text ~ ?",
                 LIKE, "%s::text LIKE ?",
                 EQUAL, "%s::numeric = ?::numeric",
-                GREATERNUMERIC, "%s::numeric > ?::numeric",
-                GREATERDATE, "%s::date > ?::date",
-                RANGENUMERIC, "%s::numeric BETWEEN ?::numeric AND ?::numeric"
+                GREATER_NUMERIC, "%s::numeric > ?::numeric",
+                GREATER_DATE, "%s::date > ?::date",
+                RANGE_NUMERIC, "%s::numeric BETWEEN ?::numeric AND ?::numeric"
         ));
         final EnumMap<PropertyType, String> propertyExpressionsMySQL = new EnumMap<>(Map.of(
                 REGEX, "CAST(%s AS CHAR) REGEXP ?",
                 LIKE, "CAST(%s AS CHAR) LIKE ?",
                 EQUAL, "CAST(%s AS CHAR) = ?", //cast to Decimal causes false positives
-                GREATERNUMERIC, "CAST(%s AS DECIMAL) > ?",
-                GREATERDATE, "CAST(%s AS DATE) > CAST(? AS DATE)",
-                RANGENUMERIC, "CAST(%s AS DECIMAL) BETWEEN ? AND ?"
+                GREATER_NUMERIC, "CAST(%s AS DECIMAL) > ?",
+                GREATER_DATE, "CAST(%s AS DATE) > CAST(? AS DATE)",
+                RANGE_NUMERIC, "CAST(%s AS DECIMAL) BETWEEN ? AND ?"
         ));
         queryBuilderPostgres = new QueryBuilder(propertyExpressionsPostgres);
         queryBuilderMySQL = new QueryBuilder(propertyExpressionsMySQL);
@@ -44,7 +44,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_Postgres_REGEX() {
-        final Map<Property, List<String>> propertyColumns = new HashMap<>();
+        final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
         final Property<?> property = PropertyFactory.createProperty(PropertyType.REGEX, Pattern.compile("test"));
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
@@ -55,7 +55,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_Postgres_LIKE() {
-        final Map<Property, List<String>> propertyColumns = new HashMap<>();
+        final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
         final Property<?> property = PropertyFactory.createProperty(LIKE, Pattern.compile("test"));
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
@@ -66,7 +66,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_Postgres_EQUAL() {
-        final Map<Property, List<String>> propertyColumns = new HashMap<>();
+        final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
         final Property<?> property = PropertyFactory.createProperty(EQUAL, BigDecimal.valueOf(1));
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
@@ -77,8 +77,8 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_Postgres_GREATERNUMERIC() {
-        final Map<Property, List<String>> propertyColumns = new HashMap<>();
-        final Property<?> property = PropertyFactory.createProperty(GREATERNUMERIC, BigDecimal.valueOf(1));
+        final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
+        final Property<?> property = PropertyFactory.createProperty(GREATER_NUMERIC, BigDecimal.valueOf(1));
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
         final String expectedQuery = "SELECT * FROM tableName WHERE (column1::numeric > ?::numeric OR column2::numeric > ?::numeric);";
@@ -88,8 +88,8 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_Postgres_GREATERDATE() {
-        final Map<Property, List<String>> propertyColumns = new HashMap<>();
-        final Property<?> property = PropertyFactory.createProperty(GREATERDATE, LocalDate.now());
+        final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
+        final Property<?> property = PropertyFactory.createProperty(GREATER_DATE, LocalDate.now());
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
         final String expectedQuery = "SELECT * FROM tableName WHERE (column1::date > ?::date OR column2::date > ?::date);";
@@ -99,8 +99,8 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_Postgres_RANGENUMERIC() {
-        final Map<Property, List<String>> propertyColumns = new HashMap<>();
-        final Property<?> property = PropertyFactory.createProperty(RANGENUMERIC, new BigDecimal[]{BigDecimal.valueOf(1), BigDecimal.valueOf(1)});
+        final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
+        final Property<?> property = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{BigDecimal.valueOf(1), BigDecimal.valueOf(1)});
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
         final String expectedQuery = "SELECT * FROM tableName WHERE (column1::numeric BETWEEN ?::numeric AND ?::numeric OR column2::numeric BETWEEN ?::numeric AND ?::numeric);";
@@ -110,8 +110,8 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_Postgres_combination() {
-        final Map<Property, List<String>> propertyColumns = new HashMap<>();
-        final Property<?> property1 = PropertyFactory.createProperty(RANGENUMERIC, new BigDecimal[]{BigDecimal.valueOf(1), BigDecimal.valueOf(1)});
+        final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
+        final Property<?> property1 = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{BigDecimal.valueOf(1), BigDecimal.valueOf(1)});
         final Property<?> property2 = PropertyFactory.createProperty(EQUAL, BigDecimal.valueOf(1));
         propertyColumns.put(property1, Arrays.asList("column1", "column2"));
         propertyColumns.put(property2, Arrays.asList("column1", "column2"));
@@ -123,7 +123,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_MySQL_REGEX() {
-        final Map<Property, List<String>> propertyColumns = new HashMap<>();
+        final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
         final Property<?> property = PropertyFactory.createProperty(PropertyType.REGEX, Pattern.compile("test"));
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
@@ -135,7 +135,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_MySQL_LIKE() {
-        final Map<Property, List<String>> propertyColumns = new HashMap<>();
+        final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
         final Property<?> property = PropertyFactory.createProperty(LIKE, Pattern.compile("test"));
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
@@ -146,7 +146,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_MySQL_EQUAL() {
-        final Map<Property, List<String>> propertyColumns = new HashMap<>();
+        final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
         final Property<?> property = PropertyFactory.createProperty(EQUAL, BigDecimal.valueOf(1));
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
@@ -157,8 +157,8 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_MySQL_GREATERNUMERIC() {
-        final Map<Property, List<String>> propertyColumns = new HashMap<>();
-        final Property<?> property = PropertyFactory.createProperty(GREATERNUMERIC, BigDecimal.valueOf(1));
+        final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
+        final Property<?> property = PropertyFactory.createProperty(GREATER_NUMERIC, BigDecimal.valueOf(1));
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
         final String expectedQuery = "SELECT * FROM tableName WHERE (CAST(column1 AS DECIMAL) > ? OR CAST(column2 AS DECIMAL) > ?);";
@@ -168,8 +168,8 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_MySQL_GREATERDATE() {
-        final Map<Property, List<String>> propertyColumns = new HashMap<>();
-        final Property<?> property = PropertyFactory.createProperty(GREATERDATE, LocalDate.now());
+        final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
+        final Property<?> property = PropertyFactory.createProperty(GREATER_DATE, LocalDate.now());
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
         final String expectedQuery = "SELECT * FROM tableName WHERE (CAST(column1 AS DATE) > CAST(? AS DATE) OR CAST(column2 AS DATE) > CAST(? AS DATE));";
@@ -179,8 +179,8 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_MySQL_RANGENUMERIC() {
-        final Map<Property, List<String>> propertyColumns = new HashMap<>();
-        final Property<?> property = PropertyFactory.createProperty(RANGENUMERIC, new BigDecimal[]{BigDecimal.valueOf(1), BigDecimal.valueOf(1)});
+        final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
+        final Property<?> property = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{BigDecimal.valueOf(1), BigDecimal.valueOf(1)});
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
         final String expectedQuery = "SELECT * FROM tableName WHERE (CAST(column1 AS DECIMAL) BETWEEN ? AND ? OR CAST(column2 AS DECIMAL) BETWEEN ? AND ?);";
@@ -190,8 +190,8 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_MySQL_combination() {
-        final Map<Property, List<String>> propertyColumns = new HashMap<>();
-        final Property<?> property1 = PropertyFactory.createProperty(RANGENUMERIC, new BigDecimal[]{BigDecimal.valueOf(1), BigDecimal.valueOf(1)});
+        final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
+        final Property<?> property1 = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{BigDecimal.valueOf(1), BigDecimal.valueOf(1)});
         final Property<?> property2 = PropertyFactory.createProperty(EQUAL, BigDecimal.valueOf(1));
         propertyColumns.put(property1, Arrays.asList("column1", "column2"));
         propertyColumns.put(property2, Arrays.asList("column1", "column2"));

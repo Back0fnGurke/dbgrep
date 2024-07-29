@@ -22,8 +22,8 @@ class TestPropertyExpressionReader {
         assertEquals("%s::text ~ ?", propertyExpressions.get(PropertyType.REGEX));
         assertEquals("%s::text LIKE ?", propertyExpressions.get(PropertyType.LIKE));
         assertEquals("%s::numeric = ?::numeric", propertyExpressions.get(PropertyType.EQUAL));
-        assertEquals("%s::numeric > ?::numeric", propertyExpressions.get(PropertyType.GREATERNUMERIC));
-        assertEquals("%s::date > ?::date", propertyExpressions.get(PropertyType.GREATERDATE));
-        assertEquals("%s::numeric BETWEEN ?::numeric AND ?::numeric", propertyExpressions.get(PropertyType.RANGENUMERIC));
+        assertEquals("%s::numeric > ?::numeric", propertyExpressions.get(PropertyType.GREATER_NUMERIC));
+        assertEquals("%s::date > ?::date", propertyExpressions.get(PropertyType.GREATER_DATE));
+        assertEquals("%s::numeric BETWEEN ?::numeric AND ?::numeric", propertyExpressions.get(PropertyType.RANGE_NUMERIC));
     }
 }

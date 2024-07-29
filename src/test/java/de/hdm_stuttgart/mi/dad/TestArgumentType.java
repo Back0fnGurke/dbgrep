@@ -17,7 +17,7 @@ public class TestArgumentType {
     @Test
     void testCreatePropertyFromArgumentTypeWithLike() {
         Property<?> actualProperty = assertDoesNotThrow(() -> ArgumentType.createPropertyFromArgumentType(ArgumentType.LIKE, "%r"));
-        Property<?> expectedProperty = PropertyFactory.getProperty(PropertyType.LIKE, Pattern.compile("%r"));
+        Property<?> expectedProperty = PropertyFactory.createProperty(PropertyType.LIKE, Pattern.compile("%r"));
         assertEquals(expectedProperty, actualProperty);
 
         assertThrows(IllegalArgumentException.class , () -> ArgumentType.createPropertyFromArgumentType(ArgumentType.LIKE, "{n,m}"));
@@ -26,7 +26,7 @@ public class TestArgumentType {
     @Test
     void testCreatePropertyFromArgumentTypeWithEqual() {
         Property<?> actualProperty = assertDoesNotThrow(() -> ArgumentType.createPropertyFromArgumentType(ArgumentType.EQUAL, "13.07"));
-        Property<?> expectedProperty = PropertyFactory.getProperty(PropertyType.EQUAL, new BigDecimal("13.07"));
+        Property<?> expectedProperty = PropertyFactory.createProperty(PropertyType.EQUAL, new BigDecimal("13.07"));
         assertEquals(expectedProperty, actualProperty);
 
         assertThrows(IllegalArgumentException.class , () -> ArgumentType.createPropertyFromArgumentType(ArgumentType.EQUAL, "string"));
@@ -37,11 +37,11 @@ public class TestArgumentType {
     @Test
     void testCreatePropertyFromArgumentTypeWithGreater() {
         Property<?> actualPropertyDate = assertDoesNotThrow(() -> ArgumentType.createPropertyFromArgumentType(ArgumentType.GREATER, "2007-12-24"));
-        Property<?> expectedPropertyDate = PropertyFactory.getProperty(PropertyType.GREATER_DATE, LocalDate.parse("2007-12-24"));
+        Property<?> expectedPropertyDate = PropertyFactory.createProperty(PropertyType.GREATER_DATE, LocalDate.parse("2007-12-24"));
         assertEquals(expectedPropertyDate, actualPropertyDate);
 
         Property<?> actualPropertyNumeric = assertDoesNotThrow(() -> ArgumentType.createPropertyFromArgumentType(ArgumentType.GREATER, "13.07"));
-        Property<?> expectedPropertyNumeric = PropertyFactory.getProperty(PropertyType.GREATER_NUMERIC, new BigDecimal("13.07"));
+        Property<?> expectedPropertyNumeric = PropertyFactory.createProperty(PropertyType.GREATER_NUMERIC, new BigDecimal("13.07"));
         assertEquals(expectedPropertyNumeric, actualPropertyNumeric);
 
         assertThrows(IllegalArgumentException.class , () -> ArgumentType.createPropertyFromArgumentType(ArgumentType.GREATER, "2007.12.24"));
@@ -53,7 +53,7 @@ public class TestArgumentType {
     @Test
     void testCreatePropertyFromArgumentTypeWithRegex() {
         Property<?> actualProperty = assertDoesNotThrow(() -> ArgumentType.createPropertyFromArgumentType(ArgumentType.REGEX, "%r"));
-        Property<?> expectedProperty = PropertyFactory.getProperty(PropertyType.REGEX, Pattern.compile("%r"));
+        Property<?> expectedProperty = PropertyFactory.createProperty(PropertyType.REGEX, Pattern.compile("%r"));
         assertEquals(expectedProperty, actualProperty);
 
         assertThrows(IllegalArgumentException.class , () -> ArgumentType.createPropertyFromArgumentType(ArgumentType.REGEX, "{n,m}"));
@@ -63,7 +63,7 @@ public class TestArgumentType {
     void testCreatePropertyFromArgumentTypeWithRange() {
         Property<?> actualProperty = assertDoesNotThrow(() -> ArgumentType.createPropertyFromArgumentType(ArgumentType.RANGE, "13.07,15.67"));
         BigDecimal[] expectedBigDecimal = {new BigDecimal("13.07"), new BigDecimal("15.67")};
-        Property<?> expectedProperty = PropertyFactory.getProperty(PropertyType.RANGE_NUMERIC, expectedBigDecimal);
+        Property<?> expectedProperty = PropertyFactory.createProperty(PropertyType.RANGE_NUMERIC, expectedBigDecimal);
         assertEquals(expectedProperty, actualProperty);
 
         assertThrows(IllegalArgumentException.class , () -> ArgumentType.createPropertyFromArgumentType(ArgumentType.RANGE, "14.987"));
