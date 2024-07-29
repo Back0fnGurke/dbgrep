@@ -91,7 +91,7 @@ public class Service implements ServicePort {
 
             log.debug("found table results: {}", results);
 
-            return results;
+            return results.stream().filter(table -> !table.rows().isEmpty()).toList();
         } catch (final RepositoryException e) {
             throw new ServiceException(ERRSQL, e);
         }
@@ -125,7 +125,7 @@ public class Service implements ServicePort {
                 results.add(table);
             }
 
-            return results;
+            return results.stream().filter(table -> !table.rows().isEmpty()).toList();
         } catch (final SQLException | RepositoryException e) {
             throw new ServiceException(ERRSQL, e);
         }
