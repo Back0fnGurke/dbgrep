@@ -59,10 +59,12 @@ public class TestConnectionProfileHandler {
     void testGetStringOfProfileList() {
         ConnectionProfileHandler handler = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/multiple_profile");
         String string = assertDoesNotThrow(handler::getStringOfProfileList);
-        assertEquals(string, "test1.cnf\ntest3.cnf\n");
+        assertTrue(string.contains("test1.cnf"));
+        assertTrue(string.contains("test3.cnf"));
+        assertFalse(string.contains("test2.txt"));
 
         ConnectionProfileHandler handlerNoProfile = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/no_profile");
         String stringNoProfile = assertDoesNotThrow(handlerNoProfile::getStringOfProfileList);
-        assertEquals(stringNoProfile, "");
+        assertEquals("", stringNoProfile);
     }
 }

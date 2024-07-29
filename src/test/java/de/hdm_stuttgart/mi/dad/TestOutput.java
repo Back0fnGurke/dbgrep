@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.*;
+import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.LIKE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestOutput {
@@ -99,35 +99,35 @@ public class TestOutput {
         ));
 
         List<Property> properties = List.of(
-                PropertyFactory.getProperty(LIKE, Pattern.compile("Harry"))
+                PropertyFactory.createProperty(LIKE, Pattern.compile("Harry"))
         );
 
         outputHandler.printTable(table, properties);
 
         String exspected =
                 "-----------------------------------------------" + System.lineSeparator()
-                + "ID | Name                              | Age | " + System.lineSeparator()
-                + "-----------------------------------------------" + System.lineSeparator()
+                        + "ID | Name                              | Age | " + System.lineSeparator()
                         + "-----------------------------------------------" + System.lineSeparator()
-                + "1  | \u001B[31mHarry\u001b[0m                             | 30  | " + System.lineSeparator()
                         + "-----------------------------------------------" + System.lineSeparator()
-                + "2  | Barry                             | 25  | " + System.lineSeparator()
+                        + "1  | \u001B[31mHarry\u001b[0m                             | 30  | " + System.lineSeparator()
                         + "-----------------------------------------------" + System.lineSeparator()
-                + "3  | Sarah-Jane Lillian Long Long Long | 22  | " + System.lineSeparator()
+                        + "2  | Barry                             | 25  | " + System.lineSeparator()
                         + "-----------------------------------------------" + System.lineSeparator()
-                + "4  | Matt                              | 22  | " + System.lineSeparator()
+                        + "3  | Sarah-Jane Lillian Long Long Long | 22  | " + System.lineSeparator()
                         + "-----------------------------------------------" + System.lineSeparator()
-                + "5  | Xanxia                            | 22  | " + System.lineSeparator()
+                        + "4  | Matt                              | 22  | " + System.lineSeparator()
                         + "-----------------------------------------------" + System.lineSeparator()
-                + "6  | Kate                              | 22  | " + System.lineSeparator()
+                        + "5  | Xanxia                            | 22  | " + System.lineSeparator()
                         + "-----------------------------------------------" + System.lineSeparator()
-                + "7  | Flora                             | 22  | " + System.lineSeparator()
+                        + "6  | Kate                              | 22  | " + System.lineSeparator()
                         + "-----------------------------------------------" + System.lineSeparator()
-                + "8  | Bloom                             | 22  | " + System.lineSeparator()
+                        + "7  | Flora                             | 22  | " + System.lineSeparator()
                         + "-----------------------------------------------" + System.lineSeparator()
-                + "9  | Aisha                             | 22  | " + System.lineSeparator()
+                        + "8  | Bloom                             | 22  | " + System.lineSeparator()
                         + "-----------------------------------------------" + System.lineSeparator()
-                + "10 | Musa                              | 22  | " + System.lineSeparator()
+                        + "9  | Aisha                             | 22  | " + System.lineSeparator()
+                        + "-----------------------------------------------" + System.lineSeparator()
+                        + "10 | Musa                              | 22  | " + System.lineSeparator()
                         + "-----------------------------------------------";
 
         assertEquals(exspected, outputStreamCaptor.toString()
@@ -203,7 +203,7 @@ public class TestOutput {
         ));
 
         List<Property> properties = List.of(
-                PropertyFactory.getProperty(LIKE, Pattern.compile("Harry"))
+                PropertyFactory.createProperty(LIKE, Pattern.compile("Harry"))
         );
 
         provideInput("m");
@@ -314,7 +314,7 @@ public class TestOutput {
         ));
 
         List<Property> properties = List.of(
-                PropertyFactory.getProperty(LIKE, Pattern.compile("Harry"))
+                PropertyFactory.createProperty(LIKE, Pattern.compile("Harry"))
         );
 
         provideInput("q");
