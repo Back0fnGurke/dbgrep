@@ -36,22 +36,25 @@ public class SearchLevelHandler {
         try {
             List<Property<?>> propertyList = createPropertyList(args);
             log.debug("property liste erstellt:" + propertyList);
-            List<String> tableValues = findAllValuesOfArgument(args, ArgumentType.TABLE);
-            resultTables.addAll(service.searchThroughTables(tableValues, propertyList));
-
-            List<String> columnValues = findAllValuesOfArgument(args, ArgumentType.COLUMN);
-            Map<String, List<String>> columnsByTable = createColumnsByTable(columnValues);
-            resultTables.addAll(service.searchThroughColumns(columnsByTable, propertyList));
 
             if (hasNotArgument(args, ArgumentType.COLUMN) && hasNotArgument(args, ArgumentType.TABLE)) {
                 log.debug("all databases are searched through");
                 resultTables.addAll(service.searchThroughWholeDatabase(propertyList));
+            } else {
+                List<String> tableValues = findAllValuesOfArgument(args, ArgumentType.TABLE);
+                resultTables.addAll(service.searchThroughTables(tableValues, propertyList));
+
+                List<String> columnValues = findAllValuesOfArgument(args, ArgumentType.COLUMN);
+                Map<String, List<String>> columnsByTable = createColumnsByTable(columnValues);
+                resultTables.addAll(service.searchThroughColumns(columnsByTable, propertyList));
             }
 
             OutputHandler outputHandler = new OutputHandler();
             log.debug("result list" + resultTables + " size: " + resultTables.size());
             for (Table table : resultTables) {
-                outputHandler.printTable(table, propertyList);
+                if (!table.rows().isEmpty()) {
+                    outputHandler.printTable(table, propertyList);
+                }
             }
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
