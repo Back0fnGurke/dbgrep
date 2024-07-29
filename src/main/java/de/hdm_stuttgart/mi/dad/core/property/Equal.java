@@ -4,7 +4,12 @@ import java.math.BigDecimal;
 
 //TODO: doku
 
-record Equal(BigDecimal value) implements Property<BigDecimal> {
+final class Equal extends Property<BigDecimal> {
+    private final BigDecimal value;
+
+    Equal(BigDecimal value) {
+        this.value = value;
+    }
 
     @Override
     public PropertyType getType() {
