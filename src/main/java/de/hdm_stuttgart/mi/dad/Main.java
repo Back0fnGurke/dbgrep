@@ -10,6 +10,9 @@ import de.hdm_stuttgart.mi.dad.outgoing.RepositoryFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -22,9 +25,8 @@ public class Main {
     }
 
     public static void start(String[] args) {
-        ConnectionProfileHandler profileHandler = new ConnectionProfileHandler("src/main/resources/connection_profile");
-
         try {
+            ConnectionProfileHandler profileHandler = new ConnectionProfileHandler(getConnectionProfileDirectory());
             final ConnectionProfile profile = profileHandler.getConnectionProfile(args);
 
             final String url = String.format("jdbc:%s://%s:%s/%s", profile.getDriver(), profile.getHost(), profile.getPort(), profile.getDatabase());
@@ -40,5 +42,10 @@ public class Main {
             System.out.println(e.getMessage());
         }
         log.debug("end programm");
+    }
+
+    public static Path getConnectionProfileDirectory() throws URISyntaxException {
+        Path path = Paths.get(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+        return path.getParent();
     }
 }

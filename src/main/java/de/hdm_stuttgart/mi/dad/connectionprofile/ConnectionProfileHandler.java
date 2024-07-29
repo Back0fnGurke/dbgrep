@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -19,9 +18,9 @@ import java.util.stream.Stream;
  * Find the connection profile file in the determined directory and create a connection profile
  */
 public class ConnectionProfileHandler {
-    public final String directoryOfProfiles;
+    public final Path directoryOfProfiles;
 
-    public ConnectionProfileHandler(String directory) {
+    public ConnectionProfileHandler(Path directory) {
         directoryOfProfiles = directory;
     }
 
@@ -53,7 +52,7 @@ public class ConnectionProfileHandler {
      * @return a connection profile object of the file
      */
     public ConnectionProfile getSelectedProfile(String fileName) throws IOException {
-        Path pathOfProfile = getDirectory().resolve(fileName);
+        Path pathOfProfile = directoryOfProfiles.resolve(fileName);
         if (Files.exists(pathOfProfile) && !Files.isDirectory(pathOfProfile)) {
             return readProfileFile(pathOfProfile);
         }
@@ -77,22 +76,13 @@ public class ConnectionProfileHandler {
     }
 
     /**
-     * Returns the path where the connection profiles are located
-     *
-     * @return the path
-     */
-    private Path getDirectory() {
-        return Paths.get(directoryOfProfiles);
-    }
-
-    /**
      * Returns a list of paths from the existing profiles.
      * These are located in the specified directory.
      *
      * @return a list of paths
      */
     private List<Path> getListOfProfilesPath() throws IOException {
-        try (Stream<Path> stream = Files.list(getDirectory())) {
+        try (Stream<Path> stream = Files.list(directoryOfProfiles)) {
             return stream
                     .filter(file -> !Files.isDirectory(file))
                     .toList();

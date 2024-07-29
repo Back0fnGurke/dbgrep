@@ -7,6 +7,7 @@ import de.hdm_stuttgart.mi.dad.connectionprofile.exception.NoProfileException;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,32 +15,32 @@ public class TestConnectionProfileHandler {
 
     @Test
     void testGetDefaultProfileWithNoProfile() {
-        ConnectionProfileHandler handler = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/no_profile");
+        ConnectionProfileHandler handler = new ConnectionProfileHandler(Paths.get("src/test/resources/TestConnectionProfileHandler/no_profile"));
         assertThrows(NoProfileException.class, handler::getDefaultProfile);
     }
 
     @Test
     void testGetDefaultProfileWithOneProfile() {
-        ConnectionProfileHandler handler = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/one_profile");
+        ConnectionProfileHandler handler = new ConnectionProfileHandler(Paths.get("src/test/resources/TestConnectionProfileHandler/one_profile"));
         ConnectionProfile profile = assertDoesNotThrow(handler::getDefaultProfile);
         assertEquals(profile.getUser(), "user5");
     }
 
     @Test
     void testGetDefaultProfileWithMultipleProfile() {
-        ConnectionProfileHandler handler = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/multiple_profile");
+        ConnectionProfileHandler handler = new ConnectionProfileHandler(Paths.get("src/test/resources/TestConnectionProfileHandler/multiple_profile"));
         assertThrows(MultipleProfileException.class, handler::getDefaultProfile);
     }
 
     @Test
     void testGetSelectedProfileWithNotExistingFile() {
-        ConnectionProfileHandler handler = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/multiple_profile");
+        ConnectionProfileHandler handler = new ConnectionProfileHandler(Paths.get("src/test/resources/TestConnectionProfileHandler/multiple_profile"));
         assertThrows(FileNotFoundException.class, () -> handler.getSelectedProfile("tet1.cnf"));
     }
 
     @Test
     void testGetSelectedProfileWithExistingFile() {
-        ConnectionProfileHandler handler = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/multiple_profile");
+        ConnectionProfileHandler handler = new ConnectionProfileHandler(Paths.get("src/test/resources/TestConnectionProfileHandler/multiple_profile"));
         assertDoesNotThrow(() -> handler.getSelectedProfile("test2.txt"));
 
         ConnectionProfile profile1 = assertDoesNotThrow(() -> handler.getSelectedProfile("test1.cnf"));
@@ -56,13 +57,13 @@ public class TestConnectionProfileHandler {
 
     @Test
     void testGetStringOfProfileList() {
-        ConnectionProfileHandler handler = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/multiple_profile");
+        ConnectionProfileHandler handler = new ConnectionProfileHandler(Paths.get("src/test/resources/TestConnectionProfileHandler/multiple_profile"));
         String string = assertDoesNotThrow(handler::getStringOfProfileList);
         assertTrue(string.contains("test1.cnf"));
         assertTrue(string.contains("test3.cnf"));
         assertTrue(string.contains("test2.txt"));
 
-        ConnectionProfileHandler handlerNoProfile = new ConnectionProfileHandler("src/test/resources/TestConnectionProfileHandler/no_profile");
+        ConnectionProfileHandler handlerNoProfile = new ConnectionProfileHandler(Paths.get("src/test/resources/TestConnectionProfileHandler/no_profile"));
         String stringNoProfile = assertDoesNotThrow(handlerNoProfile::getStringOfProfileList);
         assertEquals("", stringNoProfile);
     }
