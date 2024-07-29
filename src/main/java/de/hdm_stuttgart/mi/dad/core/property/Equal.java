@@ -2,8 +2,6 @@ package de.hdm_stuttgart.mi.dad.core.property;
 
 import java.math.BigDecimal;
 
-//TODO: doku
-
 final class Equal extends Property<BigDecimal> {
     private final BigDecimal value;
 
