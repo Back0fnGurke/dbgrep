@@ -17,6 +17,7 @@ public class SearchLevelHandler {
 
     private static final Logger log = LoggerFactory.getLogger(SearchLevelHandler.class);
     final ServicePort service;
+    private String validationErrorMessages = "";
 
     public SearchLevelHandler(final ServicePort service) {
         this.service = service;
@@ -33,33 +34,29 @@ public class SearchLevelHandler {
     public void handleInput(final String[] args) throws ServiceException {
         log.debug("start handle input");
         List<Table> resultTables = new ArrayList<>();
-        try {
-            List<Property<?>> propertyList = createPropertyList(args);
-            log.debug("property liste erstellt:" + propertyList);
+        List<Property<?>> propertyList = createPropertyList(args);
+        log.debug("property liste erstellt:{}", propertyList);
 
-            if (hasNotArgument(args, ArgumentType.COLUMN) && hasNotArgument(args, ArgumentType.TABLE)) {
-                log.debug("all databases are searched through");
-                resultTables.addAll(service.searchThroughWholeDatabase(propertyList));
-            } else {
-                List<String> tableValues = findAllValuesOfArgument(args, ArgumentType.TABLE);
-                resultTables.addAll(service.searchThroughTables(tableValues, propertyList));
+        if (hasNotArgument(args, ArgumentType.COLUMN) && hasNotArgument(args, ArgumentType.TABLE)) {
+            log.debug("all databases are searched through");
+            resultTables.addAll(service.searchThroughWholeDatabase(propertyList));
+        } else {
+            List<String> tableValues = findAllValuesOfArgument(args, ArgumentType.TABLE);
+            resultTables.addAll(service.searchThroughTables(tableValues, propertyList));
 
-                List<String> columnValues = findAllValuesOfArgument(args, ArgumentType.COLUMN);
-                Map<String, List<String>> columnsByTable = createColumnsByTable(columnValues);
-                resultTables.addAll(service.searchThroughColumns(columnsByTable, propertyList));
-            }
-
-            OutputHandler outputHandler = new OutputHandler();
-            log.debug("result list" + resultTables + " size: " + resultTables.size());
-            for (Table table : resultTables) {
-                if (!table.rows().isEmpty()) {
-                    outputHandler.printTable(table, propertyList);
-                }
-            }
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            List<String> columnValues = findAllValuesOfArgument(args, ArgumentType.COLUMN);
+            Map<String, List<String>> columnsByTable = createColumnsByTable(columnValues);
+            resultTables.addAll(service.searchThroughColumns(columnsByTable, propertyList));
         }
 
+        System.out.println(validationErrorMessages);
+        OutputHandler outputHandler = new OutputHandler();
+        log.debug("result list{} size: {}", resultTables, resultTables.size());
+        for (Table table : resultTables) {
+            if (!table.rows().isEmpty()) {
+                outputHandler.printTable(table, propertyList);
+            }
+        }
     }
 
     /**
@@ -71,15 +68,29 @@ public class SearchLevelHandler {
     private List<Property<?>> createPropertyList(final String[] args) {
         List<Property<?>> propertyList = new ArrayList<>();
 
-        for (int i = 0; i < args.length - 1; i++) {
-            for (ArgumentType argumentType : ArgumentType.values()) {
-                if (argumentType.isProperty && argumentType.argumentString.equals(args[i])) {
-                    propertyList.add(ArgumentType.createPropertyFromArgumentType(argumentType, args[i + 1]));
-                    i++;
+        for (int i = 0; i < args.length; i++) {
+            createPropertyIfValidArgumentType(args, i, propertyList);
+        }
+
+        return propertyList;
+    }
+
+
+    private void createPropertyIfValidArgumentType(final String[] args, int index, List<Property<?>> propertyList){
+        String argument = args[index];
+        if (!argument.startsWith("--")){
+            return;
+        }
+
+        for (ArgumentType argumentType : ArgumentType.values()) {
+            if (argumentType.argumentString.equals(argument)) {
+                if (argumentType.isProperty) {
+                    propertyList.add(ArgumentType.createPropertyFromArgumentType(argumentType, args[index + 1]));
                 }
+                return;
             }
         }
-        return propertyList;
+        validationErrorMessages += "Warning! " + argument + " is not a valid argument. Use --help to see all arguments. \n";
     }
 
     /**
