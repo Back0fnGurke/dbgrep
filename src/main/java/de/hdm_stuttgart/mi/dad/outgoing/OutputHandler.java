@@ -36,6 +36,7 @@ public class OutputHandler {
     public void printTable(final Table table, final List<Property> properties){
         this.table = table;
         this.properties = properties;
+        this.programEnd = false;
 
         log.debug("Output Table: {}, Properties: {}", table, properties);
 
@@ -87,7 +88,7 @@ public class OutputHandler {
                 if(s.equals("m")){
                     printRange(index, index+9);
                     index += 9;
-                    if(index > table.rows().size()){
+                    if(index >= table.rows().size()-1){
                         programEnd = true;
                     }else{
                         System.out.println("Type m for more results. Type q to quit program.");
