@@ -10,7 +10,9 @@ import de.hdm_stuttgart.mi.dad.outgoing.RepositoryFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -44,8 +46,13 @@ public class Main {
         log.debug("end programm");
     }
 
-    public static Path getConnectionProfileDirectory() throws URISyntaxException {
+    public static Path getConnectionProfileDirectory() throws URISyntaxException, FileNotFoundException {
         Path path = Paths.get(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-        return path.getParent();
+        path = path.getParent().resolve("connection_profiles");
+        if (!Files.exists(path)) {
+            throw new FileNotFoundException("Please create a directory with the name “connection_profiles” at the directory where" +
+                    " the jar file is located. Add at least one connection profile there.");
+        }
+        return path;
     }
 }
