@@ -64,7 +64,7 @@ public class TestPostgresRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("test");
-        final Property<String> property = PropertyFactory.createProperty(REGEX, pattern);
+        final Property property = PropertyFactory.createProperty(REGEX, pattern);
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
@@ -74,7 +74,6 @@ public class TestPostgresRepository {
         scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_Regex_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
-
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("Dorian");

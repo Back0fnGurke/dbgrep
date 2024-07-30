@@ -4,7 +4,6 @@ import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.core.exception.ServiceException;
 import de.hdm_stuttgart.mi.dad.core.ports.ServicePort;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
-import de.hdm_stuttgart.mi.dad.outgoing.OutputHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,12 +12,12 @@ import java.util.*;
 /**
  * Handles user input from command line and executes corresponding methods of service
  */
-public class SearchLevelHandler {
+public class InputHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(SearchLevelHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(InputHandler.class);
     final ServicePort service;
 
-    public SearchLevelHandler(final ServicePort service) {
+    public InputHandler(final ServicePort service) {
         this.service = service;
     }
 

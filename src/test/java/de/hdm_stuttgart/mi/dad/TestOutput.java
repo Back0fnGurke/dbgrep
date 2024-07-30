@@ -5,7 +5,7 @@ import de.hdm_stuttgart.mi.dad.core.entity.Row;
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
 import de.hdm_stuttgart.mi.dad.core.property.PropertyFactory;
-import de.hdm_stuttgart.mi.dad.outgoing.OutputHandler;
+import de.hdm_stuttgart.mi.dad.incoming.OutputHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

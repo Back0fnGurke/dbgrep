@@ -76,7 +76,7 @@ class TestQueryBuilder {
     }
 
     @Test
-    void test_buildQueryString_Postgres_GREATERNUMERIC() {
+    void test_buildQueryString_Postgres_GREATER_NUMERIC() {
         final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
         final Property<?> property = PropertyFactory.createProperty(GREATER_NUMERIC, BigDecimal.valueOf(1));
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
@@ -87,7 +87,7 @@ class TestQueryBuilder {
     }
 
     @Test
-    void test_buildQueryString_Postgres_GREATERDATE() {
+    void test_buildQueryString_Postgres_GREATER_DATE() {
         final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
         final Property<?> property = PropertyFactory.createProperty(GREATER_DATE, LocalDate.now());
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
@@ -98,7 +98,7 @@ class TestQueryBuilder {
     }
 
     @Test
-    void test_buildQueryString_Postgres_RANGENUMERIC() {
+    void test_buildQueryString_Postgres_RANGE_NUMERIC() {
         final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
         final Property<?> property = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{BigDecimal.valueOf(1), BigDecimal.valueOf(1)});
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
@@ -156,7 +156,7 @@ class TestQueryBuilder {
     }
 
     @Test
-    void test_buildQueryString_MySQL_GREATERNUMERIC() {
+    void test_buildQueryString_MySQL_GREATER_NUMERIC() {
         final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
         final Property<?> property = PropertyFactory.createProperty(GREATER_NUMERIC, BigDecimal.valueOf(1));
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
@@ -167,7 +167,7 @@ class TestQueryBuilder {
     }
 
     @Test
-    void test_buildQueryString_MySQL_GREATERDATE() {
+    void test_buildQueryString_MySQL_GREATER_DATE() {
         final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
         final Property<?> property = PropertyFactory.createProperty(GREATER_DATE, LocalDate.now());
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
@@ -178,7 +178,7 @@ class TestQueryBuilder {
     }
 
     @Test
-    void test_buildQueryString_MySQL_RANGENUMERIC() {
+    void test_buildQueryString_MySQL_RANGE_NUMERIC() {
         final Map<Property<?>, List<String>> propertyColumns = new HashMap<>();
         final Property<?> property = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{BigDecimal.valueOf(1), BigDecimal.valueOf(1)});
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
