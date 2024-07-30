@@ -87,7 +87,7 @@ public class OutputHandler {
                 s = in.nextLine();
                 if(s.equals("m")){
                     printRange(index, index+9);
-                    index += 9;
+                    index += 10;
                     if(index >= table.rows().size()-1){
                         programEnd = true;
                     }else{
@@ -122,7 +122,7 @@ public class OutputHandler {
                 columnValue = table.rows().get(row).columns().get(column);
                 if(new ColumnValueOutput(columnValue, properties).isMatch()){
                     System.out.print("\u001B[31m" + columnValue.value()+"\u001b[0m");
-                    System.out.printf("%-" + (longest[column] - columnValue.value().length()) + "s | ", "");
+                    System.out.printf("%-" + (longest[column] - columnValue.value().length() )  + "s | ", "");
                 }else {
                     System.out.printf("%-" + longest[column] + "s | ", columnValue.value());
                 }
