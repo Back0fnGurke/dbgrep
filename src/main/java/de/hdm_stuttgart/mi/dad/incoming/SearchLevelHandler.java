@@ -17,7 +17,6 @@ public class SearchLevelHandler {
 
     private static final Logger log = LoggerFactory.getLogger(SearchLevelHandler.class);
     final ServicePort service;
-    private String validationErrorMessages = "";
 
     public SearchLevelHandler(final ServicePort service) {
         this.service = service;
@@ -33,9 +32,13 @@ public class SearchLevelHandler {
      */
     public void handleInput(final String[] args) throws ServiceException {
         log.debug("start handle input");
+
+        validateArguments(args);
+
         List<Table> resultTables = new ArrayList<>();
         List<Property<?>> propertyList = createPropertyList(args);
         log.debug("property liste erstellt:{}", propertyList);
+
 
         if (hasNotArgument(args, ArgumentType.COLUMN) && hasNotArgument(args, ArgumentType.TABLE)) {
             log.debug("all databases are searched through");
@@ -49,7 +52,6 @@ public class SearchLevelHandler {
             resultTables.addAll(service.searchThroughColumns(columnsByTable, propertyList));
         }
 
-        System.out.println(validationErrorMessages);
         OutputHandler outputHandler = new OutputHandler();
         log.debug("result list{} size: {}", resultTables, resultTables.size());
         for (Table table : resultTables) {
@@ -69,28 +71,54 @@ public class SearchLevelHandler {
         List<Property<?>> propertyList = new ArrayList<>();
 
         for (int i = 0; i < args.length; i++) {
-            createPropertyIfValidArgumentType(args, i, propertyList);
+            createPropertyIfArgumentIsProperty(args, i, propertyList);
         }
-
         return propertyList;
     }
 
-
-    private void createPropertyIfValidArgumentType(final String[] args, int index, List<Property<?>> propertyList){
+    /**
+     * Creates a property and add it to the property list.
+     *
+     * @param args whole user input
+     * @param index for args
+     * @param propertyList the properties are added here
+     */
+    private void createPropertyIfArgumentIsProperty(final String[] args, int index, List<Property<?>> propertyList) {
         String argument = args[index];
-        if (!argument.startsWith("--")){
-            return;
-        }
 
         for (ArgumentType argumentType : ArgumentType.values()) {
-            if (argumentType.argumentString.equals(argument)) {
-                if (argumentType.isProperty) {
-                    propertyList.add(ArgumentType.createPropertyFromArgumentType(argumentType, args[index + 1]));
-                }
-                return;
+            if (argumentType.argumentString.equals(argument) && argumentType.isProperty) {
+                propertyList.add(ArgumentType.createPropertyFromArgumentType(argumentType, args[index + 1]));
             }
         }
-        validationErrorMessages += "Warning! " + argument + " is not a valid argument. Use --help to see all arguments. \n";
+    }
+
+    /**
+     * See if all words beginning with ‘-- ’ are valid arguments. And prints warnings if this is not the case.
+     *
+     * @param args whole user input
+     */
+    private void validateArguments(final String[] args) {
+        StringBuilder validationErrorMessages = new StringBuilder();
+        for (String argument : args) {
+            if (!argument.startsWith("--")) {
+                continue;
+            }
+
+            boolean isNotValid = true;
+
+            for (ArgumentType argumentType : ArgumentType.values()) {
+                if (argumentType.argumentString.equals(argument)) {
+                    isNotValid = false;
+                    break;
+                }
+            }
+
+            if (isNotValid) {
+                validationErrorMessages.append("Warning! ").append(argument).append(" is not a valid argument. Use --help to see all arguments. \n");
+            }
+        }
+        System.out.println(validationErrorMessages);
     }
 
     /**

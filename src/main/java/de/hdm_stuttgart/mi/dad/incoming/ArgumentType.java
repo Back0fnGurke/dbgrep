@@ -98,7 +98,7 @@ public enum ArgumentType {
             BigDecimal value = new BigDecimal(stringValue);
             return PropertyFactory.createProperty(propertyType, value);
         } catch (NumberFormatException e){
-            throw new IllegalArgumentException(argumentType.argumentString + " number " + stringValue + "is invalid. Example of valid number: 13.554");
+            throw new IllegalArgumentException(argumentType.argumentString + " number " + stringValue + " is invalid. Example of valid number: 13.554");
         }
     }
 
@@ -115,7 +115,7 @@ public enum ArgumentType {
             Pattern value = Pattern.compile(stringValue);
             return PropertyFactory.createProperty(propertyType, value);
         } catch (PatternSyntaxException e) {
-            throw new IllegalArgumentException(argumentType.argumentString + " pattern " + stringValue + "is invalid.");
+            throw new IllegalArgumentException(argumentType.argumentString + " pattern " + stringValue + " is invalid.");
         }
     }
 

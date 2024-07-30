@@ -18,15 +18,17 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-
 public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
+    /**
+     * This function is started when the application is executed.
+     * Set up everything necessary for SearchLevelHandler and pass the service and user input to it.
+     * Any exceptions are caught and printed for the user.
+     *
+     * @param args user input
+     */
     public static void main(final String[] args) {
-        start(args);
-    }
-
-    public static void start(String[] args) {
         try {
             ConnectionProfileHandler profileHandler = new ConnectionProfileHandler(getConnectionProfileDirectory());
             final ConnectionProfile profile = profileHandler.getConnectionProfile(args);
@@ -46,6 +48,12 @@ public class Main {
         log.debug("end programm");
     }
 
+    /**
+     * Finds out the directory where the jar is located and checks whether the connection profile folder exists.
+     * If not, an exception is thrown.
+     *
+     * @return path of connection profile directory
+     */
     public static Path getConnectionProfileDirectory() throws URISyntaxException, FileNotFoundException {
         Path path = Paths.get(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
         path = path.getParent().resolve("connection_profiles");
