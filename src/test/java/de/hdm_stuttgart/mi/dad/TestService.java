@@ -299,7 +299,7 @@ class TestService {
         final List<String> columnNames3 = List.of(columnName1, columnName2, columnName3, columnName4, columnName5);
         final Property<?> property1 = PropertyFactory.createProperty(REGEX, Pattern.compile(""));
         final Property<?> property2 = PropertyFactory.createProperty(GREATER_DATE, LocalDate.now());
-        final Property<?> property3 = PropertyFactory.createProperty(GREATER_DATE, BigDecimal.valueOf(0));
+        final Property<?> property3 = PropertyFactory.createProperty(GREATER_NUMERIC, BigDecimal.valueOf(0));
         final List<Property<?>> properties1 = List.of(property1, property2);
         final List<Property<?>> properties2 = List.of(property1, property3);
 

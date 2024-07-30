@@ -55,7 +55,7 @@ public class OutputHandler {
 
         System.out.println();
         for (int column = 0; column < table.rows().getFirst().columns().size(); column++) {
-            System.out.printf("%-" + (longest[column] + 1) + "s | ", table.rows().getFirst().columns().get(column).name());
+            System.out.printf("%-" + longest[column] + "s | ", table.rows().getFirst().columns().get(column).name());
         }
         System.out.println();
         System.out.println(divider);
@@ -108,9 +108,9 @@ public class OutputHandler {
                 columnValue = table.rows().get(row).columns().get(column);
                 if (new ColumnValueOutput(columnValue, properties).isMatch()) {
                     System.out.print("\u001B[31m" + columnValue.value() + "\u001b[0m");
-                    System.out.printf("%-" + (longest[column] - columnValue.value().length() + 1) + "s | ", "");
+                    System.out.printf("%-" + (longest[column] - columnValue.value().length()) + "s | ", "");
                 } else {
-                    System.out.printf("%-" + (longest[column] + 1) + "s | ", columnValue.value());
+                    System.out.printf("%-" + longest[column] + "s | ", columnValue.value());
                 }
             }
             System.out.println();
