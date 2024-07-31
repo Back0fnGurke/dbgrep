@@ -20,7 +20,11 @@ import java.util.stream.Stream;
 public class ConnectionProfileHandler {
     public final Path directoryOfProfiles;
 
-    public ConnectionProfileHandler(Path directory) {
+    public ConnectionProfileHandler(Path directory) throws FileNotFoundException {
+        if (!Files.exists(directory)) {
+            throw new FileNotFoundException("Please create a directory with the name “connection_profiles” at the directory where" +
+                    " the jar file is located. Add at least one connection profile there.");
+        }
         directoryOfProfiles = directory;
     }
 
