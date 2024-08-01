@@ -64,7 +64,7 @@ public class TestPostgresRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("test");
-        final Property<String> property = PropertyFactory.createProperty(REGEX, pattern);
+        final Property property = PropertyFactory.createProperty(REGEX, pattern);
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
@@ -74,7 +74,6 @@ public class TestPostgresRepository {
         scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_Regex_test_data.sql"));
 
         final List<String> columns = Arrays.asList("id", "first_name", "last_name", "account_created", "username", "email", "password");
-
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("Dorian");
@@ -366,7 +365,7 @@ public class TestPostgresRepository {
 
         final String tableName = "account";
         final BigDecimal number = BigDecimal.valueOf(98278675);
-        final Property property = PropertyFactory.createProperty(GREATERNUMERIC, number);
+        final Property property = PropertyFactory.createProperty(GREATER_NUMERIC, number);
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
@@ -379,7 +378,7 @@ public class TestPostgresRepository {
 
         final String tableName = "account";
         final BigDecimal number = BigDecimal.valueOf(97278674);
-        final Property property = PropertyFactory.createProperty(GREATERNUMERIC, number);
+        final Property property = PropertyFactory.createProperty(GREATER_NUMERIC, number);
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
@@ -408,7 +407,7 @@ public class TestPostgresRepository {
 
         final String tableName = "account";
         final BigDecimal number = BigDecimal.valueOf(94935073);
-        final Property property = PropertyFactory.createProperty(GREATERNUMERIC, number);
+        final Property property = PropertyFactory.createProperty(GREATER_NUMERIC, number);
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
@@ -465,7 +464,7 @@ public class TestPostgresRepository {
 
         final String tableName = "account";
         final LocalDate date = LocalDate.parse("2024-12-12");
-        final Property property = PropertyFactory.createProperty(GREATERDATE, date);
+        final Property property = PropertyFactory.createProperty(GREATER_DATE, date);
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
@@ -478,7 +477,7 @@ public class TestPostgresRepository {
 
         final String tableName = "account";
         final LocalDate date = LocalDate.parse("2024-05-03");
-        final Property property = PropertyFactory.createProperty(GREATERDATE, date);
+        final Property property = PropertyFactory.createProperty(GREATER_DATE, date);
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
@@ -502,7 +501,7 @@ public class TestPostgresRepository {
 
         final String tableName = "account";
         final LocalDate date = LocalDate.parse("2024-04-01");
-        final Property property = PropertyFactory.createProperty(GREATERDATE, date);
+        final Property property = PropertyFactory.createProperty(GREATER_DATE, date);
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
@@ -545,7 +544,7 @@ public class TestPostgresRepository {
         final String tableName = "account";
         final BigDecimal from = BigDecimal.valueOf(98278675);
         final BigDecimal to = BigDecimal.valueOf(100000000);
-        final Property property = PropertyFactory.createProperty(RANGENUMERIC, new BigDecimal[]{from, to});
+        final Property property = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{from, to});
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
@@ -559,7 +558,7 @@ public class TestPostgresRepository {
         final String tableName = "account";
         final BigDecimal from = BigDecimal.valueOf(80);
         final BigDecimal to = BigDecimal.valueOf(100);
-        final Property property = PropertyFactory.createProperty(RANGENUMERIC, new BigDecimal[]{from, to});
+        final Property property = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{from, to});
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
@@ -589,7 +588,7 @@ public class TestPostgresRepository {
         final String tableName = "account";
         final BigDecimal from = BigDecimal.valueOf(90000000);
         final BigDecimal to = BigDecimal.valueOf(100000000);
-        final Property property = PropertyFactory.createProperty(RANGENUMERIC, new BigDecimal[]{from, to});
+        final Property property = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{from, to});
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
@@ -647,7 +646,7 @@ public class TestPostgresRepository {
         final String tableName = "account";
         final BigDecimal from = BigDecimal.valueOf(80);
         final BigDecimal to = BigDecimal.valueOf(100);
-        final Property property1 = PropertyFactory.createProperty(RANGENUMERIC, new BigDecimal[]{from, to});
+        final Property property1 = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{from, to});
         final Property property2 = PropertyFactory.createProperty(EQUAL, BigDecimal.valueOf(88));
         final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property1, columns, property2, columns));
         final Table expected = new Table(tableName, List.of(

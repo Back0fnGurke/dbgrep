@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.RANGENUMERIC;
+import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.RANGE_NUMERIC;
 
 /**
  * The MySQLRepository class is an implementation of the RepositoryPort interface for MySQL databases.
@@ -67,7 +67,7 @@ class MySQLRepository implements RepositoryPort {
     }
 
     @Override
-    public Table findTableRowsWithProperties(final String tableName, final Map<Property, List<String>> propertyColumns) throws SQLException {
+    public Table findTableRowsWithProperties(final String tableName, final Map<Property<?>, List<String>> propertyColumns) throws SQLException {
         log.debug("tableName: {}, propertyColumns: {}", tableName, propertyColumns);
 
         final String query = queryBuilder.buildQueryString(tableName, propertyColumns);
@@ -75,10 +75,10 @@ class MySQLRepository implements RepositoryPort {
 
         try (final PreparedStatement statement = connection.prepareStatement(query)) {
             int index = 1;
-            for (Map.Entry<Property, List<String>> entry : propertyColumns.entrySet()) {
-                Property property = entry.getKey();
+            for (Map.Entry<Property<?>, List<String>> entry : propertyColumns.entrySet()) {
+                Property<?> property = entry.getKey();
                 for (int i = 0; i < entry.getValue().size(); i++) {
-                    if (property.getType().equals(RANGENUMERIC)) {
+                    if (property.getType().equals(RANGE_NUMERIC)) {
                         final BigDecimal[] range = (BigDecimal[]) property.getValue();
                         statement.setObject(index++, range[0]);
                         statement.setObject(index++, range[1]);

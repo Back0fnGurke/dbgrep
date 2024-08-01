@@ -2,7 +2,12 @@ package de.hdm_stuttgart.mi.dad.core.property;
 
 import java.math.BigDecimal;
 
-record Equal(BigDecimal value) implements Property<BigDecimal> {
+final class Equal extends Property<BigDecimal> {
+    private final BigDecimal value;
+
+    Equal(BigDecimal value) {
+        this.value = value;
+    }
 
     @Override
     public PropertyType getType() {

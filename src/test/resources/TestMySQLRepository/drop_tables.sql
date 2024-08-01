@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS account, book, user_data;
+DROP TABLE IF EXISTS account, book, user_data, customer;

@@ -48,7 +48,7 @@ public final class QueryBuilder {
      * @param propertyColumns a map of properties and their corresponding columns.
      * @return the SQL query string.
      */
-    public String buildQueryString(final String tableName, final Map<Property, List<String>> propertyColumns) {
+    public String buildQueryString(final String tableName, final Map<Property<?>, List<String>> propertyColumns) {
         log.debug("tableName: {}, propertyColumns: {}", tableName, propertyColumns);
 
         final StringBuilder query = new StringBuilder();
@@ -64,12 +64,12 @@ public final class QueryBuilder {
      * @param propertyColumns a map of properties and their corresponding columns.
      * @return the WHERE clause of the SQL query.
      */
-    private String getWhereClause(final Map<Property, List<String>> propertyColumns) {
+    private String getWhereClause(final Map<Property<?>, List<String>> propertyColumns) {
         final StringBuilder clause = new StringBuilder();
         final int propertyColumnsCount = propertyColumns.size();
 
         int index = 0;
-        for (Map.Entry<Property, List<String>> entry : propertyColumns.entrySet()) {
+        for (Map.Entry<Property<?>, List<String>> entry : propertyColumns.entrySet()) {
             clause.append(getStatementForColumn(entry.getValue(), entry.getKey()));
             if (index + 1 < propertyColumnsCount) {
                 clause.append(" AND ");
@@ -89,7 +89,7 @@ public final class QueryBuilder {
      * @param property    the property to use when generating the SQL statement.
      * @return the SQL statement for the column.
      */
-    private String getStatementForColumn(final List<String> columnNames, final Property property) {
+    private String getStatementForColumn(final List<String> columnNames, final Property<?> property) {
         final StringBuilder statement = new StringBuilder();
         statement.append("(");
 

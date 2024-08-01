@@ -59,7 +59,7 @@ public class Service implements ServicePort {
     }
 
     @Override
-    public List<Table> searchThroughColumns(final Map<String, List<String>> columnNamesOfTables, final List<Property> properties) throws ServiceException {
+    public List<Table> searchThroughColumns(final Map<String, List<String>> columnNamesOfTables, final List<Property<?>> properties) throws ServiceException {
         try {
             log.debug("columnNamesOfTables: {}, properties: {}", columnNamesOfTables, properties);
 
@@ -68,7 +68,7 @@ public class Service implements ServicePort {
                 final List<String> columnNames = entry.getValue();
                 log.debug("tableName: {}, columnNames: {}", tableName, columnNames);
 
-                final Map<Property, List<String>> propertyColumns = properties.stream().collect(Collectors.toMap(
+                final Map<Property<?>, List<String>> propertyColumns = properties.stream().collect(Collectors.toMap(
                         property -> property,
                         property -> {
                             try {
@@ -98,7 +98,7 @@ public class Service implements ServicePort {
     }
 
     @Override
-    public List<Table> searchThroughTables(final List<String> tableNames, final List<Property> properties) throws ServiceException {
+    public List<Table> searchThroughTables(final List<String> tableNames, final List<Property<?>> properties) throws ServiceException {
         try {
             log.debug("tableNames: {}, properties: {}", tableNames, properties);
 
@@ -106,7 +106,7 @@ public class Service implements ServicePort {
             for (final String tableName : tableNames) {
                 log.debug("tableName: {}", tableName);
 
-                final Map<Property, List<String>> propertyColumns = properties.stream().collect(Collectors.toMap(
+                final Map<Property<?>, List<String>> propertyColumns = properties.stream().collect(Collectors.toMap(
                         property -> property,
                         property -> {
                             try {
@@ -132,7 +132,7 @@ public class Service implements ServicePort {
     }
 
     @Override
-    public List<Table> searchThroughWholeDatabase(final List<Property> properties) throws ServiceException {
+    public List<Table> searchThroughWholeDatabase(final List<Property<?>> properties) throws ServiceException {
         try {
             log.debug("properties: {}", properties);
 
@@ -195,7 +195,7 @@ public class Service implements ServicePort {
      * @return a list of Strings containing valid column names
      * @throws SQLException if a database error occurs
      */
-    private List<String> getColumnNames(final String tableName, final Property property) throws SQLException {
+    private List<String> getColumnNames(final String tableName, final Property<?> property) throws SQLException {
         try {
             log.debug("tableName: {}, properties: {}", tableName, property);
 

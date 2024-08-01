@@ -34,20 +34,20 @@ public class TestPropertyFactory {
 
     @Test
     void testCreatePropertyGreaterNumeric() {
-        Property property = PropertyFactory.createProperty(PropertyType.GREATERNUMERIC, new BigDecimal("10"));
-        assertTrue(property.getType().equals(PropertyType.GREATERNUMERIC));
+        Property property = PropertyFactory.createProperty(PropertyType.GREATER_NUMERIC, new BigDecimal("10"));
+        assertTrue(property.getType().equals(PropertyType.GREATER_NUMERIC));
     }
 
     @Test
     void testCreatePropertyGreaterDate() {
-        Property property = PropertyFactory.createProperty(PropertyType.GREATERDATE, LocalDate.now());
-        assertTrue(property.getType().equals(PropertyType.GREATERDATE));
+        Property property = PropertyFactory.createProperty(PropertyType.GREATER_DATE, LocalDate.now());
+        assertTrue(property.getType().equals(PropertyType.GREATER_DATE));
     }
 
     @Test
     void testCreatePropertyRangeNumeric() {
-        Property property = PropertyFactory.createProperty(PropertyType.RANGENUMERIC, new BigDecimal[]{new BigDecimal("10"), new BigDecimal("20")});
-        assertTrue(property.getType().equals(PropertyType.RANGENUMERIC));
+        Property property = PropertyFactory.createProperty(PropertyType.RANGE_NUMERIC, new BigDecimal[]{new BigDecimal("10"), new BigDecimal("20")});
+        assertTrue(property.getType().equals(PropertyType.RANGE_NUMERIC));
     }
 
     @Test
@@ -55,9 +55,9 @@ public class TestPropertyFactory {
         assertThrows(IllegalArgumentException.class, () -> PropertyFactory.createProperty(PropertyType.REGEX, "test"));
         assertThrows(IllegalArgumentException.class, () -> PropertyFactory.createProperty(PropertyType.LIKE, "test"));
         assertThrows(IllegalArgumentException.class, () -> PropertyFactory.createProperty(PropertyType.EQUAL, "test"));
-        assertThrows(IllegalArgumentException.class, () -> PropertyFactory.createProperty(PropertyType.GREATERNUMERIC, "test"));
-        assertThrows(IllegalArgumentException.class, () -> PropertyFactory.createProperty(PropertyType.GREATERDATE, "test"));
-        assertThrows(IllegalArgumentException.class, () -> PropertyFactory.createProperty(PropertyType.RANGENUMERIC, "test"));
+        assertThrows(IllegalArgumentException.class, () -> PropertyFactory.createProperty(PropertyType.GREATER_NUMERIC, "test"));
+        assertThrows(IllegalArgumentException.class, () -> PropertyFactory.createProperty(PropertyType.GREATER_DATE, "test"));
+        assertThrows(IllegalArgumentException.class, () -> PropertyFactory.createProperty(PropertyType.RANGE_NUMERIC, "test"));
         assertThrows(IllegalArgumentException.class, () -> PropertyFactory.createProperty(PropertyType.REGEX, "test"));
     }
 }

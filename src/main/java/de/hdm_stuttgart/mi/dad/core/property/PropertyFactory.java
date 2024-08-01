@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  *     <li>{@link Regex}: Requires a {@link Pattern} value.</li>
  *     <li>{@link Like}: Requires a {@link Pattern} value.</li>
  *     <li>{@link Equal}: Requires a {@link BigDecimal} value.</li>
- *     <li>{@link GreaterNumeric}: Requires a {@link BigDecimal} value.</li>
+ *     <li>{@link GreaterNumeric}: Requires a {@link BigDecimal} value.</li>F
  *     <li>{@link GreaterDate}: Requires a {@link LocalDate} value.</li>
  *     <li>{@link RangeNumeric}: Requires a {@link BigDecimal[]} value.</li>
  * </ul>
@@ -38,22 +38,15 @@ public class PropertyFactory {
      * @throws IllegalArgumentException if the value type does not match the expected type for the provided property type
      */
     public static Property createProperty(PropertyType type, Object value) {
-        switch (type) {
-            case REGEX:
-                return createRegexProperty(value);
-            case LIKE:
-                return createLikeProperty(value);
-            case EQUAL:
-                return createEqualProperty(value);
-            case GREATERNUMERIC:
-                return createGreaterNumericProperty(value);
-            case GREATERDATE:
-                return createGreaterDateProperty(value);
-            case RANGENUMERIC:
-                return createRangeNumericProperty(value);
-            default:
-                throw new IllegalArgumentException("Can not use param value with type: " + type);
-        }
+        return switch (type) {
+            case REGEX -> createRegexProperty(value);
+            case LIKE -> createLikeProperty(value);
+            case EQUAL -> createEqualProperty(value);
+            case GREATER_NUMERIC -> createGreaterNumericProperty(value);
+            case GREATER_DATE -> createGreaterDateProperty(value);
+            case RANGE_NUMERIC -> createRangeNumericProperty(value);
+            default -> throw new IllegalArgumentException("Can not use param value with type: " + type);
+        };
     }
 
     /**
@@ -63,7 +56,7 @@ public class PropertyFactory {
      * @return the created property
      * @throws IllegalArgumentException if the value type is not a {@link Pattern}
      */
-    private static Property createRegexProperty(Object value) {
+    private static Property<String> createRegexProperty(Object value) {
         if (value instanceof Pattern pattern) {
             return new Regex(pattern);
         }
@@ -77,7 +70,7 @@ public class PropertyFactory {
      * @return the created property
      * @throws IllegalArgumentException if the value type is not a {@link Pattern}
      */
-    private static Property createLikeProperty(Object value) {
+    private static Property<String> createLikeProperty(Object value) {
         if (value instanceof Pattern pattern) {
             return new Like(pattern);
         }
@@ -91,7 +84,7 @@ public class PropertyFactory {
      * @return the created property
      * @throws IllegalArgumentException if the value type is not a {@link BigDecimal}
      */
-    private static Property createEqualProperty(Object value) {
+    private static Property<BigDecimal> createEqualProperty(Object value) {
         if (value instanceof BigDecimal num) {
             return new Equal(num);
         }
@@ -105,11 +98,11 @@ public class PropertyFactory {
      * @return the created property
      * @throws IllegalArgumentException if the value type is not a {@link BigDecimal}
      */
-    private static Property createGreaterNumericProperty(Object value) {
+    private static Property<BigDecimal> createGreaterNumericProperty(Object value) {
         if (value instanceof BigDecimal num) {
             return new GreaterNumeric(num);
         }
-        throw new IllegalArgumentException("GREATERNUMERIC needs value type BigDecimal. Type was: " + value.getClass().getName());
+        throw new IllegalArgumentException("GREATER_NUMERIC needs value type BigDecimal. Type was: " + value.getClass().getName());
     }
 
     /**
@@ -119,11 +112,11 @@ public class PropertyFactory {
      * @return the created property
      * @throws IllegalArgumentException if the value type is not a {@link LocalDate}
      */
-    private static Property createGreaterDateProperty(Object value) {
+    private static Property<LocalDate> createGreaterDateProperty(Object value) {
         if (value instanceof LocalDate date) {
             return new GreaterDate(date);
         }
-        throw new IllegalArgumentException("GREATERDATE needs value type LocalDate. Type was: " + value.getClass().getName());
+        throw new IllegalArgumentException("GREATER_DATE needs value type LocalDate. Type was: " + value.getClass().getName());
     }
 
     /**
@@ -133,10 +126,10 @@ public class PropertyFactory {
      * @return the created property
      * @throws IllegalArgumentException if the value type is not a {@link BigDecimal[]}
      */
-    private static Property createRangeNumericProperty(Object value) {
+    private static Property<BigDecimal[]> createRangeNumericProperty(Object value) {
         if (value instanceof BigDecimal[] nums) {
             return new RangeNumeric(nums);
         }
-        throw new IllegalArgumentException("RANGENUMERIC needs value type BigDecimal[]. Type was: " + value.getClass().getName());
+        throw new IllegalArgumentException("RANGE_NUMERIC needs value type BigDecimal[]. Type was: " + value.getClass().getName());
     }
 }
