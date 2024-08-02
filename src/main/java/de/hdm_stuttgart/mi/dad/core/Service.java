@@ -20,23 +20,46 @@ import java.util.stream.Collectors;
 import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.getDateTypes;
 import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.getNumericTypes;
 
-//TODO: mutable parameter vor bearbeitung kopieren
-
+/**
+ * The Service class implements the ServicePort interface and provides the main business logic for the application.
+ * <p>
+ * This class is responsible for searching through tables, columns, and the whole database based on provided properties.
+ * It also validates table names and column names.
+ * <p>
+ * The class has a constructor that takes a RepositoryPort object, which is used to interact with the database.
+ * <p>
+ * Example usage:
+ * <p>
+ * RepositoryPort repository = new RepositoryImplementation();
+ * Service service = new Service(repository);
+ * List<Property> properties = List.of(new Property(...));
+ * List<String> tableNames = List.of("table1", "table2");
+ * service.searchThroughTables(tableNames, properties);
+ * <p>
+ * Note: This class throws ServiceException when there is an issue with the service logic.
+ */
 public class Service implements ServicePort {
 
     private static final String ERRSQL = "Failed to find matching pattern in column values of table rows.";
 
     final RepositoryPort repository;
 
+    /**
+     * Logger for this class.
+     */
     final Logger log = LoggerFactory.getLogger(Service.class);
 
+    /**
+     * Constructor for the Service class.
+     *
+     * @param repository the RepositoryPort object used to interact with the database.
+     */
     public Service(final RepositoryPort repository) {
         this.repository = repository;
     }
 
-
     @Override
-    public List<Table> searchThroughColumns(final Map<String, List<String>> columnNamesOfTables, final List<Property> properties) throws ServiceException {
+    public List<Table> searchThroughColumns(final Map<String, List<String>> columnNamesOfTables, final List<Property<?>> properties) throws ServiceException {
         try {
             log.debug("columnNamesOfTables: {}, properties: {}", columnNamesOfTables, properties);
 
@@ -45,7 +68,7 @@ public class Service implements ServicePort {
                 final List<String> columnNames = entry.getValue();
                 log.debug("tableName: {}, columnNames: {}", tableName, columnNames);
 
-                final Map<Property, List<String>> propertyColumns = properties.stream().collect(Collectors.toMap(
+                final Map<Property<?>, List<String>> propertyColumns = properties.stream().collect(Collectors.toMap(
                         property -> property,
                         property -> {
                             try {
@@ -68,14 +91,14 @@ public class Service implements ServicePort {
 
             log.debug("found table results: {}", results);
 
-            return results;
+            return results.stream().filter(table -> !table.rows().isEmpty()).toList();
         } catch (final RepositoryException e) {
             throw new ServiceException(ERRSQL, e);
         }
     }
 
     @Override
-    public List<Table> searchThroughTables(final List<String> tableNames, final List<Property> properties) throws ServiceException {
+    public List<Table> searchThroughTables(final List<String> tableNames, final List<Property<?>> properties) throws ServiceException {
         try {
             log.debug("tableNames: {}, properties: {}", tableNames, properties);
 
@@ -83,7 +106,7 @@ public class Service implements ServicePort {
             for (final String tableName : tableNames) {
                 log.debug("tableName: {}", tableName);
 
-                final Map<Property, List<String>> propertyColumns = properties.stream().collect(Collectors.toMap(
+                final Map<Property<?>, List<String>> propertyColumns = properties.stream().collect(Collectors.toMap(
                         property -> property,
                         property -> {
                             try {
@@ -102,14 +125,14 @@ public class Service implements ServicePort {
                 results.add(table);
             }
 
-            return results;
+            return results.stream().filter(table -> !table.rows().isEmpty()).toList();
         } catch (final SQLException | RepositoryException e) {
             throw new ServiceException(ERRSQL, e);
         }
     }
 
     @Override
-    public List<Table> searchThroughWholeDatabase(final List<Property> properties) throws ServiceException {
+    public List<Table> searchThroughWholeDatabase(final List<Property<?>> properties) throws ServiceException {
         try {
             log.debug("properties: {}", properties);
 
@@ -172,7 +195,7 @@ public class Service implements ServicePort {
      * @return a list of Strings containing valid column names
      * @throws SQLException if a database error occurs
      */
-    private List<String> getColumnNames(final String tableName, final Property property) throws SQLException {
+    private List<String> getColumnNames(final String tableName, final Property<?> property) throws SQLException {
         try {
             log.debug("tableName: {}, properties: {}", tableName, property);
 

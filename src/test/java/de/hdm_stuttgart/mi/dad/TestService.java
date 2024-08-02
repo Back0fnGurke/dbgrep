@@ -65,7 +65,7 @@ class TestService {
         final List<String> columnNames1 = List.of(columnName1, columnName2, columnName3);
         final List<String> columnNames2 = List.of(columnName1, columnName2, columnName3, columnName4);
         final List<String> columnNames3 = List.of(columnName1, columnName2, columnName3, columnName4, columnName5);
-        final Property property = PropertyFactory.getProperty(REGEX, Pattern.compile(""));
+        final Property<?> property = PropertyFactory.createProperty(REGEX, Pattern.compile(""));
 
         when(repository.findTableColumnNamesAll(tableName1)).thenReturn(columnNames1);
         when(repository.findTableColumnNamesAll(tableName2)).thenReturn(columnNames2);
@@ -120,11 +120,11 @@ class TestService {
         final List<String> columnNames1 = List.of(columnName1, columnName2, columnName3);
         final List<String> columnNames2 = List.of(columnName1, columnName2, columnName3, columnName4);
         final List<String> columnNames3 = List.of(columnName1, columnName2, columnName3, columnName4, columnName5);
-        final Property property1 = PropertyFactory.getProperty(REGEX, Pattern.compile(""));
-        final Property property2 = PropertyFactory.getProperty(GREATERDATE, LocalDate.now());
-        final Property property3 = PropertyFactory.getProperty(GREATERNUMERIC, BigDecimal.valueOf(0));
-        final List<Property> properties1 = List.of(property1, property2);
-        final List<Property> properties2 = List.of(property1, property3);
+        final Property<?> property1 = PropertyFactory.createProperty(REGEX, Pattern.compile(""));
+        final Property<?> property2 = PropertyFactory.createProperty(GREATER_DATE, LocalDate.now());
+        final Property<?> property3 = PropertyFactory.createProperty(GREATER_NUMERIC, BigDecimal.valueOf(0));
+        final List<Property<?>> properties1 = List.of(property1, property2);
+        final List<Property<?>> properties2 = List.of(property1, property3);
 
         when(repository.findTableColumnNamesAll(tableName1)).thenReturn(columnNames1);
         when(repository.findTableColumnNamesDate(tableName1)).thenReturn(columnNames1);
@@ -199,12 +199,12 @@ class TestService {
         final List<String> columnNames1 = List.of(columnName1, columnName2, columnName3);
         final List<String> columnNames2 = List.of(columnName1, columnName2, columnName3, columnName4);
         final List<String> columnNames3 = List.of(columnName1, columnName2, columnName3, columnName4, columnName5);
-        final Property property1 = PropertyFactory.getProperty(REGEX, Pattern.compile(""));
-        final Property property2 = PropertyFactory.getProperty(GREATERDATE, LocalDate.now());
-        final Property property3 = PropertyFactory.getProperty(GREATERNUMERIC, BigDecimal.valueOf(0));
-        final List<Property> properties1 = List.of(property1, property2);
-        final List<Property> properties2 = List.of(property2);
-        final List<Property> properties3 = List.of(property3);
+        final Property<?> property1 = PropertyFactory.createProperty(REGEX, Pattern.compile(""));
+        final Property<?> property2 = PropertyFactory.createProperty(GREATER_DATE, LocalDate.now());
+        final Property<?> property3 = PropertyFactory.createProperty(GREATER_NUMERIC, BigDecimal.valueOf(0));
+        final List<Property<?>> properties1 = List.of(property1, property2);
+        final List<Property<?>> properties2 = List.of(property2);
+        final List<Property<?>> properties3 = List.of(property3);
 
         when(repository.findTableColumnNamesAll(tableName1)).thenReturn(columnNames1);
         when(repository.findTableColumnNamesDate(tableName1)).thenReturn(columnNames1);
@@ -245,7 +245,7 @@ class TestService {
         final List<String> columnNames1 = List.of(columnName1, columnName2, columnName3);
         final List<String> columnNames2 = List.of(columnName1, columnName2, columnName3, columnName4);
         final List<String> columnNames3 = List.of(columnName1, columnName2, columnName3, columnName4, columnName5);
-        final Property property = PropertyFactory.getProperty(REGEX, Pattern.compile(""));
+        final Property<?> property = PropertyFactory.createProperty(REGEX, Pattern.compile(""));
 
         when(repository.findTableColumnNamesAll(tableName1)).thenReturn(columnNames1);
         when(repository.findTableColumnNamesAll(tableName2)).thenReturn(columnNames2);
@@ -297,11 +297,11 @@ class TestService {
         final List<String> columnNames1 = List.of(columnName1, columnName2, columnName3);
         final List<String> columnNames2 = List.of(columnName1, columnName2, columnName3, columnName4);
         final List<String> columnNames3 = List.of(columnName1, columnName2, columnName3, columnName4, columnName5);
-        final Property property1 = PropertyFactory.getProperty(REGEX, Pattern.compile(""));
-        final Property property2 = PropertyFactory.getProperty(GREATERDATE, LocalDate.now());
-        final Property property3 = PropertyFactory.getProperty(GREATERNUMERIC, BigDecimal.valueOf(0));
-        final List<Property> properties1 = List.of(property1, property2);
-        final List<Property> properties2 = List.of(property1, property3);
+        final Property<?> property1 = PropertyFactory.createProperty(REGEX, Pattern.compile(""));
+        final Property<?> property2 = PropertyFactory.createProperty(GREATER_DATE, LocalDate.now());
+        final Property<?> property3 = PropertyFactory.createProperty(GREATER_NUMERIC, BigDecimal.valueOf(0));
+        final List<Property<?>> properties1 = List.of(property1, property2);
+        final List<Property<?>> properties2 = List.of(property1, property3);
 
         when(repository.findTableColumnNamesAll(tableName1)).thenReturn(columnNames1);
         when(repository.findTableColumnNamesAll(tableName2)).thenReturn(columnNames2);
@@ -367,12 +367,12 @@ class TestService {
         final String columnName2 = "column2";
         final String columnName3 = "column3";
         final List<String> columnNames1 = List.of(columnName1, columnName2, columnName3);
-        final Property property1 = PropertyFactory.getProperty(REGEX, Pattern.compile(""));
-        final Property property2 = PropertyFactory.getProperty(GREATERDATE, LocalDate.now());
-        final Property property3 = PropertyFactory.getProperty(GREATERNUMERIC, BigDecimal.valueOf(0));
-        final Property property4 = PropertyFactory.getProperty(LIKE, Pattern.compile(""));
-        final List<Property> properties2 = List.of(property1, property3);
-        final List<Property> properties3 = List.of(property1, property2);
+        final Property<?> property1 = PropertyFactory.createProperty(REGEX, Pattern.compile(""));
+        final Property<?> property2 = PropertyFactory.createProperty(GREATER_DATE, LocalDate.now());
+        final Property<?> property3 = PropertyFactory.createProperty(GREATER_NUMERIC, BigDecimal.valueOf(0));
+        final Property<?> property4 = PropertyFactory.createProperty(LIKE, Pattern.compile(""));
+        final List<Property<?>> properties2 = List.of(property1, property3);
+        final List<Property<?>> properties3 = List.of(property1, property2);
 
         when(repository.findTableColumnNamesAll(tableName1)).thenThrow(SQLException.class);
         when(repository.findTableColumnNamesAll(tableName2)).thenReturn(columnNames1);
@@ -411,7 +411,7 @@ class TestService {
         final List<String> columnNames1 = List.of(columnName1, columnName2, columnName3);
         final List<String> columnNames2 = List.of(columnName1, columnName2, columnName3, columnName4);
         final List<String> columnNames3 = List.of(columnName1, columnName2, columnName3, columnName4, columnName5);
-        final Property property = PropertyFactory.getProperty(REGEX, Pattern.compile(""));
+        final Property<?> property = PropertyFactory.createProperty(REGEX, Pattern.compile(""));
 
         when(repository.findTableNames()).thenReturn(List.of(tableName1, tableName2, tableName3));
         when(repository.findTableColumnNamesAll(tableName1)).thenReturn(columnNames1);
@@ -465,11 +465,11 @@ class TestService {
         final List<String> columnNames1 = List.of(columnName1, columnName2, columnName3);
         final List<String> columnNames2 = List.of(columnName1, columnName2, columnName3, columnName4);
         final List<String> columnNames3 = List.of(columnName1, columnName2, columnName3, columnName4, columnName5);
-        final Property property1 = PropertyFactory.getProperty(REGEX, Pattern.compile(""));
-        final Property property2 = PropertyFactory.getProperty(GREATERDATE, LocalDate.now());
-        final Property property3 = PropertyFactory.getProperty(GREATERNUMERIC, BigDecimal.valueOf(0));
-        final List<Property> properties1 = List.of(property1, property2);
-        final List<Property> properties2 = List.of(property1, property3);
+        final Property<?> property1 = PropertyFactory.createProperty(REGEX, Pattern.compile(""));
+        final Property<?> property2 = PropertyFactory.createProperty(GREATER_DATE, LocalDate.now());
+        final Property<?> property3 = PropertyFactory.createProperty(GREATER_NUMERIC, BigDecimal.valueOf(0));
+        final List<Property<?>> properties1 = List.of(property1, property2);
+        final List<Property<?>> properties2 = List.of(property1, property3);
 
         when(repository.findTableNames()).thenReturn(List.of(tableName1, tableName2, tableName3));
         when(repository.findTableColumnNamesAll(tableName1)).thenReturn(columnNames1);
@@ -533,12 +533,12 @@ class TestService {
         final String columnName2 = "column2";
         final String columnName3 = "column3";
         final List<String> columnNames1 = List.of(columnName1, columnName2, columnName3);
-        final Property property1 = PropertyFactory.getProperty(REGEX, Pattern.compile(""));
-        final Property property2 = PropertyFactory.getProperty(GREATERDATE, LocalDate.now());
-        final Property property3 = PropertyFactory.getProperty(GREATERNUMERIC, BigDecimal.valueOf(0));
-        final List<Property> properties1 = List.of(property1);
-        final List<Property> properties2 = List.of(property1, property3);
-        final List<Property> properties3 = List.of(property1, property2);
+        final Property<?> property1 = PropertyFactory.createProperty(REGEX, Pattern.compile(""));
+        final Property<?> property2 = PropertyFactory.createProperty(GREATER_DATE, LocalDate.now());
+        final Property<?> property3 = PropertyFactory.createProperty(GREATER_NUMERIC, BigDecimal.valueOf(0));
+        final List<Property<?>> properties1 = List.of(property1);
+        final List<Property<?>> properties2 = List.of(property1, property3);
+        final List<Property<?>> properties3 = List.of(property1, property2);
 
         when(repository.findTableNames()).thenThrow(SQLException.class);
         assertThrows(ServiceException.class, () -> service.searchThroughWholeDatabase(null));

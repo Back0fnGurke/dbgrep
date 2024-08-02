@@ -17,19 +17,20 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestEntityColumnValueOutput {
 
     @Test
-    public void testRegex(){
+    public void testRegex() {
         ColumnValueOutput column = new ColumnValueOutput(new ColumnValue("Name", "Mia Winter"),
                 List.of(
-                        PropertyFactory.getProperty(REGEX, Pattern.compile("Mia.*?"))
+                        PropertyFactory.createProperty(REGEX, Pattern.compile("Mia.*?"))
                 ));
         ColumnValueOutput column2 = new ColumnValueOutput(new ColumnValue("Name", "Mia Winter"),
                 List.of(
-                        PropertyFactory.getProperty(REGEX, Pattern.compile("Alexa"))
+                        PropertyFactory.createProperty(REGEX, Pattern.compile("Alexa"))
                 ));
 
         assertTrue(column.isMatch());
@@ -37,18 +38,18 @@ public class TestEntityColumnValueOutput {
     }
 
     @Test
-    public void testLike(){
+    public void testLike() {
         ColumnValueOutput column = new ColumnValueOutput(new ColumnValue("Name", "Mia Winter"),
                 List.of(
-                        PropertyFactory.getProperty(LIKE, Pattern.compile("Mia%"))
+                        PropertyFactory.createProperty(LIKE, Pattern.compile("Mia%"))
                 ));
         ColumnValueOutput column2 = new ColumnValueOutput(new ColumnValue("Name", "Mia Winter"),
                 List.of(
-                        PropertyFactory.getProperty(LIKE, Pattern.compile("M_a%"))
+                        PropertyFactory.createProperty(LIKE, Pattern.compile("M_a%"))
                 ));
         ColumnValueOutput column3 = new ColumnValueOutput(new ColumnValue("Name", "Mia Winter"),
                 List.of(
-                        PropertyFactory.getProperty(LIKE, Pattern.compile("Mia"))
+                        PropertyFactory.createProperty(LIKE, Pattern.compile("Mia"))
                 ));
 
         assertTrue(column.isMatch());
@@ -57,14 +58,14 @@ public class TestEntityColumnValueOutput {
     }
 
     @Test
-    public void testEqual(){
+    public void testEqual() {
         ColumnValueOutput column = new ColumnValueOutput(new ColumnValue("Age", "25"),
                 List.of(
-                        PropertyFactory.getProperty(EQUAL, new BigDecimal(25))
+                        PropertyFactory.createProperty(EQUAL, new BigDecimal(25))
                 ));
         ColumnValueOutput column2 = new ColumnValueOutput(new ColumnValue("Age", "25"),
                 List.of(
-                        PropertyFactory.getProperty(EQUAL, new BigDecimal(55))
+                        PropertyFactory.createProperty(EQUAL, new BigDecimal(55))
                 ));
 
         assertTrue(column.isMatch());
@@ -75,15 +76,15 @@ public class TestEntityColumnValueOutput {
     public void testGreaterNumeric(){
         ColumnValueOutput column = new ColumnValueOutput(new ColumnValue("Age", "25"),
                 List.of(
-                        PropertyFactory.getProperty(GREATERNUMERIC, new BigDecimal(25))
+                        PropertyFactory.createProperty(GREATER_NUMERIC, new BigDecimal(25))
                 ));
         ColumnValueOutput column2 = new ColumnValueOutput(new ColumnValue("Age", "25"),
                 List.of(
-                        PropertyFactory.getProperty(GREATERNUMERIC, new BigDecimal(55))
+                        PropertyFactory.createProperty(GREATER_NUMERIC, new BigDecimal(55))
                 ));
         ColumnValueOutput column3 = new ColumnValueOutput(new ColumnValue("Age", "25"),
                 List.of(
-                        PropertyFactory.getProperty(GREATERNUMERIC, new BigDecimal(15))
+                        PropertyFactory.createProperty(GREATER_NUMERIC, new BigDecimal(15))
                 ));
 
         assertFalse(column.isMatch());
@@ -92,26 +93,26 @@ public class TestEntityColumnValueOutput {
     }
 
     @Test
-    public void testGreaterDate(){
+    public void testGreaterDate() {
         ColumnValueOutput column = new ColumnValueOutput(new ColumnValue("Birthday", "1996-05-25"),
                 List.of(
-                        PropertyFactory.getProperty(GREATERDATE, LocalDate.of(1996, 5, 20))
+                        PropertyFactory.createProperty(GREATER_DATE, LocalDate.of(1996, 5, 20))
                 ));
         ColumnValueOutput column2 = new ColumnValueOutput(new ColumnValue("Birthday", "1996-05-25"),
                 List.of(
-                        PropertyFactory.getProperty(GREATERDATE, LocalDate.of(1996, 2, 25))
+                        PropertyFactory.createProperty(GREATER_DATE, LocalDate.of(1996, 2, 25))
                 ));
         ColumnValueOutput column3 = new ColumnValueOutput(new ColumnValue("Birthday", "1996-05-25"),
                 List.of(
-                        PropertyFactory.getProperty(GREATERDATE, LocalDate.of(1896, 5, 25))
+                        PropertyFactory.createProperty(GREATER_DATE, LocalDate.of(1896, 5, 25))
                 ));
         ColumnValueOutput column4 = new ColumnValueOutput(new ColumnValue("Birthday", "1996-05-25"),
                 List.of(
-                        PropertyFactory.getProperty(GREATERDATE, LocalDate.of(1996, 5, 25))
+                        PropertyFactory.createProperty(GREATER_DATE, LocalDate.of(1996, 5, 25))
                 ));
         ColumnValueOutput column5 = new ColumnValueOutput(new ColumnValue("Birthday", "1996-05-25"),
                 List.of(
-                        PropertyFactory.getProperty(GREATERDATE, LocalDate.of(1996, 12, 25))
+                        PropertyFactory.createProperty(GREATER_DATE, LocalDate.of(1996, 12, 25))
                 ));
 
 
@@ -123,25 +124,25 @@ public class TestEntityColumnValueOutput {
     }
 
     @Test
-    public void testRangeNumeric(){
+    public void testRangeNumeric() {
         BigDecimal[] range = new BigDecimal[2];
         range[0] = new BigDecimal(20);
         range[1] = new BigDecimal(30);
         ColumnValueOutput column = new ColumnValueOutput(new ColumnValue("Age", "25"),
                 List.of(
-                        PropertyFactory.getProperty(RANGENUMERIC, range)
+                        PropertyFactory.createProperty(RANGE_NUMERIC, range)
                 ));
         range[0] = new BigDecimal(30);
         range[1] = new BigDecimal(40);
         ColumnValueOutput column2 = new ColumnValueOutput(new ColumnValue("Age", "25"),
                 List.of(
-                        PropertyFactory.getProperty(RANGENUMERIC, range)
+                        PropertyFactory.createProperty(RANGE_NUMERIC, range)
                 ));
         range[0] = new BigDecimal(25);
         range[1] = new BigDecimal(25);
         ColumnValueOutput column3 = new ColumnValueOutput(new ColumnValue("Age", "25"),
                 List.of(
-                        PropertyFactory.getProperty(RANGENUMERIC, range)
+                        PropertyFactory.createProperty(RANGE_NUMERIC, range)
                 ));
 
 

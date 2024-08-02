@@ -1,15 +1,15 @@
 package de.hdm_stuttgart.mi.dad.connectionprofile;
 
-import de.hdm_stuttgart.mi.dad.connectionprofile.exception.IllegalFileExtensionException;
 import de.hdm_stuttgart.mi.dad.connectionprofile.exception.MultipleProfileException;
 import de.hdm_stuttgart.mi.dad.connectionprofile.exception.NoProfileException;
+import de.hdm_stuttgart.mi.dad.incoming.ArgumentType;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Stream;
@@ -18,9 +18,13 @@ import java.util.stream.Stream;
  * Find the connection profile file in the determined directory and create a connection profile
  */
 public class ConnectionProfileHandler {
-    private final String directoryOfProfiles;
+    public final Path directoryOfProfiles;
 
-    public ConnectionProfileHandler(String directory) {
+    public ConnectionProfileHandler(Path directory) throws FileNotFoundException {
+        if (!Files.exists(directory)) {
+            throw new FileNotFoundException("Please create a directory with the name “connection_profiles” at the directory where" +
+                    " the jar file is located. Add at least one connection profile there.");
+        }
         directoryOfProfiles = directory;
     }
 
@@ -51,11 +55,8 @@ public class ConnectionProfileHandler {
      * @param fileName the file name of the connection profile
      * @return a connection profile object of the file
      */
-    public ConnectionProfile getSelectedProfile(String fileName) throws IOException, IllegalFileExtensionException {
-        if (!hasConfigExtension(fileName)) {
-            throw new IllegalFileExtensionException("A profile file has to end with '.cnf'.");
-        }
-        Path pathOfProfile = getDirectory().resolve(fileName);
+    public ConnectionProfile getSelectedProfile(String fileName) throws IOException {
+        Path pathOfProfile = directoryOfProfiles.resolve(fileName);
         if (Files.exists(pathOfProfile) && !Files.isDirectory(pathOfProfile)) {
             return readProfileFile(pathOfProfile);
         }
@@ -78,18 +79,26 @@ public class ConnectionProfileHandler {
         return profileList.toString();
     }
 
-    private Path getDirectory() {
-        return Paths.get(directoryOfProfiles);
-    }
-
+    /**
+     * Returns a list of paths from the existing profiles.
+     * These are located in the specified directory.
+     *
+     * @return a list of paths
+     */
     private List<Path> getListOfProfilesPath() throws IOException {
-        try (Stream<Path> stream = Files.list(getDirectory())) {
+        try (Stream<Path> stream = Files.list(directoryOfProfiles)) {
             return stream
-                    .filter(file -> !Files.isDirectory(file) && hasConfigExtension(file.getFileName().toString()))
+                    .filter(file -> !Files.isDirectory(file))
                     .toList();
         }
     }
 
+    /**
+     * Read the connection profile file and filter for certain properties and pass this value to the ConnectionProfile
+     *
+     * @param pathOfProfile of readed connection profile file
+     * @return ConnectionProfile from the read connection profile file
+     */
     private ConnectionProfile readProfileFile(Path pathOfProfile) throws IOException {
         Properties configProperties = new Properties();
         try (InputStream stream = Files.newInputStream(pathOfProfile)) {
@@ -106,7 +115,20 @@ public class ConnectionProfileHandler {
         return new ConnectionProfile(driver, host, port, user, password, database);
     }
 
-    private boolean hasConfigExtension(String file) {
-        return file.endsWith(".cnf");
+    /**
+     * Checks whether the --profile command is present
+     * and creates a ConnectionProfile from the specified connection profile file.
+     * If no --profile command is available, the default profile is searched for.
+     *
+     * @return ConnectionProfile from given file name or default profile
+     */
+    public ConnectionProfile getConnectionProfile(String[] args) throws IOException, NoProfileException, MultipleProfileException {
+        if (Arrays.asList(args).contains(ArgumentType.PROFILE.toString())) {
+            int indexProfileArgument = Arrays.asList(args).indexOf(ArgumentType.PROFILE.toString()) + 1;
+            String profileArgument = args[indexProfileArgument];
+            return getSelectedProfile(profileArgument);
+        } else {
+            return getDefaultProfile();
+        }
     }
 }

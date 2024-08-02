@@ -16,7 +16,7 @@ public class ColumnValueOutput {
     String value;
     boolean isMatch;
 
-    public ColumnValueOutput(ColumnValue column, List<Property> properties){
+    public ColumnValueOutput(ColumnValue column, List<Property<?>> properties){
         this.name = column.name();
         this.value = column.value();
         this.isMatch = isMatch(value, properties);
@@ -28,8 +28,8 @@ public class ColumnValueOutput {
      * @param properties a list with values of type Property
      * @return
      */
-    private boolean isMatch(String value, List<Property> properties){
-        for (Property property : properties) {
+    private boolean isMatch(String value, List<Property<?>> properties){
+        for (Property<?> property : properties) {
             switch (property.getType()) {
                 case REGEX:
                     return Pattern.compile(property.getValue().toString()).matcher(value).matches();
@@ -40,11 +40,11 @@ public class ColumnValueOutput {
                     return p.matcher(value).matches();
                 case EQUAL:
                     return property.getValue().equals(new BigDecimal(value));
-                case GREATERNUMERIC:
+                case GREATER_NUMERIC:
                     return ((BigDecimal) property.getValue()).compareTo(new BigDecimal(value)) < 0;
-                case GREATERDATE:
+                case GREATER_DATE:
                     return ((LocalDate) property.getValue()).isBefore(LocalDate.parse(value));
-                case RANGENUMERIC:
+                case RANGE_NUMERIC:
                     final BigDecimal[] range = (BigDecimal[]) property.getValue();
                     return
                             range[0].compareTo(new BigDecimal(value)) <= 0

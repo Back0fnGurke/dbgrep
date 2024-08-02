@@ -16,29 +16,29 @@ public interface ServicePort {
      *
      * @param columnNamesOfTables a Map consisting of table names as keys and a List of the column names of the respective table as value
      * @param properties          the properties to search for in the column values
-     * @return a List of Tables. List of Rows in Table is Empty if none where found.
+     * @return a List of Tables with non-empty rows.
      * @throws ServiceException if Repository throws SQLException
      */
-    List<Table> searchThroughColumns(final Map<String, List<String>> columnNamesOfTables, final List<Property> properties) throws ServiceException;
+    List<Table> searchThroughColumns(final Map<String, List<String>> columnNamesOfTables, final List<Property<?>> properties) throws ServiceException;
 
     /**
      * Find rows in provided tables that have column values which match the provided search pattern. Use validateTableNames to prevent sql injection and cast errors in database.
      *
      * @param tableNames the table names to search in
      * @param properties the properties to search for in the column values
-     * @return a List of Tables. List of Rows in Table is Empty if none where found.
+     * @return a List of Tables with non-empty rows.
      * @throws ServiceException if Repository throws SQLException
      */
-    List<Table> searchThroughTables(final List<String> tableNames, final List<Property> properties) throws ServiceException;
+    List<Table> searchThroughTables(final List<String> tableNames, final List<Property<?>> properties) throws ServiceException;
 
     /**
      * Find rows in non system tables of database whose columns have values that match the provided search pattern.
      *
      * @param properties the properties to search for in the column value
-     * @return a List of Tables. List of Rows in Table is Empty if none where found.
+     * @return a List of Tables with non-empty rows.
      * @throws ServiceException if Repository throws SQLException
      */
-    List<Table> searchThroughWholeDatabase(final List<Property> properties) throws ServiceException;
+    List<Table> searchThroughWholeDatabase(final List<Property<?>> properties) throws ServiceException;
 
     /**
      * Checks whether the provided table names exist in the database or not.

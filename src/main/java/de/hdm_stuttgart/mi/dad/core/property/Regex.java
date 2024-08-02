@@ -2,9 +2,12 @@ package de.hdm_stuttgart.mi.dad.core.property;
 
 import java.util.regex.Pattern;
 
-//TODO: doku
+final class Regex extends Property<String> {
+    private final Pattern value;
 
-record Regex(Pattern value) implements Property<String> {
+    Regex(Pattern value) {
+        this.value = value;
+    }
 
     @Override
     public PropertyType getType() {

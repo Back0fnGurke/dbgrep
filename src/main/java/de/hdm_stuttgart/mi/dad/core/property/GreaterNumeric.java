@@ -2,13 +2,16 @@ package de.hdm_stuttgart.mi.dad.core.property;
 
 import java.math.BigDecimal;
 
-//TODO: doku
+final class GreaterNumeric extends Property<BigDecimal> {
+    private final BigDecimal value;
 
-record GreaterNumeric(BigDecimal value) implements Property<BigDecimal> {
+    GreaterNumeric(BigDecimal value) {
+        this.value = value;
+    }
 
     @Override
     public PropertyType getType() {
-        return PropertyType.GREATERNUMERIC;
+        return PropertyType.GREATER_NUMERIC;
     }
 
     @Override

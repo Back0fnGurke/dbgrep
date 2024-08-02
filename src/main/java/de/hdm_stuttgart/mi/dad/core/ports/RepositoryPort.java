@@ -19,7 +19,7 @@ public interface RepositoryPort {
      * @return a Table containing all rows with matching column values. List of Rows is Empty if none where found.
      * @throws SQLException if a database access error occurs
      */
-    Table findTableRowsWithProperties(final String tableName, final Map<Property, List<String>> propertyColumns) throws SQLException;
+    Table findTableRowsWithProperties(final String tableName, final Map<Property<?>, List<String>> propertyColumns) throws SQLException;
 
     /**
      * Find non system table names of tables existing in database.
