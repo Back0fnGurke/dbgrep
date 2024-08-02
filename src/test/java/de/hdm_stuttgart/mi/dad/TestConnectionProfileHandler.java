@@ -64,10 +64,10 @@ public class TestConnectionProfileHandler {
         ConnectionProfileHandler handler = assertDoesNotThrow(() -> new ConnectionProfileHandler(Paths.get("src/test/resources/TestConnectionProfileHandler/multiple_profile")));
         assertDoesNotThrow(() -> handler.getSelectedProfile("test2.txt"));
 
-        ConnectionProfile profile1 = assertDoesNotThrow(() -> handler.getSelectedProfile("test1.cnf"));
+        ConnectionProfile profile1 = assertDoesNotThrow(() -> handler.getSelectedProfile("test1.cfg"));
         assertEquals(profile1.getUser(), "user1");
 
-        ConnectionProfile profile2 = assertDoesNotThrow(() -> handler.getSelectedProfile("test3.cnf"));
+        ConnectionProfile profile2 = assertDoesNotThrow(() -> handler.getSelectedProfile("test3.cfg"));
         assertEquals(profile2.getUser(), "user3");
         assertEquals(profile2.getHost(), "myserver.companynet.com");
         assertEquals(profile2.getPort(), "5432");
@@ -80,8 +80,8 @@ public class TestConnectionProfileHandler {
     void testGetStringOfProfileList() {
         ConnectionProfileHandler handler = assertDoesNotThrow(() -> new ConnectionProfileHandler(Paths.get("src/test/resources/TestConnectionProfileHandler/multiple_profile")));
         String string = assertDoesNotThrow(handler::getStringOfProfileList);
-        assertTrue(string.contains("test1.cnf"));
-        assertTrue(string.contains("test3.cnf"));
+        assertTrue(string.contains("test1.cfg"));
+        assertTrue(string.contains("test3.cfg"));
         assertTrue(string.contains("test2.txt"));
 
         ConnectionProfileHandler handlerNoProfile = assertDoesNotThrow(() -> new ConnectionProfileHandler(Paths.get("src/test/resources/TestConnectionProfileHandler/no_profile")));
