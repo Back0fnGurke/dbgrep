@@ -7,6 +7,7 @@ import de.hdm_stuttgart.mi.dad.core.property.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.*;
 import java.util.*;
 
 /**
@@ -29,8 +30,13 @@ public class InputHandler {
      *
      * @param args whole user input
      */
-    public void handleInput(final String[] args) throws ServiceException {
+    public void handleInput(final String[] args) throws ServiceException, IOException {
         log.debug("start handle input");
+
+        if (hasArgument(args, ArgumentType.HELP)){
+            printManual();
+            return;
+        }
 
         validateArguments(args);
 
@@ -39,7 +45,7 @@ public class InputHandler {
         log.debug("property liste erstellt:{}", propertyList);
 
 
-        if (hasNotArgument(args, ArgumentType.COLUMN) && hasNotArgument(args, ArgumentType.TABLE)) {
+        if (!hasArgument(args, ArgumentType.COLUMN) && !hasArgument(args, ArgumentType.TABLE)) {
             log.debug("all databases are searched through");
             resultTables.addAll(service.searchThroughWholeDatabase(propertyList));
         } else {
@@ -163,13 +169,36 @@ public class InputHandler {
     }
 
     /**
+     * Reads and prints the contents of the "manual.txt" file located in the classpath.
+     *
+     * @throws IOException if an I/O error occurs while reading the file.
+     * @throws FileNotFoundException if the "manual.txt" file cannot be found in the classpath.
+     */
+    public void printManual() throws IOException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream("manual.txt");
+        if (inputStream == null){
+            throw new FileNotFoundException();
+        }
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+            System.out.println();
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+            System.out.println();
+        }
+    }
+
+    /**
      * Check if in the user input is no argument of a specific argument type.
      *
      * @param args     whole user input
      * @param argument argument type which arguments are searched for
      * @return true if there is no argument od argument type
      */
-    private boolean hasNotArgument(final String[] args, ArgumentType argument) {
-        return !Arrays.asList(args).contains(argument.toString());
+    private boolean hasArgument(final String[] args, ArgumentType argument) {
+        return Arrays.asList(args).contains(argument.toString());
     }
 }
