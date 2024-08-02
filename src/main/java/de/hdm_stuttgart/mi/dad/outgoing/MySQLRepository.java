@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,6 +65,8 @@ class MySQLRepository implements RepositoryPort {
     public MySQLRepository(final Connection connection, final Map<PropertyType, String> propertyExpressions) {
         this.connection = connection;
         this.queryBuilder = new QueryBuilder(propertyExpressions);
+
+        log.debug("MySQLRepository initialized");
     }
 
     @Override

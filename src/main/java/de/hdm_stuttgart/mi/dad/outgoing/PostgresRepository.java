@@ -64,6 +64,7 @@ class PostgresRepository implements RepositoryPort {
     public PostgresRepository(final Connection connection, final Map<PropertyType, String> propertyExpressions) {
         this.connection = connection;
         this.queryBuilder = new QueryBuilder(propertyExpressions);
+        log.debug("PostgresRepository initialized");
     }
 
     @Override
