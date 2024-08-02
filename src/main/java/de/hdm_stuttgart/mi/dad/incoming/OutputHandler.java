@@ -18,11 +18,6 @@ import java.util.Scanner;
 
 public class OutputHandler {
 
-    Table table;
-    List<Property<?>> properties;
-    int[] longest;
-    boolean programEnd = false;
-
     private static final Logger log = LoggerFactory.getLogger(OutputHandler.class);
 
     /**
@@ -35,16 +30,47 @@ public class OutputHandler {
      * @param properties a list with values of type Property
      */
     public void printTable(final Table table, final List<Property<?>> properties){
-        this.table = table;
-        this.properties = properties;
-        this.programEnd = false;
 
         log.debug("Output Table: {}, Properties: {}", table, properties);
 
         int numberOfColumns = table.rows().getFirst().columns().size();
+        final int[] longest = findLongestStringsOfColumns(table, numberOfColumns);
 
-        //find largest String for each column
-        longest = new int[numberOfColumns];
+        final String divider = createDivider(longest, numberOfColumns);
+        System.out.print(divider);
+
+        printHeader(table, longest, numberOfColumns);
+        System.out.println(divider);
+
+        printRange(table, properties, longest, 0, 9);
+        handleUserInput(table, properties, longest);
+
+    }
+
+    /**
+     * Creates a divider string based on the longest string lengths of each column.
+     *
+     * @param longest         an array of the longest string lengths for each column
+     * @param numberOfColumns the number of columns in the table
+     * @return a divider string
+     */
+    private String createDivider(final int[] longest, final int numberOfColumns){
+        String divider = "";
+        for (int i = 0; i < numberOfColumns; i++) {
+            divider += "-".repeat(longest[i] + numberOfColumns);
+        }
+        return divider;
+    }
+
+    /**
+     * Finds the longest string in each column of a table.
+     *
+     * @param table           the table to analyze
+     * @param numberOfColumns the number of columns in the table
+     * @return an array of the longest string lengths for each column
+     */
+    private int[] findLongestStringsOfColumns(final Table table, int numberOfColumns){
+        final int[] longest = new int[numberOfColumns];
 
         for (int row = 0; row < table.rows().size(); row++) {
             for (int column = 0; column < numberOfColumns; column++) {
@@ -60,62 +86,37 @@ public class OutputHandler {
                 longest[column] = length;
             }
         }
+        return longest;
+    }
 
-        //create divider String depending on longest entries
-        String divider = "";
-        for (int i = 0; i < numberOfColumns; i++) {
-            divider += "-".repeat(longest[i] + numberOfColumns);
-        }
-        System.out.print(divider);
-
-        //Print first line with column names
+    /**
+     * Prints the header of a table.
+     *
+     * @param table           the table to print the header for
+     * @param longest         an array of the longest string lengths for each column
+     * @param numberOfColumns the number of columns in the table
+     */
+    private void printHeader(final Table table, int[] longest, int numberOfColumns){
         System.out.println();
         for (int column = 0; column < table.rows().getFirst().columns().size(); column++) {
             System.out.printf("%-"+longest[column]+"s | ", table.rows().getFirst().columns().get(column).name());
         }
         System.out.println();
-        System.out.println(divider);
-
-        printRange(0, 9);
-        int index = 10;
-        if(table.rows().size()> 10) {
-            System.out.println("Type m for more results. Type q to quit program.");
-
-            Scanner in = new Scanner(System.in);
-            String s;
-
-            while (!programEnd) {
-                s = in.nextLine();
-                if(s.equals("m")){
-                    printRange(index, index+9);
-                    index += 10;
-                    if(index >= table.rows().size()-1){
-                        programEnd = true;
-                    }else{
-                        System.out.println("Type m for more results. Type q to quit program.");
-                    }
-                }
-                if(s.equals("q")){
-                    programEnd = true;
-                }
-            }
-        }
-
     }
 
     /**
-     * prints only a given range of rows from the Output Table
+     * Prints a range of rows from a table.
      *
-     * @param start
-     * @param end
+     * @param table      the table to print
+     * @param properties the properties to highlight in the table
+     * @param longest    an array of the longest string lengths for each column
+     * @param start      the starting row index
+     * @param end        the ending row index
      */
-    private void printRange(final int start,final int end){
+    private void printRange(final Table table, final List<Property<?>> properties, int[] longest, final int start,final int end){
         int numberOfColumns = table.rows().getFirst().columns().size();
 
-        String divider = "";
-        for (int i = 0; i < numberOfColumns; i++) {
-            divider += "-".repeat(longest[i] + numberOfColumns);
-        }
+        final String divider = createDivider(longest, numberOfColumns);
         System.out.println(divider);
 
         ColumnValue columnValue;
@@ -131,6 +132,43 @@ public class OutputHandler {
             }
             System.out.println();
             System.out.println(divider);
+        }
+    }
+
+    /**
+     * Handles user input for displaying more rows of a table or quitting the program.
+     *
+     * @param table           the table to print
+     * @param properties      the properties to highlight in the table
+     * @param longest         an array of the longest string lengths for each column
+     */
+    private void handleUserInput(final Table table, final List<Property<?>> properties, final int[] longest){
+        int index = 10;
+        final int tableSize = table.rows().size();
+        if(tableSize > 10) {
+            System.out.println("Type m for more results. Type q to quit program.");
+
+            final Scanner in = new Scanner(System.in);
+            String input;
+
+            boolean running = true;
+            while (running) {
+
+                input = in.nextLine();
+                switch (input) {
+                    case "m" -> {
+                        printRange(table, properties, longest, index, index + 9);
+                        index += 10;
+                        if(index >= tableSize){
+                            running = false;
+                        }else{
+                            System.out.println("Type m for more results. Type q to quit program.");
+                        }
+                    }
+                    case "q" -> running = false;
+                    default -> System.out.println("Invalid input. Type m for more results. Type q to quit program.");
+                }
+            }
         }
     }
 
