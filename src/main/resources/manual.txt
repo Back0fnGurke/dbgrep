@@ -9,8 +9,8 @@ Add a connection profile of your database there.
 
 SUPPORTED DATABASES
 
-- Postgres
-- MySql
+- PostgreSQL
+- MySQL
 
 USAGE
 dbgrep [OPTIONS] PARAMETERS
