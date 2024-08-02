@@ -4,11 +4,15 @@ The complete row where the match was found is displayed and the matching element
 Before using the command you have to start your database and create a folder 'connection_profiles' in the directory where the jar file is located.
 Add a connection profile of your database there.
 
-******Add connection profile syntax here*******
-
+Example connection profile, spaces are ignored:
+host=localhost
+port=5432
+database=test
+user=test
+password=test
+driver=postgresql
 
 SUPPORTED DATABASES
-
 - PostgreSQL
 - MySQL
 
@@ -27,6 +31,7 @@ You can use several of the below options or one several times, if you input none
 
 PARAMETERS FOR MATCHING
 If you use more than one parameter, the command finds only matches that fit all parameters.
+Numerical input values should be represented in American numerical notation, e.g. "1.56".
 
 --equal     String      Match entries with equal numeric values.
 --like      String      Match entries against the database's like operation and its syntax.
