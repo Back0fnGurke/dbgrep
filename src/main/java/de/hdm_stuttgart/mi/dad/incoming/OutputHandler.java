@@ -98,7 +98,7 @@ public class OutputHandler {
      */
     private void printHeader(final Table table, int[] longest, int numberOfColumns){
         System.out.println();
-        for (int column = 0; column < table.rows().getFirst().columns().size(); column++) {
+        for (int column = 0; column < numberOfColumns; column++) {
             System.out.printf("%-"+ (longest[column] + 1) +"s| ", table.rows().getFirst().columns().get(column).name());
         }
         System.out.println();

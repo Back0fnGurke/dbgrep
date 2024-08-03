@@ -1,5 +1,6 @@
 package de.hdm_stuttgart.mi.dad.connectionprofile;
 
+import de.hdm_stuttgart.mi.dad.connectionprofile.exception.IllegalConnectionProfileException;
 import de.hdm_stuttgart.mi.dad.connectionprofile.exception.MultipleProfileException;
 import de.hdm_stuttgart.mi.dad.connectionprofile.exception.NoProfileException;
 import de.hdm_stuttgart.mi.dad.incoming.ArgumentType;
@@ -9,9 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
@@ -34,7 +33,7 @@ public class ConnectionProfileHandler {
      *
      * @return a connection profile of the profile file
      */
-    public ConnectionProfile getDefaultProfile() throws NoProfileException, MultipleProfileException, IOException {
+    public ConnectionProfile getDefaultProfile() throws NoProfileException, MultipleProfileException, IOException, IllegalConnectionProfileException {
         List<Path> profiles = getListOfProfilesPath();
 
         long fileCount = profiles.size();
@@ -55,7 +54,7 @@ public class ConnectionProfileHandler {
      * @param fileName the file name of the connection profile
      * @return a connection profile object of the file
      */
-    public ConnectionProfile getSelectedProfile(String fileName) throws IOException {
+    public ConnectionProfile getSelectedProfile(String fileName) throws IOException, IllegalConnectionProfileException {
         Path pathOfProfile = directoryOfProfiles.resolve(fileName);
         if (Files.exists(pathOfProfile) && !Files.isDirectory(pathOfProfile)) {
             return readProfileFile(pathOfProfile);
@@ -96,23 +95,31 @@ public class ConnectionProfileHandler {
     /**
      * Read the connection profile file and filter for certain properties and pass this value to the ConnectionProfile
      *
-     * @param pathOfProfile of readed connection profile file
+     * @param pathOfProfile of read connection profile file
      * @return ConnectionProfile from the read connection profile file
      */
-    private ConnectionProfile readProfileFile(Path pathOfProfile) throws IOException {
+    private ConnectionProfile readProfileFile(Path pathOfProfile) throws IOException, IllegalConnectionProfileException {
         Properties configProperties = new Properties();
         try (InputStream stream = Files.newInputStream(pathOfProfile)) {
             configProperties.load(stream);
         }
 
-        String driver = configProperties.getProperty("driver");
-        String host = configProperties.getProperty("host");
-        String port = configProperties.getProperty("port");
-        String user = configProperties.getProperty("user");
-        String password = configProperties.getProperty("password");
-        String database = configProperties.getProperty("database");
+        Map<String, String> profileProperties = new HashMap<>();
+        profileProperties.put("driver", configProperties.getProperty("driver"));
+        profileProperties.put("host", configProperties.getProperty("host"));
+        profileProperties.put("port", configProperties.getProperty("port"));
+        profileProperties.put("user", configProperties.getProperty("user"));
+        profileProperties.put("password", configProperties.getProperty("password"));
+        profileProperties.put("database", configProperties.getProperty("database"));
 
-        return new ConnectionProfile(driver, host, port, user, password, database);
+        for (Map.Entry<String, String> property : profileProperties.entrySet()) {
+            if (property.getValue() == null) {
+                throw new IllegalConnectionProfileException("\"" + property.getKey() + "\" is missing in the connection profile file or was not specified correctly.");
+            }
+        }
+
+        return new ConnectionProfile(profileProperties.get("driver"), profileProperties.get("host"), profileProperties.get("port"),
+                profileProperties.get("user"), profileProperties.get("password"), profileProperties.get("database"));
     }
 
     /**
@@ -122,7 +129,7 @@ public class ConnectionProfileHandler {
      *
      * @return ConnectionProfile from given file name or default profile
      */
-    public ConnectionProfile getConnectionProfile(String[] args) throws IOException, NoProfileException, MultipleProfileException {
+    public ConnectionProfile getConnectionProfile(String[] args) throws IOException, NoProfileException, MultipleProfileException, IllegalConnectionProfileException {
         if (Arrays.asList(args).contains(ArgumentType.PROFILE.toString())) {
             int indexProfileArgument = Arrays.asList(args).indexOf(ArgumentType.PROFILE.toString()) + 1;
             String profileArgument = args[indexProfileArgument];

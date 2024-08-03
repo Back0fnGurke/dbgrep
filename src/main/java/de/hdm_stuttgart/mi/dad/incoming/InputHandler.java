@@ -42,7 +42,7 @@ public class InputHandler {
 
         List<Table> resultTables = new ArrayList<>();
         List<Property<?>> propertyList = createPropertyList(args);
-        log.debug("property liste erstellt:{}", propertyList);
+        log.debug("property list created:{}", propertyList);
 
 
         if (!hasArgument(args, ArgumentType.COLUMN) && !hasArgument(args, ArgumentType.TABLE)) {
