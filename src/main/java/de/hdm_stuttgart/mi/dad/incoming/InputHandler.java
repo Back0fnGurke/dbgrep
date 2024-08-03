@@ -29,6 +29,8 @@ public class InputHandler {
      * The output is then print using the OutputHandler.
      *
      * @param args whole user input
+     * @throws ServiceException from service methods.
+     * @throws IOException  if an I/O error occurs while reading the manual file.
      */
     public void handleInput(final String[] args) throws ServiceException, IOException {
         log.debug("start handle input");
@@ -149,6 +151,7 @@ public class InputHandler {
      *
      * @param columnValues The names of the columns that the user has entered
      * @return map that assigns the columns to each table
+     * @throws IllegalArgumentException if column value is invalid.
      */
     private Map<String, List<String>> createColumnsByTable(List<String> columnValues) {
         Map<String, List<String>> columnsByTable = new HashMap<>();
