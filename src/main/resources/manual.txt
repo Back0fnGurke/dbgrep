@@ -27,7 +27,7 @@ OPTIONS
 You can use several of the below options or one several times, if you input none of them, it will search the whole database.
 
 --column    String    The column to search through. Syntax: ["table name"."column name"], e.g. "account.first_name".
---table     String    The table to search through.
+--table     String    The table or view to search through.
 
 PARAMETERS FOR MATCHING
 If you use more than one parameter, the command finds only matches that fit all parameters.
