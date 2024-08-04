@@ -1,5 +1,8 @@
 package de.hdm_stuttgart.mi.dad.connectionprofile;
 
+/**
+ * Store connection profile data.
+ */
 public class ConnectionProfile {
     private final String driver;
     private final String host;
