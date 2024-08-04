@@ -1,18 +1,12 @@
-package de.hdm_stuttgart.mi.dad;
+package de.hdm_stuttgart.mi.dad.incoming;
 
 import de.hdm_stuttgart.mi.dad.core.entity.ColumnValue;
-import de.hdm_stuttgart.mi.dad.core.entity.ColumnValueOutput;
-import de.hdm_stuttgart.mi.dad.core.property.Property;
-import de.hdm_stuttgart.mi.dad.core.property.PropertyFactory;
-import org.checkerframework.checker.regex.qual.Regex;
-import org.checkerframework.checker.units.qual.C;
+import de.hdm_stuttgart.mi.dad.core.property.properties.PropertyFactory;
+import de.hdm_stuttgart.mi.dad.incoming.output.ColumnValueOutput;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -20,10 +14,10 @@ import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestEntityColumnValueOutput {
+class TestColumnValueOutput {
 
     @Test
-    public void testRegex() {
+    void testRegex() {
         ColumnValueOutput column = new ColumnValueOutput(new ColumnValue("Name", "Mia Winter"),
                 List.of(
                         PropertyFactory.createProperty(REGEX, Pattern.compile("Mia.*?"))
@@ -38,7 +32,7 @@ public class TestEntityColumnValueOutput {
     }
 
     @Test
-    public void testLike() {
+    void testLike() {
         ColumnValueOutput column = new ColumnValueOutput(new ColumnValue("Name", "Mia Winter"),
                 List.of(
                         PropertyFactory.createProperty(LIKE, Pattern.compile("Mia%"))
@@ -58,7 +52,7 @@ public class TestEntityColumnValueOutput {
     }
 
     @Test
-    public void testEqual() {
+    void testEqual() {
         ColumnValueOutput column = new ColumnValueOutput(new ColumnValue("Age", "25"),
                 List.of(
                         PropertyFactory.createProperty(EQUAL, new BigDecimal(25))
@@ -73,7 +67,7 @@ public class TestEntityColumnValueOutput {
     }
 
     @Test
-    public void testGreaterNumeric(){
+    void testGreaterNumeric() {
         ColumnValueOutput column = new ColumnValueOutput(new ColumnValue("Age", "25"),
                 List.of(
                         PropertyFactory.createProperty(GREATER_NUMERIC, new BigDecimal(25))
@@ -93,7 +87,7 @@ public class TestEntityColumnValueOutput {
     }
 
     @Test
-    public void testGreaterDate() {
+    void testGreaterDate() {
         ColumnValueOutput column = new ColumnValueOutput(new ColumnValue("Birthday", "1996-05-25"),
                 List.of(
                         PropertyFactory.createProperty(GREATER_DATE, LocalDate.of(1996, 5, 20))
@@ -124,7 +118,7 @@ public class TestEntityColumnValueOutput {
     }
 
     @Test
-    public void testRangeNumeric() {
+    void testRangeNumeric() {
         BigDecimal[] range = new BigDecimal[2];
         range[0] = new BigDecimal(20);
         range[1] = new BigDecimal(30);

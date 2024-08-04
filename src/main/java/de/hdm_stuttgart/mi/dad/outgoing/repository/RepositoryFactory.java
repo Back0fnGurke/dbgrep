@@ -1,6 +1,7 @@
-package de.hdm_stuttgart.mi.dad.outgoing;
+package de.hdm_stuttgart.mi.dad.outgoing.repository;
 
 import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
+import de.hdm_stuttgart.mi.dad.outgoing.PropertyExpressionReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

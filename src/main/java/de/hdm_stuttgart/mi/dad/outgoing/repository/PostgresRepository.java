@@ -1,4 +1,4 @@
-package de.hdm_stuttgart.mi.dad.outgoing;
+package de.hdm_stuttgart.mi.dad.outgoing.repository;
 
 import de.hdm_stuttgart.mi.dad.core.entity.ColumnValue;
 import de.hdm_stuttgart.mi.dad.core.entity.Row;
@@ -6,6 +6,7 @@ import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
 import de.hdm_stuttgart.mi.dad.core.property.PropertyType;
+import de.hdm_stuttgart.mi.dad.outgoing.QueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,15 +16,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
 import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.RANGE_NUMERIC;
 
 /**
- * The MySQLRepository class is an implementation of the RepositoryPort interface for MySQL databases.
- * It provides methods to interact with a MySQL database, such as finding table names, column names, and rows with specific properties.
+ * The PostgresRepository class is an implementation of the RepositoryPort interface for PostgreSQL databases.
+ * It provides methods to interact with a PostgreSQL database, such as finding table names, column names, and rows with specific properties.
  * <p>
  * The class uses a Connection object to connect to the database and a QueryBuilder object to build SQL queries.
  * <p>
@@ -39,15 +39,15 @@ import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.RANGE_NUMERIC;
  * <p>
  * The getResultTable method is a private helper method used to get a Table object from a ResultSet object. It is used by the findTableRowsWithProperties method.
  */
-class MySQLRepository implements RepositoryPort {
+class PostgresRepository implements RepositoryPort {
 
     /**
      * Logger for this class.
      */
-    private static final Logger log = LoggerFactory.getLogger(MySQLRepository.class);
+    private static final Logger log = LoggerFactory.getLogger(PostgresRepository.class);
 
     /**
-     * Connection to the MySQL database.
+     * Connection to the PostgreSQL database.
      */
     private final Connection connection;
 
@@ -57,16 +57,15 @@ class MySQLRepository implements RepositoryPort {
     private final QueryBuilder queryBuilder;
 
     /**
-     * Constructor for the MySQLRepository class.
+     * Constructor for the PostgresRepository class.
      *
-     * @param connection          the Connection object to connect to the MySQL database.
+     * @param connection          the Connection object to connect to the PostgreSQL database.
      * @param propertyExpressions the Map of PropertyType and String pairs to initialize the QueryBuilder.
      */
-    public MySQLRepository(final Connection connection, final Map<PropertyType, String> propertyExpressions) {
+    public PostgresRepository(final Connection connection, final Map<PropertyType, String> propertyExpressions) {
         this.connection = connection;
         this.queryBuilder = new QueryBuilder(propertyExpressions);
-
-        log.debug("MySQLRepository initialized");
+        log.debug("PostgresRepository initialized");
     }
 
     @Override
@@ -98,7 +97,7 @@ class MySQLRepository implements RepositoryPort {
 
     @Override
     public List<String> findTableNames() throws SQLException {
-        final String query = "SELECT table_name FROM information_schema.tables WHERE table_schema NOT IN ('information_schema', 'mysql', 'performance_schema', 'sys')";
+        final String query = "SELECT table_name FROM information_schema.tables WHERE table_schema NOT IN ('pg_catalog', 'information_schema')";
 
         log.debug("query: {}", query);
 
@@ -119,7 +118,7 @@ class MySQLRepository implements RepositoryPort {
     public List<String> findTableColumnNamesNumeric(final String tableName) throws SQLException {
         log.debug("table name: {}", tableName);
 
-        final String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ? AND data_type IN ('tinyint', 'smallint', 'mediumint', 'int', 'bigint', 'decimal', 'bit', 'float', 'double')";
+        final String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ? AND data_type IN ('smallint', 'integer', 'bigint', 'decimal', 'numeric', 'real', 'double precision', 'smallserial', 'serial', 'bigserial', 'money')";
         return findTableColumnNames(query, tableName);
     }
 
@@ -127,7 +126,7 @@ class MySQLRepository implements RepositoryPort {
     public List<String> findTableColumnNamesDate(final String tableName) throws SQLException {
         log.debug("table name: {}", tableName);
 
-        final String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ? AND data_type IN ('date', 'datetime', 'timestamp')";
+        final String query = "SELECT column_name FROM information_schema.columns WHERE table_name = ? AND data_type IN ('timestamp without time zone', 'timestamp with time zone', 'date')";
         return findTableColumnNames(query, tableName);
     }
 

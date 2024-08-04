@@ -1,6 +1,5 @@
-package de.hdm_stuttgart.mi.dad;
+package de.hdm_stuttgart.mi.dad.core;
 
-import de.hdm_stuttgart.mi.dad.core.Service;
 import de.hdm_stuttgart.mi.dad.core.entity.ColumnValue;
 import de.hdm_stuttgart.mi.dad.core.entity.Row;
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
@@ -9,7 +8,7 @@ import de.hdm_stuttgart.mi.dad.core.exception.IllegalTableNameException;
 import de.hdm_stuttgart.mi.dad.core.exception.ServiceException;
 import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
-import de.hdm_stuttgart.mi.dad.core.property.PropertyFactory;
+import de.hdm_stuttgart.mi.dad.core.property.properties.PropertyFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -3,12 +3,12 @@
         <module name="dbgrep"/>
         <extension name="coverage">
             <pattern>
-                <option name="PATTERN" value="de.hdm_stuttgart.mi.dad.*"/>
+                <option name="PATTERN" value="de.hdm_stuttgart.mi.dad.outgoing.*"/>
                 <option name="ENABLED" value="true"/>
             </pattern>
         </extension>
         <option name="PACKAGE_NAME" value="de.hdm_stuttgart.mi.dad"/>
-        <option name="MAIN_CLASS_NAME" value="de.hdm_stuttgart.mi.dad.TestService"/>
+        <option name="MAIN_CLASS_NAME" value="de.hdm_stuttgart.mi.dad.core.TestService"/>
         <option name="METHOD_NAME" value=""/>
         <option name="TEST_OBJECT" value="class"/>
         <option name="VM_PARAMETERS" value="-ea -Dnet.bytebuddy.experimental=true -XX:+EnableDynamicAgentLoading"/>

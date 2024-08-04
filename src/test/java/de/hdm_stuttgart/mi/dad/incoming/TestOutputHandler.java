@@ -1,11 +1,11 @@
-package de.hdm_stuttgart.mi.dad;
+package de.hdm_stuttgart.mi.dad.incoming;
 
 import de.hdm_stuttgart.mi.dad.core.entity.ColumnValue;
 import de.hdm_stuttgart.mi.dad.core.entity.Row;
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
-import de.hdm_stuttgart.mi.dad.core.property.PropertyFactory;
-import de.hdm_stuttgart.mi.dad.incoming.OutputHandler;
+import de.hdm_stuttgart.mi.dad.core.property.properties.PropertyFactory;
+import de.hdm_stuttgart.mi.dad.incoming.output.OutputHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.LIKE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestOutput {
+class TestOutputHandler {
 
     private final PrintStream standardOut = System.out;
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
@@ -42,7 +42,7 @@ public class TestOutput {
     }
 
     @Test
-    public void testOutput() {
+    void testOutput() {
 
         OutputHandler outputHandler = new OutputHandler();
         Table table = new Table("Test", Arrays.asList(
@@ -136,7 +136,7 @@ public class TestOutput {
     }
 
     @Test
-    public void testOutputwithInteraction() {
+    void testOutputwithInteraction() {
 
         OutputHandler outputHandler = new OutputHandler();
         Table table = new Table("Test", Arrays.asList(
@@ -247,7 +247,7 @@ public class TestOutput {
     }
 
     @Test
-    public void testOutputwithQuitInteraction() {
+    void testOutputwithQuitInteraction() {
 
         OutputHandler outputHandler = new OutputHandler();
         Table table = new Table("Test", Arrays.asList(
@@ -353,7 +353,7 @@ public class TestOutput {
     }
 
     @Test
-    public void testOutputwithMultipleTables() {
+    void testOutputwithMultipleTables() {
 
         OutputHandler outputHandler = new OutputHandler();
         Table table1 = new Table("Test1", Arrays.asList(
@@ -513,7 +513,7 @@ public class TestOutput {
     }
 
     @Test
-    public void testOutputWithMultipleTablesAndInput() {
+    void testOutputWithMultipleTablesAndInput() {
 
         OutputHandler outputHandler = new OutputHandler();
         Table table1 = new Table("Test1", Arrays.asList(
@@ -691,7 +691,7 @@ public class TestOutput {
     }
 
     @Test
-    public void testOutputColorOnLongest() {
+    void testOutputColorOnLongest() {
 
         OutputHandler outputHandler = new OutputHandler();
         Table table1 = new Table("Test1", Arrays.asList(

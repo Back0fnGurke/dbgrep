@@ -1,4 +1,7 @@
-package de.hdm_stuttgart.mi.dad.core.property;
+package de.hdm_stuttgart.mi.dad.core.property.properties;
+
+import de.hdm_stuttgart.mi.dad.core.property.Property;
+import de.hdm_stuttgart.mi.dad.core.property.PropertyType;
 
 import java.time.LocalDate;
 

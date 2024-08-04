@@ -1,7 +1,6 @@
-package de.hdm_stuttgart.mi.dad;
+package de.hdm_stuttgart.mi.dad.outgoing;
 
 import de.hdm_stuttgart.mi.dad.core.property.PropertyType;
-import de.hdm_stuttgart.mi.dad.outgoing.PropertyExpressionReader;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

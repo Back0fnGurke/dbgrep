@@ -1,12 +1,10 @@
-package de.hdm_stuttgart.mi.dad.incoming;
+package de.hdm_stuttgart.mi.dad.incoming.output;
 
 import de.hdm_stuttgart.mi.dad.core.entity.ColumnValue;
-import de.hdm_stuttgart.mi.dad.core.entity.ColumnValueOutput;
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import java.util.List;
 import java.util.Scanner;

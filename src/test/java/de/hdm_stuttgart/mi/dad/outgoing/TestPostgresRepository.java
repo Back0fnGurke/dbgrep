@@ -1,12 +1,12 @@
-package de.hdm_stuttgart.mi.dad;
+package de.hdm_stuttgart.mi.dad.outgoing;
 
 import de.hdm_stuttgart.mi.dad.core.entity.ColumnValue;
 import de.hdm_stuttgart.mi.dad.core.entity.Row;
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
-import de.hdm_stuttgart.mi.dad.core.property.PropertyFactory;
-import de.hdm_stuttgart.mi.dad.outgoing.RepositoryFactory;
+import de.hdm_stuttgart.mi.dad.core.property.properties.PropertyFactory;
+import de.hdm_stuttgart.mi.dad.outgoing.repository.RepositoryFactory;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

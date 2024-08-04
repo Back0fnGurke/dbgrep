@@ -1,9 +1,10 @@
-package de.hdm_stuttgart.mi.dad.incoming;
+package de.hdm_stuttgart.mi.dad.incoming.input;
 
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.core.exception.ServiceException;
 import de.hdm_stuttgart.mi.dad.core.ports.ServicePort;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
+import de.hdm_stuttgart.mi.dad.incoming.output.OutputHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

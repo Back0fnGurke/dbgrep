@@ -1,8 +1,8 @@
-package de.hdm_stuttgart.mi.dad;
+package de.hdm_stuttgart.mi.dad.core;
 
 import de.hdm_stuttgart.mi.dad.core.property.Property;
-import de.hdm_stuttgart.mi.dad.core.property.PropertyFactory;
 import de.hdm_stuttgart.mi.dad.core.property.PropertyType;
+import de.hdm_stuttgart.mi.dad.core.property.properties.PropertyFactory;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
