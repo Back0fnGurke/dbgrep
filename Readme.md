@@ -2,6 +2,21 @@
 
 ## About
 
+dbgrep is a database command, which searches a database for matching entries and displays them in the console.
+The complete row where the match was found is displayed and the matching element is highlighted in red.
+Before using the command you have to start your database and create a folder 'connection_profiles' in the directory where the jar file is located.
+Add a connection profile of your database there.
+
+Example connection profile, spaces are ignored:
+host=localhost
+port=5432
+database=test
+user=test
+password=test
+driver=postgresql
+
+For more information use the --help command.
+
 ## Development
 
 Java version: 21
