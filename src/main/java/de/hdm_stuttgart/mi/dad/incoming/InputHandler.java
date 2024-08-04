@@ -16,10 +16,13 @@ import java.util.*;
 public class InputHandler {
 
     private static final Logger log = LoggerFactory.getLogger(InputHandler.class);
-    final ServicePort service;
+    private final ServicePort service;
+    private final OutputHandler outputHandler;
 
-    public InputHandler(final ServicePort service) {
+    public InputHandler(final ServicePort service, final OutputHandler outputHandler) {
         this.service = service;
+        this.outputHandler = outputHandler;
+
     }
 
     /**
@@ -59,7 +62,6 @@ public class InputHandler {
             resultTables.addAll(service.searchThroughColumns(columnsByTable, propertyList));
         }
 
-        OutputHandler outputHandler = new OutputHandler();
         log.debug("result list{} size: {}", resultTables, resultTables.size());
         for (Table table : resultTables) {
             if (!table.rows().isEmpty()) {
