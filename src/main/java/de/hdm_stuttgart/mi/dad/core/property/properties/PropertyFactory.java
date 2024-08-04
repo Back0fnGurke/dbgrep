@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  *     <li>{@link Regex}: Requires a {@link Pattern} value.</li>
  *     <li>{@link Like}: Requires a {@link Pattern} value.</li>
  *     <li>{@link Equal}: Requires a {@link BigDecimal} value.</li>
- *     <li>{@link GreaterNumeric}: Requires a {@link BigDecimal} value.</li>F
+ *     <li>{@link GreaterNumeric}: Requires a {@link BigDecimal} value.</li>
  *     <li>{@link GreaterDate}: Requires a {@link LocalDate} value.</li>
  *     <li>{@link RangeNumeric}: Requires a {@link BigDecimal[]} value.</li>
  * </ul>

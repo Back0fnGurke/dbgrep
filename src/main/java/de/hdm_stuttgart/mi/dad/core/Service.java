@@ -33,8 +33,8 @@ import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.getNumericTypes
  * <p>
  * RepositoryPort repository = new RepositoryImplementation();
  * Service service = new Service(repository);
- * List<Property> properties = List.of(new Property(...));
- * List<String> tableNames = List.of("table1", "table2");
+ * List&lt;Property&gt; properties = List.of(new Property(...));
+ * List&lt;String&gt; tableNames = List.of("table1", "table2");
  * service.searchThroughTables(tableNames, properties);
  * <p>
  * Note: This class throws ServiceException when there is an issue with the service logic.

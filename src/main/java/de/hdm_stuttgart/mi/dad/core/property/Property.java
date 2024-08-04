@@ -10,11 +10,6 @@ package de.hdm_stuttgart.mi.dad.core.property;
  * <p>
  * Extending classes of this abstract class are expected to provide a concrete type for T and override the getType and getValue methods.
  * <p>
- * Example usage:
- * <p>
- * Property<String> stringProperty = new StringProperty("example");
- * PropertyType type = stringProperty.getType();  // Returns PropertyType.STRING
- * String value = stringProperty.getValue();  // Returns "example"
  */
 
 public abstract class Property<T> {

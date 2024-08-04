@@ -108,7 +108,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>de.hdm_stuttgart.mi.dad</mainClass>
+                            <mainClass>de.hdm_stuttgart.mi.dad.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -17,10 +17,13 @@ import java.util.*;
 public class InputHandler {
 
     private static final Logger log = LoggerFactory.getLogger(InputHandler.class);
-    final ServicePort service;
+    private final ServicePort service;
+    private final OutputHandler outputHandler;
 
-    public InputHandler(final ServicePort service) {
+    public InputHandler(final ServicePort service, final OutputHandler outputHandler) {
         this.service = service;
+        this.outputHandler = outputHandler;
+
     }
 
     /**
@@ -30,6 +33,8 @@ public class InputHandler {
      * The output is then print using the OutputHandler.
      *
      * @param args whole user input
+     * @throws ServiceException from service methods.
+     * @throws IOException  if an I/O error occurs while reading the manual file.
      */
     public void handleInput(final String[] args) throws ServiceException, IOException {
         log.debug("start handle input");
@@ -43,7 +48,7 @@ public class InputHandler {
 
         List<Table> resultTables = new ArrayList<>();
         List<Property<?>> propertyList = createPropertyList(args);
-        log.debug("property liste erstellt:{}", propertyList);
+        log.debug("property list created:{}", propertyList);
 
 
         if (!hasArgument(args, ArgumentType.COLUMN) && !hasArgument(args, ArgumentType.TABLE)) {
@@ -58,7 +63,6 @@ public class InputHandler {
             resultTables.addAll(service.searchThroughColumns(columnsByTable, propertyList));
         }
 
-        OutputHandler outputHandler = new OutputHandler();
         log.debug("result list{} size: {}", resultTables, resultTables.size());
         for (Table table : resultTables) {
             if (!table.rows().isEmpty()) {
@@ -93,7 +97,7 @@ public class InputHandler {
         String argument = args[index];
 
         for (ArgumentType argumentType : ArgumentType.values()) {
-            if (argumentType.argumentString.equals(argument) && argumentType.isProperty) {
+            if (argumentType.argumentString.equals(argument) && argumentType.isProperty && (index + 1) < args.length) {
                 propertyList.add(ArgumentType.createPropertyFromArgumentType(argumentType, args[index + 1]));
             }
         }
@@ -150,6 +154,7 @@ public class InputHandler {
      *
      * @param columnValues The names of the columns that the user has entered
      * @return map that assigns the columns to each table
+     * @throws IllegalArgumentException if column value is invalid.
      */
     private Map<String, List<String>> createColumnsByTable(List<String> columnValues) {
         Map<String, List<String>> columnsByTable = new HashMap<>();

@@ -2,6 +2,7 @@ package de.hdm_stuttgart.mi.dad;
 
 import de.hdm_stuttgart.mi.dad.connectionprofile.ConnectionProfile;
 import de.hdm_stuttgart.mi.dad.connectionprofile.ConnectionProfileHandler;
+import de.hdm_stuttgart.mi.dad.connectionprofile.exception.InvalidConnectionProfileException;
 import de.hdm_stuttgart.mi.dad.connectionprofile.exception.MultipleProfileException;
 import de.hdm_stuttgart.mi.dad.connectionprofile.exception.NoProfileException;
 import org.junit.jupiter.api.AfterAll;
@@ -87,5 +88,14 @@ public class TestConnectionProfileHandler {
         ConnectionProfileHandler handlerNoProfile = assertDoesNotThrow(() -> new ConnectionProfileHandler(Paths.get("src/test/resources/TestConnectionProfileHandler/no_profile")));
         String stringNoProfile = assertDoesNotThrow(handlerNoProfile::getStringOfProfileList);
         assertEquals("", stringNoProfile);
+    }
+
+    @Test
+    void testValidation() {
+        ConnectionProfileHandler handler = assertDoesNotThrow(() -> new ConnectionProfileHandler(Paths.get("src/test/resources/TestConnectionProfileHandler/invalid_profile")));
+        assertDoesNotThrow(() -> handler.getSelectedProfile("valid_profile.cfg"));
+        assertDoesNotThrow(() -> handler.getSelectedProfile("valid_profile_with_spaces.cfg"));
+        assertThrows(InvalidConnectionProfileException.class, () -> handler.getSelectedProfile("missing_property.cfg"));
+        assertThrows(InvalidConnectionProfileException.class, () -> handler.getSelectedProfile("wrong_written_property.cfg"));
     }
 }
