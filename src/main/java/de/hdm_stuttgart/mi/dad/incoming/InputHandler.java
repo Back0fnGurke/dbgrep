@@ -96,7 +96,7 @@ public class InputHandler {
         String argument = args[index];
 
         for (ArgumentType argumentType : ArgumentType.values()) {
-            if (argumentType.argumentString.equals(argument) && argumentType.isProperty) {
+            if (argumentType.argumentString.equals(argument) && argumentType.isProperty && (index + 1) < args.length) {
                 propertyList.add(ArgumentType.createPropertyFromArgumentType(argumentType, args[index + 1]));
             }
         }
