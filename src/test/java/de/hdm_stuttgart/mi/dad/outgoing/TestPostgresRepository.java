@@ -669,6 +669,26 @@ public class TestPostgresRepository {
     }
 
     @Test
+    void test_findTableRowsWithProperties_view() throws FileNotFoundException, SQLException {
+        scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findTableRowsWithProperties_view_test_data.sql"));
+
+        final List<String> columns = Arrays.asList("first_name", "last_name");
+
+        final String viewName = "user_name";
+        final Pattern pattern = Pattern.compile("Dorian");
+        final Property property = PropertyFactory.createProperty(LIKE, pattern);
+        final Table actual = repository.findTableRowsWithProperties(viewName, Map.of(property, columns));
+        final Table expected = new Table(viewName, List.of(
+                new Row(Arrays.asList(
+                        new ColumnValue("first_name", "Dorian"),
+                        new ColumnValue("last_name", "Sporner")
+                ))
+        ));
+        assertEquals(expected.rows().size(), actual.rows().size(), "Wrong number of rows");
+        assertEquals(expected.rows().getFirst(), actual.rows().getFirst(), "Should match");
+    }
+
+    @Test
     void test_findTableNames() throws SQLException, FileNotFoundException {
         scriptRunner.runScript(new FileReader("src/test/resources/TestPostgresRepository/test_findTableNames_test_data.sql"));
 
