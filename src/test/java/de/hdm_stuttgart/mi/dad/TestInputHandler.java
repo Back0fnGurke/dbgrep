@@ -6,10 +6,10 @@ import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.core.exception.ServiceException;
 import de.hdm_stuttgart.mi.dad.core.ports.ServicePort;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
-import de.hdm_stuttgart.mi.dad.core.property.PropertyFactory;
 import de.hdm_stuttgart.mi.dad.core.property.PropertyType;
-import de.hdm_stuttgart.mi.dad.incoming.InputHandler;
-import de.hdm_stuttgart.mi.dad.incoming.OutputHandler;
+import de.hdm_stuttgart.mi.dad.core.property.properties.PropertyFactory;
+import de.hdm_stuttgart.mi.dad.incoming.input.InputHandler;
+import de.hdm_stuttgart.mi.dad.incoming.output.OutputHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class TestInputHandler {
+class TestInputHandler {
     @Mock
     OutputHandler mockOutputHandler;
     @Mock
