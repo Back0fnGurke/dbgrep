@@ -16,6 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,7 +70,7 @@ class PostgresRepository implements RepositoryPort {
     }
 
     @Override
-    public Table findTableRowsWithProperties(final String tableName, final Map<Property<?>, List<String>> propertyColumns) throws SQLException {
+    public Table findTableRowsWithProperties(final String tableName, final LinkedHashMap<Property<?>, List<String>> propertyColumns) throws SQLException {
         log.debug("tableName: {}, propertyColumns: {}", tableName, propertyColumns);
 
         final String query = queryBuilder.buildQueryString(tableName, propertyColumns);

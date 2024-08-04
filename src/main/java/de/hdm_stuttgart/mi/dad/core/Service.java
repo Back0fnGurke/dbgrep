@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -81,7 +82,7 @@ public class Service implements ServicePort {
                 ));
 
                 try {
-                    final Table table = repository.findTableRowsWithProperties(tableName, propertyColumns);
+                    final Table table = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(propertyColumns));
                     log.debug("found rows in table: {}", table);
                     return table;
                 } catch (SQLException e) {
@@ -119,7 +120,7 @@ public class Service implements ServicePort {
                         }
                 ));
 
-                final Table table = repository.findTableRowsWithProperties(tableName, propertyColumns);
+                final Table table = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(propertyColumns));
                 log.debug("found rows in table: {}", table);
 
                 results.add(table);

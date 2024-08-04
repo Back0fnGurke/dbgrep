@@ -14,9 +14,14 @@ import java.util.Scanner;
  * For this create one OutputHandler and use the printTable method to print an Output Table
  */
 
+
+//TODO: add table nam to header
+//TODO: add empty line at end of table
 public class OutputHandler {
 
     private static final Logger log = LoggerFactory.getLogger(OutputHandler.class);
+
+    private static final int PAGE_SIZE = 10;
 
     /**
      * This method prints a Table into the console.
@@ -40,7 +45,7 @@ public class OutputHandler {
         printHeader(table, longest, numberOfColumns);
         System.out.println(divider);
 
-        printRange(table, properties, longest, 0, 9);
+        printRange(table, properties, longest, 0, PAGE_SIZE - 1);
         handleUserInput(table, properties, longest);
 
     }
@@ -141,9 +146,9 @@ public class OutputHandler {
      * @param longest         an array of the longest string lengths for each column
      */
     private void handleUserInput(final Table table, final List<Property<?>> properties, final int[] longest){
-        int index = 10;
+        int index = PAGE_SIZE;
         final int tableSize = table.rows().size();
-        if(tableSize > 10) {
+        if (tableSize > PAGE_SIZE) {
             System.out.println("Type m for more results. Type q to quit program.");
 
             final Scanner in = new Scanner(System.in);
@@ -155,16 +160,17 @@ public class OutputHandler {
                 input = in.nextLine();
                 switch (input) {
                     case "m" -> {
-                        printRange(table, properties, longest, index, index + 9);
-                        index += 10;
+                        printRange(table, properties, longest, index, index + PAGE_SIZE - 1);
+                        index += PAGE_SIZE;
                         if(index >= tableSize){
                             running = false;
                         }else{
-                            System.out.println("Type m for more results. Type q to quit program.");
+                            System.out.println("Type m for more results of this table. Type q to quit this action.");
                         }
                     }
                     case "q" -> running = false;
-                    default -> System.out.println("Invalid input. Type m for more results. Type q to quit program.");
+                    default ->
+                            System.out.println("Invalid input. Type m for more results. Type q to quit this action.");
                 }
             }
         }

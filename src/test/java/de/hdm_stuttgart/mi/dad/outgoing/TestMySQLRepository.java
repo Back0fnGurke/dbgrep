@@ -22,6 +22,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -64,8 +65,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("test");
-        final Property property = PropertyFactory.createProperty(REGEX, pattern);
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(REGEX, pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
 
@@ -78,8 +79,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("Dorian");
-        final Property property = PropertyFactory.createProperty(REGEX, pattern);
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(REGEX, pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         System.out.println(actual.rows());
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
@@ -104,8 +105,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("^c");
-        final Property property = PropertyFactory.createProperty(REGEX, pattern);
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(REGEX, pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         final Table expected = new Table(tableName, Arrays.asList(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "4"),
@@ -139,8 +140,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("10");
-        final Property property = PropertyFactory.createProperty(REGEX, pattern);
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(REGEX, pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         final Table expected = new Table(tableName, Arrays.asList(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "5"),
@@ -174,8 +175,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("test");
-        final Property property = PropertyFactory.createProperty(LIKE, pattern);
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(LIKE, pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
 
@@ -187,8 +188,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("Dorian");
-        final Property property = PropertyFactory.createProperty(LIKE, pattern);
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(LIKE, pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "1"),
@@ -212,8 +213,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("c%");
-        final Property property = PropertyFactory.createProperty(LIKE, pattern);
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(LIKE, pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         final Table expected = new Table(tableName, Arrays.asList(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "4"),
@@ -247,8 +248,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final Pattern pattern = Pattern.compile("2018-__-__ __:__:__");
-        final Property property = PropertyFactory.createProperty(LIKE, pattern);
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(LIKE, pattern);
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         final Table expected = new Table(tableName, Arrays.asList(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "1"),
@@ -292,8 +293,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final BigDecimal number = BigDecimal.valueOf(11);
-        final Property property = PropertyFactory.createProperty(EQUAL, number);
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(EQUAL, number);
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
 
@@ -305,8 +306,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final BigDecimal number = BigDecimal.valueOf(34);
-        final Property property = PropertyFactory.createProperty(EQUAL, number);
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(EQUAL, number);
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "5"),
@@ -336,8 +337,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final BigDecimal number = BigDecimal.valueOf(0.50);
-        final Property property = PropertyFactory.createProperty(EQUAL, number);
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(EQUAL, number);
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "4"),
@@ -367,8 +368,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final BigDecimal number = BigDecimal.valueOf(98278675);
-        final Property property = PropertyFactory.createProperty(GREATER_NUMERIC, number);
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(GREATER_NUMERIC, number);
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
 
@@ -380,8 +381,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final BigDecimal number = BigDecimal.valueOf(97278674);
-        final Property property = PropertyFactory.createProperty(GREATER_NUMERIC, number);
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(GREATER_NUMERIC, number);
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "10"),
@@ -409,8 +410,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final BigDecimal number = BigDecimal.valueOf(94935073);
-        final Property property = PropertyFactory.createProperty(GREATER_NUMERIC, number);
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(GREATER_NUMERIC, number);
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "7"),
@@ -466,8 +467,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final LocalDate date = LocalDate.parse("2024-12-12");
-        final Property property = PropertyFactory.createProperty(GREATER_DATE, date);
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(GREATER_DATE, date);
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
 
@@ -479,8 +480,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final LocalDate date = LocalDate.parse("2024-05-03");
-        final Property property = PropertyFactory.createProperty(GREATER_DATE, date);
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(GREATER_DATE, date);
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "4"),
@@ -503,8 +504,8 @@ class TestMySQLRepository {
 
         final String tableName = "account";
         final LocalDate date = LocalDate.parse("2024-04-03");
-        final Property property = PropertyFactory.createProperty(GREATER_DATE, date);
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(GREATER_DATE, date);
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "1"),
@@ -546,8 +547,8 @@ class TestMySQLRepository {
         final String tableName = "account";
         final BigDecimal from = BigDecimal.valueOf(98278675);
         final BigDecimal to = BigDecimal.valueOf(100000000);
-        final Property property = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{from, to});
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{from, to});
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         assertTrue(actual.rows().isEmpty(), "should be empty");
     }
 
@@ -560,8 +561,8 @@ class TestMySQLRepository {
         final String tableName = "account";
         final BigDecimal from = BigDecimal.valueOf(80);
         final BigDecimal to = BigDecimal.valueOf(100);
-        final Property property = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{from, to});
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{from, to});
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "4"),
@@ -590,8 +591,8 @@ class TestMySQLRepository {
         final String tableName = "account";
         final BigDecimal from = BigDecimal.valueOf(90000000);
         final BigDecimal to = BigDecimal.valueOf(100000000);
-        final Property property = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{from, to});
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{from, to});
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property, columns)));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "7"),
@@ -648,9 +649,9 @@ class TestMySQLRepository {
         final String tableName = "account";
         final BigDecimal from = BigDecimal.valueOf(80);
         final BigDecimal to = BigDecimal.valueOf(100);
-        final Property property1 = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{from, to});
-        final Property property2 = PropertyFactory.createProperty(EQUAL, BigDecimal.valueOf(88));
-        final Table actual = repository.findTableRowsWithProperties(tableName, Map.of(property1, columns, property2, columns));
+        final Property<?> property1 = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{from, to});
+        final Property<?> property2 = PropertyFactory.createProperty(EQUAL, BigDecimal.valueOf(88));
+        final Table actual = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(Map.of(property1, columns, property2, columns)));
         final Table expected = new Table(tableName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("id", "4"),
@@ -678,8 +679,8 @@ class TestMySQLRepository {
 
         final String viewName = "user_name";
         final Pattern pattern = Pattern.compile("Dorian");
-        final Property property = PropertyFactory.createProperty(LIKE, pattern);
-        final Table actual = repository.findTableRowsWithProperties(viewName, Map.of(property, columns));
+        final Property<?> property = PropertyFactory.createProperty(LIKE, pattern);
+        final Table actual = repository.findTableRowsWithProperties(viewName, new LinkedHashMap<>(Map.of(property, columns)));
         final Table expected = new Table(viewName, List.of(
                 new Row(Arrays.asList(
                         new ColumnValue("first_name", "Dorian"),

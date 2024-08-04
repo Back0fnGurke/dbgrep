@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -69,9 +70,9 @@ class TestService {
         when(repository.findTableColumnNamesAll(tableName1)).thenReturn(columnNames1);
         when(repository.findTableColumnNamesAll(tableName2)).thenReturn(columnNames2);
         when(repository.findTableColumnNamesAll(tableName3)).thenReturn(columnNames3);
-        when(repository.findTableRowsWithProperties(tableName1, Map.of(property, columnNames1))).thenReturn(table1);
-        when(repository.findTableRowsWithProperties(tableName2, Map.of(property, columnNames2))).thenReturn(table2);
-        when(repository.findTableRowsWithProperties(tableName3, Map.of(property, columnNames3))).thenReturn(table3);
+        when(repository.findTableRowsWithProperties(tableName1, new LinkedHashMap<>(Map.of(property, columnNames1)))).thenReturn(table1);
+        when(repository.findTableRowsWithProperties(tableName2, new LinkedHashMap<>(Map.of(property, columnNames2)))).thenReturn(table2);
+        when(repository.findTableRowsWithProperties(tableName3, new LinkedHashMap<>(Map.of(property, columnNames3)))).thenReturn(table3);
 
         final List<Table> expected = List.of(table1, table2, table3);
         final List<Table> actual = service.searchThroughColumns(
@@ -134,12 +135,12 @@ class TestService {
         when(repository.findTableColumnNamesAll(tableName3)).thenReturn(columnNames3);
         when(repository.findTableColumnNamesDate(tableName3)).thenReturn(columnNames3);
         when(repository.findTableColumnNamesNumeric(tableName3)).thenReturn(columnNames3);
-        when(repository.findTableRowsWithProperties(tableName1, Map.of(property1, columnNames1, property2, columnNames1))).thenReturn(table1);
-        when(repository.findTableRowsWithProperties(tableName2, Map.of(property1, columnNames2, property2, columnNames2))).thenReturn(table2);
-        when(repository.findTableRowsWithProperties(tableName3, Map.of(property1, columnNames3, property2, columnNames3))).thenReturn(table3);
-        when(repository.findTableRowsWithProperties(tableName1, Map.of(property1, columnNames1, property3, columnNames1))).thenReturn(table1);
-        when(repository.findTableRowsWithProperties(tableName2, Map.of(property1, columnNames2, property3, columnNames2))).thenReturn(table2);
-        when(repository.findTableRowsWithProperties(tableName3, Map.of(property1, columnNames3, property3, columnNames3))).thenReturn(table3);
+        when(repository.findTableRowsWithProperties(tableName1, new LinkedHashMap<>(Map.of(property1, columnNames1, property2, columnNames1)))).thenReturn(table1);
+        when(repository.findTableRowsWithProperties(tableName2, new LinkedHashMap<>(Map.of(property1, columnNames2, property2, columnNames2)))).thenReturn(table2);
+        when(repository.findTableRowsWithProperties(tableName3, new LinkedHashMap<>(Map.of(property1, columnNames3, property2, columnNames3)))).thenReturn(table3);
+        when(repository.findTableRowsWithProperties(tableName1, new LinkedHashMap<>(Map.of(property1, columnNames1, property3, columnNames1)))).thenReturn(table1);
+        when(repository.findTableRowsWithProperties(tableName2, new LinkedHashMap<>(Map.of(property1, columnNames2, property3, columnNames2)))).thenReturn(table2);
+        when(repository.findTableRowsWithProperties(tableName3, new LinkedHashMap<>(Map.of(property1, columnNames3, property3, columnNames3)))).thenReturn(table3);
 
         final List<Table> expected1 = List.of(table1, table2, table3);
         final List<Table> actual1 = service.searchThroughColumns(
@@ -209,9 +210,9 @@ class TestService {
         when(repository.findTableColumnNamesDate(tableName1)).thenReturn(columnNames1);
         when(repository.findTableColumnNamesDate(tableName2)).thenReturn(columnNames2);
         when(repository.findTableColumnNamesNumeric(tableName3)).thenReturn(columnNames3);
-        when(repository.findTableRowsWithProperties(tableName1, Map.of(property1, columnNames1, property2, columnNames1))).thenThrow(SQLException.class);
-        when(repository.findTableRowsWithProperties(tableName2, Map.of(property2, columnNames2))).thenThrow(SQLException.class);
-        when(repository.findTableRowsWithProperties(tableName3, Map.of(property3, columnNames3))).thenThrow(SQLException.class);
+        when(repository.findTableRowsWithProperties(tableName1, new LinkedHashMap<>(Map.of(property1, columnNames1, property2, columnNames1)))).thenThrow(SQLException.class);
+        when(repository.findTableRowsWithProperties(tableName2, new LinkedHashMap<>(Map.of(property2, columnNames2)))).thenThrow(SQLException.class);
+        when(repository.findTableRowsWithProperties(tableName3, new LinkedHashMap<>(Map.of(property3, columnNames3)))).thenThrow(SQLException.class);
         assertThrows(ServiceException.class, () -> service.searchThroughColumns(Map.of(tableName1, columnNames1), properties1));
         assertThrows(ServiceException.class, () -> service.searchThroughColumns(Map.of(tableName2, columnNames2), properties2));
         assertThrows(ServiceException.class, () -> service.searchThroughColumns(Map.of(tableName3, columnNames3), properties3));
@@ -249,9 +250,9 @@ class TestService {
         when(repository.findTableColumnNamesAll(tableName1)).thenReturn(columnNames1);
         when(repository.findTableColumnNamesAll(tableName2)).thenReturn(columnNames2);
         when(repository.findTableColumnNamesAll(tableName3)).thenReturn(columnNames3);
-        when(repository.findTableRowsWithProperties(tableName1, Map.of(property, columnNames1))).thenReturn(table1);
-        when(repository.findTableRowsWithProperties(tableName2, Map.of(property, columnNames2))).thenReturn(table2);
-        when(repository.findTableRowsWithProperties(tableName3, Map.of(property, columnNames3))).thenReturn(table3);
+        when(repository.findTableRowsWithProperties(tableName1, new LinkedHashMap<>(Map.of(property, columnNames1)))).thenReturn(table1);
+        when(repository.findTableRowsWithProperties(tableName2, new LinkedHashMap<>(Map.of(property, columnNames2)))).thenReturn(table2);
+        when(repository.findTableRowsWithProperties(tableName3, new LinkedHashMap<>(Map.of(property, columnNames3)))).thenReturn(table3);
 
         final List<Table> expected = List.of(table1, table2, table3);
         final List<Table> actual = service.searchThroughTables(List.of(tableName1, tableName2, tableName3), List.of(property));
@@ -308,15 +309,15 @@ class TestService {
         when(repository.findTableColumnNamesDate(tableName1)).thenReturn(columnNames1);
         when(repository.findTableColumnNamesDate(tableName2)).thenReturn(columnNames2);
         when(repository.findTableColumnNamesDate(tableName3)).thenReturn(columnNames3);
-        when(repository.findTableRowsWithProperties(tableName1, Map.of(property1, columnNames1, property2, columnNames1))).thenReturn(table1);
-        when(repository.findTableRowsWithProperties(tableName2, Map.of(property1, columnNames2, property2, columnNames2))).thenReturn(table2);
-        when(repository.findTableRowsWithProperties(tableName3, Map.of(property1, columnNames3, property2, columnNames3))).thenReturn(table3);
+        when(repository.findTableRowsWithProperties(tableName1, new LinkedHashMap<>(Map.of(property1, columnNames1, property2, columnNames1)))).thenReturn(table1);
+        when(repository.findTableRowsWithProperties(tableName2, new LinkedHashMap<>(Map.of(property1, columnNames2, property2, columnNames2)))).thenReturn(table2);
+        when(repository.findTableRowsWithProperties(tableName3, new LinkedHashMap<>(Map.of(property1, columnNames3, property2, columnNames3)))).thenReturn(table3);
         when(repository.findTableColumnNamesNumeric(tableName1)).thenReturn(columnNames1);
         when(repository.findTableColumnNamesNumeric(tableName2)).thenReturn(columnNames2);
         when(repository.findTableColumnNamesNumeric(tableName3)).thenReturn(columnNames3);
-        when(repository.findTableRowsWithProperties(tableName1, Map.of(property1, columnNames1, property3, columnNames1))).thenReturn(table1);
-        when(repository.findTableRowsWithProperties(tableName2, Map.of(property1, columnNames2, property3, columnNames2))).thenReturn(table2);
-        when(repository.findTableRowsWithProperties(tableName3, Map.of(property1, columnNames3, property3, columnNames3))).thenReturn(table3);
+        when(repository.findTableRowsWithProperties(tableName1, new LinkedHashMap<>(Map.of(property1, columnNames1, property3, columnNames1)))).thenReturn(table1);
+        when(repository.findTableRowsWithProperties(tableName2, new LinkedHashMap<>(Map.of(property1, columnNames2, property3, columnNames2)))).thenReturn(table2);
+        when(repository.findTableRowsWithProperties(tableName3, new LinkedHashMap<>(Map.of(property1, columnNames3, property3, columnNames3)))).thenReturn(table3);
 
         final List<Table> expected1 = List.of(table1, table2, table3);
         final List<Table> actual1 = service.searchThroughTables(List.of(tableName1, tableName2, tableName3), properties1);
@@ -379,7 +380,7 @@ class TestService {
         when(repository.findTableColumnNamesNumeric(tableName2)).thenThrow(SQLException.class);
         when(repository.findTableColumnNamesDate(tableName3)).thenThrow(SQLException.class);
         when(repository.findTableColumnNamesAll(tableName4)).thenReturn(columnNames1);
-        when(repository.findTableRowsWithProperties(tableName4, Map.of(property4, columnNames1))).thenThrow(SQLException.class);
+        when(repository.findTableRowsWithProperties(tableName4, new LinkedHashMap<>(Map.of(property4, columnNames1)))).thenThrow(SQLException.class);
         assertThrows(ServiceException.class, () -> service.searchThroughTables(List.of(tableName1), List.of(property1)));
         assertThrows(ServiceException.class, () -> service.searchThroughTables(List.of(tableName2), properties2));
         assertThrows(ServiceException.class, () -> service.searchThroughTables(List.of(tableName3), properties3));
@@ -416,9 +417,9 @@ class TestService {
         when(repository.findTableColumnNamesAll(tableName1)).thenReturn(columnNames1);
         when(repository.findTableColumnNamesAll(tableName2)).thenReturn(columnNames2);
         when(repository.findTableColumnNamesAll(tableName3)).thenReturn(columnNames3);
-        when(repository.findTableRowsWithProperties(tableName1, Map.of(property, columnNames1))).thenReturn(table1);
-        when(repository.findTableRowsWithProperties(tableName2, Map.of(property, columnNames2))).thenReturn(table2);
-        when(repository.findTableRowsWithProperties(tableName3, Map.of(property, columnNames3))).thenReturn(table3);
+        when(repository.findTableRowsWithProperties(tableName1, new LinkedHashMap<>(Map.of(property, columnNames1)))).thenReturn(table1);
+        when(repository.findTableRowsWithProperties(tableName2, new LinkedHashMap<>(Map.of(property, columnNames2)))).thenReturn(table2);
+        when(repository.findTableRowsWithProperties(tableName3, new LinkedHashMap<>(Map.of(property, columnNames3)))).thenReturn(table3);
 
 
         final List<Table> expected = List.of(table1, table2, table3);
@@ -477,15 +478,15 @@ class TestService {
         when(repository.findTableColumnNamesDate(tableName1)).thenReturn(columnNames1);
         when(repository.findTableColumnNamesDate(tableName2)).thenReturn(columnNames2);
         when(repository.findTableColumnNamesDate(tableName3)).thenReturn(columnNames3);
-        when(repository.findTableRowsWithProperties(tableName1, Map.of(property1, columnNames1, property2, columnNames1))).thenReturn(table1);
-        when(repository.findTableRowsWithProperties(tableName2, Map.of(property1, columnNames2, property2, columnNames2))).thenReturn(table2);
-        when(repository.findTableRowsWithProperties(tableName3, Map.of(property1, columnNames3, property2, columnNames3))).thenReturn(table3);
+        when(repository.findTableRowsWithProperties(tableName1, new LinkedHashMap<>(Map.of(property1, columnNames1, property2, columnNames1)))).thenReturn(table1);
+        when(repository.findTableRowsWithProperties(tableName2, new LinkedHashMap<>(Map.of(property1, columnNames2, property2, columnNames2)))).thenReturn(table2);
+        when(repository.findTableRowsWithProperties(tableName3, new LinkedHashMap<>(Map.of(property1, columnNames3, property2, columnNames3)))).thenReturn(table3);
         when(repository.findTableColumnNamesNumeric(tableName1)).thenReturn(columnNames1);
         when(repository.findTableColumnNamesNumeric(tableName2)).thenReturn(columnNames2);
         when(repository.findTableColumnNamesNumeric(tableName3)).thenReturn(columnNames3);
-        when(repository.findTableRowsWithProperties(tableName1, Map.of(property1, columnNames1, property3, columnNames1))).thenReturn(table1);
-        when(repository.findTableRowsWithProperties(tableName2, Map.of(property1, columnNames2, property3, columnNames2))).thenReturn(table2);
-        when(repository.findTableRowsWithProperties(tableName3, Map.of(property1, columnNames3, property3, columnNames3))).thenReturn(table3);
+        when(repository.findTableRowsWithProperties(tableName1, new LinkedHashMap<>(Map.of(property1, columnNames1, property3, columnNames1)))).thenReturn(table1);
+        when(repository.findTableRowsWithProperties(tableName2, new LinkedHashMap<>(Map.of(property1, columnNames2, property3, columnNames2)))).thenReturn(table2);
+        when(repository.findTableRowsWithProperties(tableName3, new LinkedHashMap<>(Map.of(property1, columnNames3, property3, columnNames3)))).thenReturn(table3);
 
         final List<Table> expected1 = List.of(table1, table2, table3);
         final List<Table> actual1 = service.searchThroughWholeDatabase(properties1);
@@ -557,7 +558,7 @@ class TestService {
         reset(repository);
         when(repository.findTableNames()).thenReturn(List.of(tableName1));
         when(repository.findTableColumnNamesAll(tableName1)).thenReturn(columnNames1);
-        when(repository.findTableRowsWithProperties(tableName1, Map.of(property1, columnNames1))).thenThrow(SQLException.class);
+        when(repository.findTableRowsWithProperties(tableName1, new LinkedHashMap<>(Map.of(property1, columnNames1)))).thenThrow(SQLException.class);
         assertThrows(ServiceException.class, () -> service.searchThroughWholeDatabase(properties1));
     }
 

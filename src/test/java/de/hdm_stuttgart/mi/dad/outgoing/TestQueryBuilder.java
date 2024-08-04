@@ -43,7 +43,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_Postgres_REGEX() {
-        final Map<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
+        final LinkedHashMap<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
         final Property<?> property = PropertyFactory.createProperty(PropertyType.REGEX, Pattern.compile("test"));
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
@@ -54,7 +54,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_Postgres_LIKE() {
-        final Map<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
+        final LinkedHashMap<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
         final Property<?> property = PropertyFactory.createProperty(LIKE, Pattern.compile("test"));
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
@@ -65,7 +65,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_Postgres_EQUAL() {
-        final Map<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
+        final LinkedHashMap<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
         final Property<?> property = PropertyFactory.createProperty(EQUAL, BigDecimal.valueOf(1));
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
@@ -76,7 +76,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_Postgres_GREATER_NUMERIC() {
-        final Map<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
+        final LinkedHashMap<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
         final Property<?> property = PropertyFactory.createProperty(GREATER_NUMERIC, BigDecimal.valueOf(1));
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
@@ -87,7 +87,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_Postgres_GREATER_DATE() {
-        final Map<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
+        final LinkedHashMap<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
         final Property<?> property = PropertyFactory.createProperty(GREATER_DATE, LocalDate.now());
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
@@ -98,7 +98,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_Postgres_RANGE_NUMERIC() {
-        final Map<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
+        final LinkedHashMap<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
         final Property<?> property = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{BigDecimal.valueOf(1), BigDecimal.valueOf(1)});
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
@@ -109,7 +109,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_Postgres_combination() {
-        final Map<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
+        final LinkedHashMap<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
         final Property<?> property1 = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{BigDecimal.valueOf(1), BigDecimal.valueOf(1)});
         final Property<?> property2 = PropertyFactory.createProperty(EQUAL, BigDecimal.valueOf(1));
         propertyColumns.put(property1, Arrays.asList("column1", "column2"));
@@ -122,7 +122,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_MySQL_REGEX() {
-        final Map<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
+        final LinkedHashMap<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
         final Property<?> property = PropertyFactory.createProperty(PropertyType.REGEX, Pattern.compile("test"));
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
@@ -134,7 +134,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_MySQL_LIKE() {
-        final Map<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
+        final LinkedHashMap<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
         final Property<?> property = PropertyFactory.createProperty(LIKE, Pattern.compile("test"));
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
@@ -145,7 +145,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_MySQL_EQUAL() {
-        final Map<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
+        final LinkedHashMap<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
         final Property<?> property = PropertyFactory.createProperty(EQUAL, BigDecimal.valueOf(1));
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
@@ -156,7 +156,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_MySQL_GREATER_NUMERIC() {
-        final Map<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
+        final LinkedHashMap<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
         final Property<?> property = PropertyFactory.createProperty(GREATER_NUMERIC, BigDecimal.valueOf(1));
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
@@ -167,7 +167,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_MySQL_GREATER_DATE() {
-        final Map<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
+        final LinkedHashMap<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
         final Property<?> property = PropertyFactory.createProperty(GREATER_DATE, LocalDate.now());
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
@@ -178,7 +178,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_MySQL_RANGE_NUMERIC() {
-        final Map<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
+        final LinkedHashMap<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
         final Property<?> property = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{BigDecimal.valueOf(1), BigDecimal.valueOf(1)});
         propertyColumns.put(property, Arrays.asList("column1", "column2"));
 
@@ -189,7 +189,7 @@ class TestQueryBuilder {
 
     @Test
     void test_buildQueryString_MySQL_combination() {
-        final Map<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
+        final LinkedHashMap<Property<?>, List<String>> propertyColumns = new LinkedHashMap<>();
         final Property<?> property1 = PropertyFactory.createProperty(RANGE_NUMERIC, new BigDecimal[]{BigDecimal.valueOf(1), BigDecimal.valueOf(1)});
         final Property<?> property2 = PropertyFactory.createProperty(EQUAL, BigDecimal.valueOf(1));
         propertyColumns.put(property1, Arrays.asList("column1", "column2"));
