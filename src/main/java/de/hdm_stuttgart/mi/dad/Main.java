@@ -43,7 +43,7 @@ public class Main {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        log.debug("end programm");
+        log.debug("end program");
     }
 
     /**

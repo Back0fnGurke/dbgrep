@@ -1,6 +1,5 @@
 package de.hdm_stuttgart.mi.dad.incoming.output;
 
-import de.hdm_stuttgart.mi.dad.core.entity.ColumnValue;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
 
 import java.math.BigDecimal;
@@ -9,13 +8,9 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Storing data of a single row column with the information if it is a match.
+ * Utility class for matching values against properties.
  */
-public record ColumnValueOutput(String name, String value, boolean isMatch) {
-
-    public ColumnValueOutput(ColumnValue column, List<Property<?>> properties) {
-        this(column.name(), column.value(), isMatch(column.value(), properties));
-    }
+public class ValueMatcher {
 
     /**
      * Evaluates if the value is a match for the properties.
@@ -24,26 +19,28 @@ public record ColumnValueOutput(String name, String value, boolean isMatch) {
      * @param properties a list with values of type Property
      * @return true if the value matches one of the properties
      */
-    private static boolean isMatch(String value, List<Property<?>> properties) {
+    public static boolean isMatch(final String value, final List<Property<?>> properties) {
+        final String checkedValue = (value == null) ? "null" : value;
+
         for (Property<?> property : properties) {
             switch (property.getType()) {
                 case REGEX -> {
-                    return isRegexMatch(value, property);
+                    return isRegexMatch(checkedValue, property);
                 }
                 case LIKE -> {
-                    return isLikeMatch(value, property);
+                    return isLikeMatch(checkedValue, property);
                 }
                 case EQUAL -> {
-                    return isEqualMatch(value, property);
+                    return isEqualMatch(checkedValue, property);
                 }
                 case GREATER_NUMERIC -> {
-                    return isGreaterNumericMatch(value, property);
+                    return isGreaterNumericMatch(checkedValue, property);
                 }
                 case GREATER_DATE -> {
-                    return isGreaterDateMatch(value, property);
+                    return isGreaterDateMatch(checkedValue, property);
                 }
                 case RANGE_NUMERIC -> {
-                    return isRangeNumericMatch(value, property);
+                    return isRangeNumericMatch(checkedValue, property);
                 }
                 default -> throw new IllegalArgumentException("Unexpected value: " + property.getType());
             }
@@ -58,7 +55,7 @@ public record ColumnValueOutput(String name, String value, boolean isMatch) {
      * @param property the property containing the regex pattern
      * @return true if the value matches the regex pattern, false otherwise
      */
-    private static boolean isRegexMatch(String value, Property<?> property) {
+    private static boolean isRegexMatch(final String value, final Property<?> property) {
         return Pattern.compile(property.getValue().toString()).matcher(value).matches();
     }
 
@@ -72,9 +69,10 @@ public record ColumnValueOutput(String name, String value, boolean isMatch) {
      * @param property the property containing the LIKE pattern
      * @return true if the value matches the LIKE pattern, false otherwise
      */
-    private static boolean isLikeMatch(String value, Property<?> property) {
-        String regex = property.getValue().toString();
-        regex = regex.replace("_", ".").replace("%", ".*?");
+    private static boolean isLikeMatch(final String value, final Property<?> property) {
+        final String regex = property.getValue().toString()
+                .replace("_", ".")
+                .replace("%", ".*?");
         final Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
         return p.matcher(value).matches();
     }
@@ -86,7 +84,7 @@ public record ColumnValueOutput(String name, String value, boolean isMatch) {
      * @param property the property containing the value to compare
      * @return true if the values are equal, false otherwise
      */
-    private static boolean isEqualMatch(String value, Property<?> property) {
+    private static boolean isEqualMatch(final String value, final Property<?> property) {
         return property.getValue().equals(new BigDecimal(value));
     }
 
@@ -97,7 +95,7 @@ public record ColumnValueOutput(String name, String value, boolean isMatch) {
      * @param property the property containing the numeric value to compare
      * @return true if the value is greater, false otherwise
      */
-    private static boolean isGreaterNumericMatch(String value, Property<?> property) {
+    private static boolean isGreaterNumericMatch(final String value, final Property<?> property) {
         return ((BigDecimal) property.getValue()).compareTo(new BigDecimal(value)) < 0;
     }
 
@@ -108,7 +106,7 @@ public record ColumnValueOutput(String name, String value, boolean isMatch) {
      * @param property the property containing the date value to compare
      * @return true if the value is greater, false otherwise
      */
-    private static boolean isGreaterDateMatch(String value, Property<?> property) {
+    private static boolean isGreaterDateMatch(final String value, final Property<?> property) {
         return ((LocalDate) property.getValue()).isBefore(LocalDate.parse(value));
     }
 
@@ -119,7 +117,7 @@ public record ColumnValueOutput(String name, String value, boolean isMatch) {
      * @param property the property containing the numeric range
      * @return true if the value is within the range, false otherwise
      */
-    private static boolean isRangeNumericMatch(String value, Property<?> property) {
+    private static boolean isRangeNumericMatch(final String value, final Property<?> property) {
         final BigDecimal[] range = (BigDecimal[]) property.getValue();
         return range[0].compareTo(new BigDecimal(value)) <= 0 && range[1].compareTo(new BigDecimal(value)) >= 0;
     }
