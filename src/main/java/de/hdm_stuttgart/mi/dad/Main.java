@@ -54,6 +54,7 @@ public class Main {
      * If not, an exception is thrown.
      *
      * @return path of connection profile directory
+     * @throws URISyntaxException if creating the uri from the path of the jar fails
      */
     public static Path getConnectionProfileDirectory() throws URISyntaxException {
         Path path = Paths.get(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());

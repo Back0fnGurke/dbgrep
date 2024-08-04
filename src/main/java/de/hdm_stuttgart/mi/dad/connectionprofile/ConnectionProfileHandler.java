@@ -14,7 +14,7 @@ import java.util.*;
 import java.util.stream.Stream;
 
 /**
- * Find the connection profile file in the determined directory and create a connection profile
+ * Find the connection profile file in the determined directory and create a connection profile.
  */
 public class ConnectionProfileHandler {
     public final Path directoryOfProfiles;

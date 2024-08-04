@@ -22,7 +22,7 @@ import java.util.Map;
  * <p>
  * Example usage:
  * <p>
- * EnumMap<PropertyType, String> propertyExpressions = PropertyExpressionReader.readPropertyExpressions("propertyExpressions.json");
+ * EnumMap&lt;PropertyType, String&gt; propertyExpressions = PropertyExpressionReader.readPropertyExpressions("propertyExpressions.json");
  */
 public class PropertyExpressionReader {
 
