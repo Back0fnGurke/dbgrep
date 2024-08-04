@@ -17,6 +17,10 @@ driver=postgresql
 
 For more information use the --help command.
 
+### Build jar
+
+``mvn clean package -DskipTests
+
 ## Development
 
 Java version: 21
