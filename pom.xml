@@ -107,7 +107,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>de.hdm_stuttgart.mi.dad</mainClass>
+                            <mainClass>de.hdm_stuttgart.mi.dad.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -174,7 +174,7 @@
                         <transformer
                                 implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <manifestEntries>
-                                <Main-Class>de.hdm-stuttgart.mi.dad.Main</Main-Class>
+                                <Main-Class>de.hdm_stuttgart.mi.dad.Main</Main-Class>
                                 <Multi-Release>true</Multi-Release>
                             </manifestEntries>
                         </transformer>

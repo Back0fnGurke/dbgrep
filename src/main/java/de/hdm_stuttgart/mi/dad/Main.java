@@ -6,6 +6,7 @@ import de.hdm_stuttgart.mi.dad.core.Service;
 import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
 import de.hdm_stuttgart.mi.dad.core.ports.ServicePort;
 import de.hdm_stuttgart.mi.dad.incoming.InputHandler;
+import de.hdm_stuttgart.mi.dad.incoming.OutputHandler;
 import de.hdm_stuttgart.mi.dad.outgoing.RepositoryFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,13 +39,14 @@ public class Main {
                 log.debug("build connection");
                 final RepositoryPort repository = RepositoryFactory.createRepository(connection, profile.getDriver());
                 final ServicePort service = new Service(repository);
-                final InputHandler inputHandler = new InputHandler(service);
+                final OutputHandler outputHandler = new OutputHandler();
+                final InputHandler inputHandler = new InputHandler(service, outputHandler);
                 inputHandler.handleInput(args);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        log.debug("end programm");
+        log.debug("end program");
     }
 
     /**
@@ -52,6 +54,7 @@ public class Main {
      * If not, an exception is thrown.
      *
      * @return path of connection profile directory
+     * @throws URISyntaxException if creating the uri from the path of the jar fails
      */
     public static Path getConnectionProfileDirectory() throws URISyntaxException {
         Path path = Paths.get(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
