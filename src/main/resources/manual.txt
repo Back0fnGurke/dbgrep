@@ -13,8 +13,8 @@ password=test
 driver=postgresql
 
 SUPPORTED DATABASES
-- PostgreSQL
-- MySQL
+- PostgreSQL driver=postgresql
+- MySQL      driver=mysql
 
 USAGE
 dbgrep [OPTIONS] PARAMETERS
