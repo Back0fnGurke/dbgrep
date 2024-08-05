@@ -3,7 +3,7 @@ package de.hdm_stuttgart.mi.dad.connectionprofile;
 import de.hdm_stuttgart.mi.dad.connectionprofile.exception.InvalidConnectionProfileException;
 import de.hdm_stuttgart.mi.dad.connectionprofile.exception.MultipleProfileException;
 import de.hdm_stuttgart.mi.dad.connectionprofile.exception.NoProfileException;
-import de.hdm_stuttgart.mi.dad.incoming.ArgumentType;
+import de.hdm_stuttgart.mi.dad.incoming.input.ArgumentType;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

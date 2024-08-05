@@ -60,6 +60,8 @@ Everything else can be done in ui.
 
 ### Execute tests
 
+Start the test database as described above without test data.
+
 Use following command to execute unit tests:
 
 ``mvn surefire:test``

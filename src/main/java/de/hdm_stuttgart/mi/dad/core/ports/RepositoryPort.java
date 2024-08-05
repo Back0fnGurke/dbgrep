@@ -4,8 +4,8 @@ import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.core.property.Property;
 
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Defines database query methods needed for functionality of the Service classes.
@@ -19,7 +19,7 @@ public interface RepositoryPort {
      * @return a Table containing all rows with matching column values. List of Rows is Empty if none where found.
      * @throws SQLException if a database access error occurs
      */
-    Table findTableRowsWithProperties(final String tableName, final Map<Property<?>, List<String>> propertyColumns) throws SQLException;
+    Table findTableRowsWithProperties(final String tableName, final LinkedHashMap<Property<?>, List<String>> propertyColumns) throws SQLException;
 
     /**
      * Find non system table names of tables existing in database.

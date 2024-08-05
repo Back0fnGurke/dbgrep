@@ -5,6 +5,7 @@ import de.hdm_stuttgart.mi.dad.core.property.PropertyType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +49,7 @@ public final class QueryBuilder {
      * @param propertyColumns a map of properties and their corresponding columns.
      * @return the SQL query string.
      */
-    public String buildQueryString(final String tableName, final Map<Property<?>, List<String>> propertyColumns) {
+    public String buildQueryString(final String tableName, final LinkedHashMap<Property<?>, List<String>> propertyColumns) {
         log.debug("tableName: {}, propertyColumns: {}", tableName, propertyColumns);
 
         final StringBuilder query = new StringBuilder();
