@@ -1,25 +1,21 @@
 # dbgrep Tool
 
 ## About
+dbgrep is a command-line tool for databases that searches for specific column entries and displays the corresponding rows, highlighting the matched column value in red in the console.
 
-dbgrep is a database command, which searches a database for matching entries and displays them in the console.
-The complete row where the match was found is displayed and the matching element is highlighted in red.
-Before using the command you have to start your database and create a folder 'connection_profiles' in the directory where the jar file is located.
-Add a connection profile of your database there.
+## Usage
+Create a directory named 'connection_profiles' in the same directory as the jar file.
+Then, add a connection profile for your database within that folder.
 
-Example connection profile, spaces are ignored:
-host=localhost
-port=5432
-database=test
-user=test
-password=test
-driver=postgresql
+### Connection Profile
+The profile files can have any file ending.
+Example connection profiles can be found under /connection_profiles.
 
 For more information use the --help command.
 
 ### Build jar
 
-``mvn clean package -DskipTests
+``mvn clean package -DskipTests``
 
 ## Development
 
