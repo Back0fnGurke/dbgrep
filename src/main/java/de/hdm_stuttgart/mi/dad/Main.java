@@ -29,14 +29,14 @@ public class Main {
      */
     public static void main(final String[] args) {
         try {
-            ConnectionProfileHandler profileHandler = new ConnectionProfileHandler(getConnectionProfileDirectory());
+            final ConnectionProfileHandler profileHandler = new ConnectionProfileHandler(getConnectionProfileDirectory());
             final ConnectionProfile profile = profileHandler.getConnectionProfile(args);
 
-            final String url = String.format("jdbc:%s://%s:%s/%s", profile.getDriver(), profile.getHost(), profile.getPort(), profile.getDatabase());
+            final String url = String.format("jdbc:%s://%s:%s/%s", profile.driver(), profile.host(), profile.port(), profile.database());
 
-            try (final Connection connection = DriverManager.getConnection(url, profile.getUser(), profile.getPassword())) {
+            try (final Connection connection = DriverManager.getConnection(url, profile.user(), profile.password())) {
                 log.debug("build connection");
-                final RepositoryPort repository = RepositoryFactory.createRepository(connection, profile.getDriver());
+                final RepositoryPort repository = RepositoryFactory.createRepository(connection, profile.driver());
                 final ServicePort service = new Service(repository);
                 final OutputHandler outputHandler = new OutputHandler();
                 final InputHandler inputHandler = new InputHandler(service, outputHandler);
