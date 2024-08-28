@@ -16,4 +16,5 @@ jobs:
   build:
     name: Build
     needs: [ "lint", "test" ]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     uses: ./.github/workflows/build.yaml
