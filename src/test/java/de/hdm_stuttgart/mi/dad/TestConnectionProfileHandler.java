@@ -45,7 +45,7 @@ public class TestConnectionProfileHandler {
     void testGetDefaultProfileWithOneProfile() {
         ConnectionProfileHandler handler = assertDoesNotThrow(() -> new ConnectionProfileHandler(Paths.get("src/test/resources/TestConnectionProfileHandler/one_profile")));
         ConnectionProfile profile = assertDoesNotThrow(handler::getDefaultProfile);
-        assertEquals(profile.getUser(), "user5");
+        assertEquals(profile.user(), "user5");
     }
 
     @Test
@@ -66,15 +66,15 @@ public class TestConnectionProfileHandler {
         assertDoesNotThrow(() -> handler.getSelectedProfile("test2.txt"));
 
         ConnectionProfile profile1 = assertDoesNotThrow(() -> handler.getSelectedProfile("test1.cfg"));
-        assertEquals(profile1.getUser(), "user1");
+        assertEquals(profile1.user(), "user1");
 
         ConnectionProfile profile2 = assertDoesNotThrow(() -> handler.getSelectedProfile("test3.cfg"));
-        assertEquals(profile2.getUser(), "user3");
-        assertEquals(profile2.getHost(), "myserver.companynet.com");
-        assertEquals(profile2.getPort(), "5432");
-        assertEquals(profile2.getDatabase(), "main_test_data");
-        assertEquals(profile2.getPassword(), "secret");
-        assertEquals(profile2.getDriver(), "Driver/postgresql-42.6.0.jar");
+        assertEquals(profile2.user(), "user3");
+        assertEquals(profile2.host(), "myserver.companynet.com");
+        assertEquals(profile2.port(), "5432");
+        assertEquals(profile2.database(), "main_test_data");
+        assertEquals(profile2.password(), "secret");
+        assertEquals(profile2.driver(), "Driver/postgresql-42.6.0.jar");
     }
 
     @Test

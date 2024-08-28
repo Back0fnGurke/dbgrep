@@ -17,9 +17,9 @@ import java.util.stream.Stream;
  * Find the connection profile file in the determined directory and create a connection profile.
  */
 public class ConnectionProfileHandler {
-    public final Path directoryOfProfiles;
+    private final Path directoryOfProfiles;
 
-    public ConnectionProfileHandler(Path directory) throws FileNotFoundException {
+    public ConnectionProfileHandler(final Path directory) throws FileNotFoundException {
         if (!Files.exists(directory)) {
             throw new FileNotFoundException("Please create a directory with the name “connection_profiles” at the directory where" +
                     " the jar file is located. Add at least one connection profile there.");
@@ -38,9 +38,9 @@ public class ConnectionProfileHandler {
      * @throws InvalidConnectionProfileException if the connection profile miss a property or has wrong syntax
      */
     public ConnectionProfile getDefaultProfile() throws NoProfileException, MultipleProfileException, IOException, InvalidConnectionProfileException {
-        List<Path> profiles = getListOfProfilesPath();
+        final List<Path> profiles = getListOfProfilesPath();
 
-        long fileCount = profiles.size();
+        final long fileCount = profiles.size();
 
         if (fileCount == 0) {
             throw new NoProfileException("There is no profile file in '" + directoryOfProfiles + "'.");
@@ -60,8 +60,8 @@ public class ConnectionProfileHandler {
      * @throws IOException if an I/O error occurs while reading the connection profile file.
      * @throws InvalidConnectionProfileException if the connection profile miss a property or has wrong syntax
      */
-    public ConnectionProfile getSelectedProfile(String fileName) throws IOException, InvalidConnectionProfileException {
-        Path pathOfProfile = directoryOfProfiles.resolve(fileName);
+    public ConnectionProfile getSelectedProfile(final String fileName) throws IOException, InvalidConnectionProfileException {
+        final Path pathOfProfile = directoryOfProfiles.resolve(fileName);
         if (Files.exists(pathOfProfile) && !Files.isDirectory(pathOfProfile)) {
             return readProfileFile(pathOfProfile);
         }
@@ -76,9 +76,9 @@ public class ConnectionProfileHandler {
      * @throws IOException if an I/O error occurs while create a file list from directory.
      */
     public String getStringOfProfileList() throws IOException {
-        List<Path> profiles = getListOfProfilesPath();
-        StringBuilder profileList = new StringBuilder();
-        for (Path profile : profiles) {
+        final List<Path> profiles = getListOfProfilesPath();
+        final StringBuilder profileList = new StringBuilder();
+        for (final Path profile : profiles) {
             profileList.append(profile.getFileName().toString());
             profileList.append("\n");
         }
@@ -108,13 +108,13 @@ public class ConnectionProfileHandler {
      * @throws IOException if an I/O error occurs while reading the connection profile file.
      * @throws InvalidConnectionProfileException if the connection profile miss a property or has wrong syntax
      */
-    private ConnectionProfile readProfileFile(Path pathOfProfile) throws IOException, InvalidConnectionProfileException {
-        Properties configProperties = new Properties();
+    private ConnectionProfile readProfileFile(final Path pathOfProfile) throws IOException, InvalidConnectionProfileException {
+        final Properties configProperties = new Properties();
         try (InputStream stream = Files.newInputStream(pathOfProfile)) {
             configProperties.load(stream);
         }
 
-        Map<String, String> profileProperties = new HashMap<>();
+        final Map<String, String> profileProperties = new HashMap<>();
         profileProperties.put("driver", configProperties.getProperty("driver"));
         profileProperties.put("host", configProperties.getProperty("host"));
         profileProperties.put("port", configProperties.getProperty("port"));
@@ -122,7 +122,7 @@ public class ConnectionProfileHandler {
         profileProperties.put("password", configProperties.getProperty("password"));
         profileProperties.put("database", configProperties.getProperty("database"));
 
-        for (Map.Entry<String, String> property : profileProperties.entrySet()) {
+        for (final Map.Entry<String, String> property : profileProperties.entrySet()) {
             if (property.getValue() == null) {
                 throw new InvalidConnectionProfileException("\"" + property.getKey() + "\" is missing in the connection profile file or was not specified correctly.");
             }
@@ -143,10 +143,10 @@ public class ConnectionProfileHandler {
      * @throws MultipleProfileException if more than one file exist in directoryOfProfiles
      * @throws InvalidConnectionProfileException if the connection profile miss a property or has wrong syntax
      */
-    public ConnectionProfile getConnectionProfile(String[] args) throws IOException, NoProfileException, MultipleProfileException, InvalidConnectionProfileException {
+    public ConnectionProfile getConnectionProfile(final String[] args) throws IOException, NoProfileException, MultipleProfileException, InvalidConnectionProfileException {
         if (Arrays.asList(args).contains(ArgumentType.PROFILE.toString())) {
-            int indexProfileArgument = Arrays.asList(args).indexOf(ArgumentType.PROFILE.toString()) + 1;
-            String profileArgument = args[indexProfileArgument];
+            final int indexProfileArgument = Arrays.asList(args).indexOf(ArgumentType.PROFILE.toString()) + 1;
+            final String profileArgument = args[indexProfileArgument];
             return getSelectedProfile(profileArgument);
         } else {
             return getDefaultProfile();

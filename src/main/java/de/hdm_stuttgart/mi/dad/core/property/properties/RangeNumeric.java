@@ -39,4 +39,12 @@ final class RangeNumeric extends Property<BigDecimal[]> {
         boolean equalValue = Objects.equals(otherProperty.getValue()[0], this.getValue()[0]) && Objects.equals(otherProperty.getValue()[1], this.getValue()[1]);
         return otherProperty.getType() == this.getType() && equalValue;
     }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + (getType() == null ? 0 : getType().hashCode());
+        result = 31 * result + Arrays.hashCode(getValue());
+        return result;
+    }
 }

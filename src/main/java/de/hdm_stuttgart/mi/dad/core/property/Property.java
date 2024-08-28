@@ -41,4 +41,12 @@ public abstract class Property<T> {
         }
         return otherProperty.getType() == this.getType() && otherProperty.getValue().equals(this.getValue());
     }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + (getType() == null ? 0 : getType().hashCode());
+        result = 31 * result + (getValue() == null ? 0 : getValue().hashCode());
+        return result;
+    }
 }

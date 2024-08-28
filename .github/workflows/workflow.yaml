@@ -1,44 +1,20 @@
-name: Build and Test
+name: Build, Test and Lint
 on:
   push:
   pull_request:
     branches: [ main ]
 
 jobs:
+  lint:
+    name: Lint
+    uses: ./.github/workflows/lint.yaml
 
-  build_and_test:
-    name: Build and Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Git repository
-        uses: actions/checkout@v4
+  test:
+    name: Test
+    uses: ./.github/workflows/test.yaml
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'corretto'
-          cache: maven
-
-      - name: Build
-        run: mvn clean install -DskipTests
-
-      - name: Checkstyle source code standard review
-        run: mvn -Pcicdprofile checkstyle:check
-
-      - name: PMD code quality analysis
-        run: mvn -Pcicdprofile pmd:check
-
-      - name: Start test environment
-        run: docker compose --file ./docker-compose.yml up --force-recreate --wait
-
-      - name: Test with coverage
-        run: mvn -Pcicdprofile install
-
-      - name: Output test environment logs
-        if: failure()
-        run: docker compose --file ./docker-compose.yml logs
-
-      - name: Stop test environment
-        if: failure() || success()
-        run: docker compose --file ./docker-compose.yml down
+  build:
+    name: Build
+    needs: [ "lint", "test" ]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/build.yaml

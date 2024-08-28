@@ -1,0 +1,32 @@
+name: Test
+
+on: workflow_call
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Git repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+          cache: maven
+
+      - name: Start test environment
+        run: docker compose --file ./docker-compose.yml up --force-recreate --wait
+
+      - name: Test with coverage
+        run: mvn -Pcicdprofile verify
+
+      - name: Output test environment logs
+        if: failure()
+        run: docker compose --file ./docker-compose.yml logs
+
+      - name: Stop test environment
+        if: failure() || success()
+        run: docker compose --file ./docker-compose.yml down
