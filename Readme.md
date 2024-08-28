@@ -17,16 +17,25 @@ For more information use the --help command.
 
 ``mvn clean package -DskipTests``
 
+### Run jar
+
+``java -jar dbgrep-1.0.jar --help``
+
+### Test data
+
+To test the tool, you can use the test databases by starting the test environment as described below in
+the [docker](#docker) section.
+
 ## Development
 
-Java version: 21
+### Prerequisites:
 
-### Start test environment
-
-#### Prerequisites:
-
+- Java version: 21
+- Maven
 - docker or docker desktop installed
 - Under Windows: wsl2 with docker or docker desktop installed
+
+### Start test environment
 
 #### Docker
 
