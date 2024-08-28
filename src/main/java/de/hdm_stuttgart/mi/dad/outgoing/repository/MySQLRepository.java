@@ -70,6 +70,23 @@ class MySQLRepository implements RepositoryPort {
         log.debug("MySQLRepository initialized");
     }
 
+    /**
+     * Private helper method to get the names from a ResultSet object.
+     *
+     * @param statement the PreparedStatement object to execute the SQL query.
+     * @return a List of names from the ResultSet object.
+     * @throws SQLException if a database access error occurs.
+     */
+    private static List<String> getNames(final PreparedStatement statement) throws SQLException {
+        final List<String> names = new ArrayList<>();
+        try (ResultSet namesSet = statement.executeQuery()) {
+            while (namesSet.next()) {
+                names.add(namesSet.getString(1));
+            }
+        }
+        return names;
+    }
+
     @Override
     public Table findTableRowsWithProperties(final String tableName, final LinkedHashMap<Property<?>, List<String>> propertyColumns) throws SQLException {
         log.debug("tableName: {}, propertyColumns: {}", tableName, propertyColumns);
@@ -77,7 +94,7 @@ class MySQLRepository implements RepositoryPort {
         final String query = queryBuilder.buildQueryString(tableName, propertyColumns);
         log.debug("sql query string with placeholders: {}", query);
 
-        try (final PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             int index = 1;
             for (Map.Entry<Property<?>, List<String>> entry : propertyColumns.entrySet()) {
                 Property<?> property = entry.getKey();
@@ -94,17 +111,6 @@ class MySQLRepository implements RepositoryPort {
 
             log.debug("sql query string: {}", statement);
             return getResultTable(statement, tableName);
-        }
-    }
-
-    @Override
-    public List<String> findTableNames() throws SQLException {
-        final String query = "SELECT table_name FROM information_schema.tables WHERE table_schema NOT IN ('information_schema', 'mysql', 'performance_schema', 'sys')";
-
-        log.debug("query: {}", query);
-
-        try (final PreparedStatement statement = connection.prepareStatement(query)) {
-            return getNames(statement);
         }
     }
 
@@ -132,21 +138,15 @@ class MySQLRepository implements RepositoryPort {
         return findTableColumnNames(query, tableName);
     }
 
-    /**
-     * Private helper method to get the names from a ResultSet object.
-     *
-     * @param statement the PreparedStatement object to execute the SQL query.
-     * @return a List of names from the ResultSet object.
-     * @throws SQLException if a database access error occurs.
-     */
-    private static List<String> getNames(final PreparedStatement statement) throws SQLException {
-        final List<String> names = new ArrayList<>();
-        try (final ResultSet namesSet = statement.executeQuery()) {
-            while (namesSet.next()) {
-                names.add(namesSet.getString(1));
-            }
+    @Override
+    public List<String> findTableNames() throws SQLException {
+        final String query = "SELECT table_name FROM information_schema.tables WHERE table_schema NOT IN ('information_schema', 'mysql', 'performance_schema', 'sys')";
+
+        log.debug("query: {}", query);
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            return getNames(statement);
         }
-        return names;
     }
 
     /**
@@ -158,7 +158,7 @@ class MySQLRepository implements RepositoryPort {
      * @throws SQLException if a database access error occurs.
      */
     private List<String> findTableColumnNames(final String query, final String tableName) throws SQLException {
-        try (final PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, tableName);
             log.debug("query string: {}", statement);
             return getNames(statement);
@@ -175,7 +175,7 @@ class MySQLRepository implements RepositoryPort {
      */
     private Table getResultTable(final PreparedStatement statement, final String tableName) throws SQLException {
         final List<Row> result = new ArrayList<>();
-        try (final ResultSet tableSet = statement.executeQuery()) {
+        try (ResultSet tableSet = statement.executeQuery()) {
             while (tableSet.next()) {
                 final List<ColumnValue> columnValues = new ArrayList<>();
                 for (int i = 1; i <= tableSet.getMetaData().getColumnCount(); i++) {

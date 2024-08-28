@@ -34,7 +34,7 @@ public class Main {
 
             final String url = String.format("jdbc:%s://%s:%s/%s", profile.driver(), profile.host(), profile.port(), profile.database());
 
-            try (final Connection connection = DriverManager.getConnection(url, profile.user(), profile.password())) {
+            try (Connection connection = DriverManager.getConnection(url, profile.user(), profile.password())) {
                 log.debug("build connection");
                 final RepositoryPort repository = RepositoryFactory.createRepository(connection, profile.driver());
                 final ServicePort service = new Service(repository);

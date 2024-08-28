@@ -93,7 +93,7 @@ public class ConnectionProfileHandler {
      * @throws IOException if an I/O error occurs while create a file list from directory.
      */
     private List<Path> getListOfProfilesPath() throws IOException {
-        try (final Stream<Path> stream = Files.list(directoryOfProfiles)) {
+        try (Stream<Path> stream = Files.list(directoryOfProfiles)) {
             return stream
                     .filter(file -> !Files.isDirectory(file))
                     .toList();
@@ -110,7 +110,7 @@ public class ConnectionProfileHandler {
      */
     private ConnectionProfile readProfileFile(final Path pathOfProfile) throws IOException, InvalidConnectionProfileException {
         final Properties configProperties = new Properties();
-        try (final InputStream stream = Files.newInputStream(pathOfProfile)) {
+        try (InputStream stream = Files.newInputStream(pathOfProfile)) {
             configProperties.load(stream);
         }
 
