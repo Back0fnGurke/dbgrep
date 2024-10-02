@@ -46,7 +46,6 @@ public class OutputHandler {
 
         final StringBuilder output = new StringBuilder();
 
-        //TODO error is here
         output.append(System.lineSeparator())
                 .append("Table name: ").append(table.name().toUpperCase())
                 .append(System.lineSeparator())

@@ -87,8 +87,8 @@ public class ValueMatcher {
      */
     private static boolean isEqualMatch(final String value, final Property<?> property) {
         try {
-            BigDecimal numericValue = new BigDecimal(value);
-            return property.getValue().equals(numericValue);
+            final BigDecimal numericValue = new BigDecimal(value);
+            return ((BigDecimal) property.getValue()).compareTo(numericValue) == 0;
         } catch (NumberFormatException e) {
             return false;
         }
@@ -103,7 +103,7 @@ public class ValueMatcher {
      */
     private static boolean isGreaterNumericMatch(final String value, final Property<?> property) {
         try {
-            BigDecimal numericValue = new BigDecimal(value);
+            final BigDecimal numericValue = new BigDecimal(value);
             return ((BigDecimal) property.getValue()).compareTo(numericValue) < 0;
         } catch (NumberFormatException e) {
             return false;
@@ -119,7 +119,7 @@ public class ValueMatcher {
      */
     private static boolean isGreaterDateMatch(final String value, final Property<?> property) {
         try {
-            LocalDate dateValue = LocalDate.parse(value);
+            final LocalDate dateValue = LocalDate.parse(value);
             return ((LocalDate) property.getValue()).isBefore(dateValue);
         } catch (DateTimeParseException e) {
             return false;
@@ -135,7 +135,7 @@ public class ValueMatcher {
      */
     private static boolean isRangeNumericMatch(final String value, final Property<?> property) {
         try {
-            BigDecimal numericValue = new BigDecimal(value);
+            final BigDecimal numericValue = new BigDecimal(value);
             final BigDecimal[] range = (BigDecimal[]) property.getValue();
             return range[0].compareTo(numericValue) <= 0 && range[1].compareTo(numericValue) >= 0;
         } catch (NumberFormatException e) {
