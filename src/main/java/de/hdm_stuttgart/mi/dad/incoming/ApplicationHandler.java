@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Handles the processing of search inputs and delegates the search operations to the service layer.
@@ -52,11 +53,17 @@ public class ApplicationHandler {
         }
         if (searchInput.searchTables()) {
             log.debug("search through tables.");
-            resultTables.addAll(service.searchThroughTables(searchInput.tables(), propertyList));
+            final List<String> tableNames = searchInput.tables();
+            service.validateTableNames(tableNames);
+            resultTables.addAll(service.searchThroughTables(tableNames, propertyList));
         }
         if (searchInput.searchColumns()) {
             log.debug("search through columns.");
-            resultTables.addAll(service.searchThroughColumns(searchInput.columns(), propertyList));
+            final Map<String, List<String>> columns = searchInput.columns();
+            for (Map.Entry<String, List<String>> entry : columns.entrySet()) {
+                service.validateColumnNames(entry.getKey(), entry.getValue());
+            }
+            resultTables.addAll(service.searchThroughColumns(columns, propertyList));
         }
 
         log.debug("result list{} size: {}", resultTables, resultTables.size());
