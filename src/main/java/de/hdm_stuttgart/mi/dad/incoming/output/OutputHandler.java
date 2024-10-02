@@ -159,7 +159,6 @@ public class OutputHandler {
      * @return a format specifier string for a column
      */
     private static String buildColumnFormatSpecifier(final int width) {
-        System.out.println(width);
         return String.format("%%-%ds| ", width);
     }
 
