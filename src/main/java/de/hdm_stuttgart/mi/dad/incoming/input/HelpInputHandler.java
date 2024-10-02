@@ -8,10 +8,12 @@ public class HelpInputHandler {
     private HelpInputHandler() {
     }
 
-    public static void handleHelp(final String[] args) throws IOException {
+    public static boolean handleHelp(final String[] args) throws IOException {
         if (hasArgument(args, ArgumentType.HELP)) {
             printManual();
+            return true;
         }
+        return false;
     }
 
     /**

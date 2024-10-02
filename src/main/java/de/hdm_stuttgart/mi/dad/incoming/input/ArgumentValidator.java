@@ -10,8 +10,8 @@ public class ArgumentValidator {
      *
      * @param args the command-line arguments
      */
-    public static void validateArguments(final String[] args) {
-        StringBuilder validationErrorMessages = new StringBuilder();
+    public static boolean isValidArguments(final String[] args) {
+        final StringBuilder validationErrorMessages = new StringBuilder();
         for (String argument : args) {
             if (!argument.startsWith("--")) {
                 continue;
@@ -28,8 +28,10 @@ public class ArgumentValidator {
 
             if (isNotValid) {
                 validationErrorMessages.append("Warning! ").append(argument).append(" is not a valid argument. Use --help to see all arguments. \n");
+                return true;
             }
         }
         System.out.println(validationErrorMessages);
+        return false;
     }
 }
