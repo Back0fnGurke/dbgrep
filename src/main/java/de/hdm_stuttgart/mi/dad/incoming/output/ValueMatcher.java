@@ -25,30 +25,34 @@ public class ValueMatcher {
     public static boolean isMatch(final String value, final List<Property<?>> properties) {
         final String checkedValue = (value == null) ? "null" : value;
 
+        boolean isMatch = false;
         for (Property<?> property : properties) {
             switch (property.getType()) {
                 case REGEX -> {
-                    return isRegexMatch(checkedValue, property);
+                    isMatch = isRegexMatch(checkedValue, property);
                 }
                 case LIKE -> {
-                    return isLikeMatch(checkedValue, property);
+                    isMatch = isLikeMatch(checkedValue, property);
                 }
                 case EQUAL -> {
-                    return isEqualMatch(checkedValue, property);
+                    isMatch = isEqualMatch(checkedValue, property);
                 }
                 case GREATER_NUMERIC -> {
-                    return isGreaterNumericMatch(checkedValue, property);
+                    isMatch = isGreaterNumericMatch(checkedValue, property);
                 }
                 case GREATER_DATE -> {
-                    return isGreaterDateMatch(checkedValue, property);
+                    isMatch = isGreaterDateMatch(checkedValue, property);
                 }
                 case RANGE_NUMERIC -> {
-                    return isRangeNumericMatch(checkedValue, property);
+                    isMatch = isRangeNumericMatch(checkedValue, property);
                 }
                 default -> throw new IllegalArgumentException("Unexpected value: " + property.getType());
             }
+            if (isMatch) {
+                break;
+            }
         }
-        return false;
+        return isMatch;
     }
 
     /**
