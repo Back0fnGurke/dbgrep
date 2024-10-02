@@ -30,19 +30,22 @@ public class Main {
      *
      * @param args user input
      */
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
         log.debug("args: {}", args);
 
+        //args = new String[]{"--profile", "postgres.cfg", "--greater", "2007-12-24", "--range", "4.0,7.0", "--regex", "test"};
+
         try {
-            ArgumentValidator.validateArguments(args);
-            HelpInputHandler.handleHelp(args);
+            if (ArgumentValidator.isValidArguments(args)) return;
+            if (HelpInputHandler.handleHelp(args)) return;
 
             final SearchInputHandler inputHandler = new SearchInputHandler();
             final ConnectionProfileHandler profileHandler = new ConnectionProfileHandler();
             final ConnectionProfile profile = profileHandler.getConnectionProfile(args);
+            //final ConnectionProfile profile = new ConnectionProfile("postgresql", "localhost", "5432", "test", "test", "test");
 
             final String url = String.format("jdbc:%s://%s:%s/%s", profile.driver(), profile.host(), profile.port(), profile.database());
-            try (Connection connection = DriverManager.getConnection(url, profile.user(), profile.password());) {
+            try (Connection connection = DriverManager.getConnection(url, profile.user(), profile.password())) {
                 final RepositoryPort repository = RepositoryFactory.createRepository(connection, profile.driver());
                 final ServicePort service = new Service(repository);
                 final ApplicationHandler applicationHandler = new ApplicationHandler(service);
