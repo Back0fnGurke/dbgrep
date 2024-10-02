@@ -1,4 +1,4 @@
-package de.hdm_stuttgart.mi.dad.connectionprofile.exception;
+package de.hdm_stuttgart.mi.dad.incoming.input.connectionprofile.exception;
 
 /**
  * Used for cases such as when a property is missing or misspelled in the connection profile.

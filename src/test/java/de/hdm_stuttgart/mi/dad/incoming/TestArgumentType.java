@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestArgumentType {
+class TestArgumentType {
 
     @Test
     void testCreatePropertyFromArgumentTypeWithLike() {

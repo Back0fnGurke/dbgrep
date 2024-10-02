@@ -1,4 +1,4 @@
-package de.hdm_stuttgart.mi.dad.connectionprofile.exception;
+package de.hdm_stuttgart.mi.dad.incoming.input.connectionprofile.exception;
 
 /**
  * Is thrown if a default profile is searched for and there are several files in the folder.
