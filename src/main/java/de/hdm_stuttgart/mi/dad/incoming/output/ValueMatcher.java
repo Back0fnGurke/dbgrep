@@ -4,6 +4,8 @@ import de.hdm_stuttgart.mi.dad.core.property.Property;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -119,7 +121,14 @@ public class ValueMatcher {
      */
     private static boolean isGreaterDateMatch(final String value, final Property<?> property) {
         try {
-            final LocalDate dateValue = LocalDate.parse(value);
+            final LocalDate dateValue;
+            if (value.contains(" ")) {
+                final String isoValue = value.replace(" ", "T");
+                final LocalDateTime dateTimeValue = LocalDateTime.parse(isoValue, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                dateValue = dateTimeValue.toLocalDate();
+            } else {
+                dateValue = LocalDate.parse(value, DateTimeFormatter.ISO_LOCAL_DATE);
+            }
             return ((LocalDate) property.getValue()).isBefore(dateValue);
         } catch (DateTimeParseException e) {
             return false;
