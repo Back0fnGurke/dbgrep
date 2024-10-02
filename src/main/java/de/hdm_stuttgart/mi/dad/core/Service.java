@@ -120,10 +120,14 @@ public class Service implements ServicePort {
                         }
                 ));
 
-                final Table table = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(propertyColumns));
-                log.debug("found rows in table: {}", table);
+                if (propertyColumns.values().stream().anyMatch(List::isEmpty)) {
+                    results.add(new Table(tableName, new ArrayList<>()));
+                } else {
+                    final Table table = repository.findTableRowsWithProperties(tableName, new LinkedHashMap<>(propertyColumns));
+                    log.debug("found rows in table: {}", table);
 
-                results.add(table);
+                    results.add(table);
+                }
             }
 
             return results.stream().filter(table -> !table.rows().isEmpty()).toList();
