@@ -4,6 +4,7 @@ import de.hdm_stuttgart.mi.dad.core.property.Property;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -85,7 +86,12 @@ public class ValueMatcher {
      * @return true if the values are equal, false otherwise
      */
     private static boolean isEqualMatch(final String value, final Property<?> property) {
-        return property.getValue().equals(new BigDecimal(value));
+        try {
+            BigDecimal numericValue = new BigDecimal(value);
+            return property.getValue().equals(numericValue);
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     /**
@@ -96,7 +102,12 @@ public class ValueMatcher {
      * @return true if the value is greater, false otherwise
      */
     private static boolean isGreaterNumericMatch(final String value, final Property<?> property) {
-        return ((BigDecimal) property.getValue()).compareTo(new BigDecimal(value)) < 0;
+        try {
+            BigDecimal numericValue = new BigDecimal(value);
+            return ((BigDecimal) property.getValue()).compareTo(numericValue) < 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     /**
@@ -107,7 +118,12 @@ public class ValueMatcher {
      * @return true if the value is greater, false otherwise
      */
     private static boolean isGreaterDateMatch(final String value, final Property<?> property) {
-        return ((LocalDate) property.getValue()).isBefore(LocalDate.parse(value));
+        try {
+            LocalDate dateValue = LocalDate.parse(value);
+            return ((LocalDate) property.getValue()).isBefore(dateValue);
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 
     /**
@@ -118,7 +134,12 @@ public class ValueMatcher {
      * @return true if the value is within the range, false otherwise
      */
     private static boolean isRangeNumericMatch(final String value, final Property<?> property) {
-        final BigDecimal[] range = (BigDecimal[]) property.getValue();
-        return range[0].compareTo(new BigDecimal(value)) <= 0 && range[1].compareTo(new BigDecimal(value)) >= 0;
+        try {
+            BigDecimal numericValue = new BigDecimal(value);
+            final BigDecimal[] range = (BigDecimal[]) property.getValue();
+            return range[0].compareTo(numericValue) <= 0 && range[1].compareTo(numericValue) >= 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }
