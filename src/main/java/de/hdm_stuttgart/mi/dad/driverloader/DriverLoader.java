@@ -2,6 +2,7 @@ package de.hdm_stuttgart.mi.dad.driverloader;
 
 import de.hdm_stuttgart.mi.dad.connectionprofile.ConnectionProfile;
 
+import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,8 +27,11 @@ public class DriverLoader {
      * @param connectionProfile the {@link ConnectionProfile} containing the driver details.
      * @throws RuntimeException if there is an error loading or registering the drivers
      */
-    public static void loadDriver(final ConnectionProfile connectionProfile) throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, SQLException, MalformedURLException {
+    public static void loadDriver(final ConnectionProfile connectionProfile) throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, SQLException, MalformedURLException, FileNotFoundException {
         final Path path = Paths.get(connectionProfile.pathToDriverJar());
+        if (!path.toFile().exists()) {
+            throw new FileNotFoundException("Driver JAR file not found: " + path);
+        }
         final URLClassLoader classLoader = new URLClassLoader(new URL[]{path.toUri().toURL()});
         final Class<?> driverClass = Class.forName(connectionProfile.driverClassName(), true, classLoader);
         final Driver driverInstance = (Driver) driverClass.getDeclaredConstructor().newInstance();

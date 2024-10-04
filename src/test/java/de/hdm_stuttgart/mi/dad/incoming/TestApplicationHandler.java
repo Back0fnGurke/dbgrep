@@ -114,8 +114,6 @@ class TestApplicationHandler {
         // given
         final List<Property<?>> properties = new ArrayList<>();
         final SearchInput searchInput = new SearchInput(properties, new ArrayList<>(), Map.of(), false, false);
-
-        // when
         when(serviceMock.searchThroughWholeDatabase(properties)).thenThrow(new ServiceException("Error"));
 
         // then
