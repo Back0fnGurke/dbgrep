@@ -102,7 +102,7 @@ class TestOutputHandler {
                 PropertyFactory.createProperty(LIKE, Pattern.compile("Harry"))
         );
 
-        OutputHandler.printTable(table, properties);
+        OutputHandler.printTable(table, properties, 0);
 
         final String expected = "Table name: TEST" + System.lineSeparator() +
                 "----------------------------------------------" + System.lineSeparator()
@@ -206,7 +206,7 @@ class TestOutputHandler {
         );
 
         provideInput("m");
-        OutputHandler.printTable(table, properties);
+        OutputHandler.printTable(table, properties, 0);
 
         final String expected = "Table name: TEST" + System.lineSeparator() +
                 "----------------------------------------------" + System.lineSeparator()
@@ -316,7 +316,7 @@ class TestOutputHandler {
         );
 
         provideInput("q");
-        OutputHandler.printTable(table, properties);
+        OutputHandler.printTable(table, properties, 0);
 
         String exspected = "Table name: TEST" + System.lineSeparator() +
                 "----------------------------------------------" + System.lineSeparator()
@@ -454,8 +454,8 @@ class TestOutputHandler {
                 PropertyFactory.createProperty(LIKE, Pattern.compile("Harry"))
         );
 
-        OutputHandler.printTable(table1, properties);
-        OutputHandler.printTable(table2, properties);
+        OutputHandler.printTable(table1, properties, 0);
+        OutputHandler.printTable(table2, properties, 0);
 
         final String expected = "Table name: TEST1" + System.lineSeparator() +
                 "----------------------------------------------" + System.lineSeparator()
@@ -627,8 +627,8 @@ class TestOutputHandler {
 
         provideInput("m");
 
-        OutputHandler.printTable(table1, properties);
-        OutputHandler.printTable(table2, properties);
+        OutputHandler.printTable(table1, properties, 0);
+        OutputHandler.printTable(table2, properties, 0);
 
         final String expected = "Table name: TEST1" + System.lineSeparator() +
                 "----------------------------------------------" + System.lineSeparator()
@@ -751,7 +751,7 @@ class TestOutputHandler {
                 PropertyFactory.createProperty(LIKE, Pattern.compile("Sarah-Jane Smith"))
         );
 
-        OutputHandler.printTable(table1, properties);
+        OutputHandler.printTable(table1, properties, 0);
 
         final String expected = "Table name: TEST1" + System.lineSeparator() +
                 "-----------------------------" + System.lineSeparator()
