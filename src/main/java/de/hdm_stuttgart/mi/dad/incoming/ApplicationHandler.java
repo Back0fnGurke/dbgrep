@@ -39,7 +39,7 @@ public class ApplicationHandler {
      *
      * @param searchInput the parsed user {@link SearchInput}
      * @return a {@link List} of {@link Table} that match the search criteria
-     * @throws {@link ServiceException} if an error occurs during the search operations
+     * @throws ServiceException if an error occurs during the search operations
      */
     public List<Table> handle(final SearchInput searchInput) throws ServiceException {
         log.debug("searchInput: {}", searchInput);
