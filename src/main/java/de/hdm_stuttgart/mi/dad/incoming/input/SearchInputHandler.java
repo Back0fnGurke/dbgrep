@@ -100,6 +100,7 @@ public class SearchInputHandler {
      *
      * @param columnNames the {@link List} of column names
      * @return a {@link Map} where the key is the table name and the value is a {@link List} of column names
+     * @throws IllegalArgumentException if the column values are not in the correct format
      */
     private Map<String, List<String>> createColumnsByTable(List<String> columnNames) {
         final Map<String, List<String>> columnsByTable = new HashMap<>();

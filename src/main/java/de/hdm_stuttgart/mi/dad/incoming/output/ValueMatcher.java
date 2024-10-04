@@ -15,6 +15,9 @@ import java.util.regex.Pattern;
  */
 public class ValueMatcher {
 
+    private ValueMatcher() {
+    }
+
     /**
      * Evaluates if the value is a match for the properties.
      *
@@ -28,29 +31,15 @@ public class ValueMatcher {
         boolean isMatch = false;
         for (Property<?> property : properties) {
             switch (property.getType()) {
-                case REGEX -> {
-                    isMatch = isRegexMatch(checkedValue, property);
-                }
-                case LIKE -> {
-                    isMatch = isLikeMatch(checkedValue, property);
-                }
-                case EQUAL -> {
-                    isMatch = isEqualMatch(checkedValue, property);
-                }
-                case GREATER_NUMERIC -> {
-                    isMatch = isGreaterNumericMatch(checkedValue, property);
-                }
-                case GREATER_DATE -> {
-                    isMatch = isGreaterDateMatch(checkedValue, property);
-                }
-                case RANGE_NUMERIC -> {
-                    isMatch = isRangeNumericMatch(checkedValue, property);
-                }
+                case REGEX -> isMatch = isRegexMatch(checkedValue, property);
+                case LIKE -> isMatch = isLikeMatch(checkedValue, property);
+                case EQUAL -> isMatch = isEqualMatch(checkedValue, property);
+                case GREATER_NUMERIC -> isMatch = isGreaterNumericMatch(checkedValue, property);
+                case GREATER_DATE -> isMatch = isGreaterDateMatch(checkedValue, property);
+                case RANGE_NUMERIC -> isMatch = isRangeNumericMatch(checkedValue, property);
                 default -> throw new IllegalArgumentException("Unexpected value: " + property.getType());
             }
-            if (isMatch) {
-                break;
-            }
+            if (isMatch) break;
         }
         return isMatch;
     }

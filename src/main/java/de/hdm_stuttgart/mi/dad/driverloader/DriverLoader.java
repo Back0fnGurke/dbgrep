@@ -12,21 +12,26 @@ import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * The `DriverLoader` class is responsible for loading and registering JDBC drivers dynamically at runtime.
+ */
 public class DriverLoader {
 
-    public static void loadDriver(final ConnectionProfile connectionProfile) {
-        try {
-            final Path path = Paths.get(connectionProfile.pathToDriverJar());
-            final URLClassLoader classLoader = new URLClassLoader(new URL[]{path.toUri().toURL()});
-            final Class<?> driverClass = Class.forName(connectionProfile.driverClassName(), true, classLoader);
-            final Driver driverInstance = (Driver) driverClass.getDeclaredConstructor().newInstance();
+    private DriverLoader() {
+    }
 
-            DriverManager.registerDriver(new DriverShim(driverInstance));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException | IllegalAccessException | NoSuchMethodException | InstantiationException |
-                 InvocationTargetException | SQLException e) {
-            throw new RuntimeException(e);
-        }
+    /**
+     * Loads and registers a JDBC driver specified in the given {@link ConnectionProfile}.
+     *
+     * @param connectionProfile the {@link ConnectionProfile} containing the driver details.
+     * @throws RuntimeException if there is an error loading or registering the drivers
+     */
+    public static void loadDriver(final ConnectionProfile connectionProfile) throws NoSuchMethodException, ClassNotFoundException, InvocationTargetException, InstantiationException, IllegalAccessException, SQLException, MalformedURLException {
+        final Path path = Paths.get(connectionProfile.pathToDriverJar());
+        final URLClassLoader classLoader = new URLClassLoader(new URL[]{path.toUri().toURL()});
+        final Class<?> driverClass = Class.forName(connectionProfile.driverClassName(), true, classLoader);
+        final Driver driverInstance = (Driver) driverClass.getDeclaredConstructor().newInstance();
+
+        DriverManager.registerDriver(new DriverShim(driverInstance));
     }
 }
