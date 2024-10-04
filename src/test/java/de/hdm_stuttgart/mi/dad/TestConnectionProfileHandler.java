@@ -1,10 +1,10 @@
-package de.hdm_stuttgart.mi.dad.incoming;
+package de.hdm_stuttgart.mi.dad;
 
-import de.hdm_stuttgart.mi.dad.incoming.input.connectionprofile.ConnectionProfile;
-import de.hdm_stuttgart.mi.dad.incoming.input.connectionprofile.ConnectionProfileHandler;
-import de.hdm_stuttgart.mi.dad.incoming.input.connectionprofile.exception.InvalidConnectionProfileException;
-import de.hdm_stuttgart.mi.dad.incoming.input.connectionprofile.exception.MultipleProfileException;
-import de.hdm_stuttgart.mi.dad.incoming.input.connectionprofile.exception.NoProfileException;
+import de.hdm_stuttgart.mi.dad.connectionprofile.ConnectionProfile;
+import de.hdm_stuttgart.mi.dad.connectionprofile.ConnectionProfileHandler;
+import de.hdm_stuttgart.mi.dad.connectionprofile.exception.InvalidConnectionProfileException;
+import de.hdm_stuttgart.mi.dad.connectionprofile.exception.MultipleProfileException;
+import de.hdm_stuttgart.mi.dad.connectionprofile.exception.NoProfileException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

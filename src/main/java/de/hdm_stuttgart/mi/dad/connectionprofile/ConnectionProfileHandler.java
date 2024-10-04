@@ -118,7 +118,7 @@ public class ConnectionProfileHandler {
      * @throws IOException                       if an I/O error occurs while reading the connection profile file.
      * @throws InvalidConnectionProfileException if the connection profile miss a property or has wrong syntax
      */
-    private ConnectionProfile getSelectedProfile(final String fileName) throws IOException, InvalidConnectionProfileException {
+    public ConnectionProfile getSelectedProfile(final String fileName) throws IOException, InvalidConnectionProfileException {
         final Path pathOfProfile = directoryOfProfiles.resolve(fileName);
         if (Files.exists(pathOfProfile) && !Files.isDirectory(pathOfProfile)) {
             return readProfileFile(pathOfProfile);
@@ -144,7 +144,7 @@ public class ConnectionProfileHandler {
         final Map<String, String> profileProperties = new HashMap<>();
         profileProperties.put("driver", configProperties.getProperty("driver"));
         profileProperties.put("driverClassName", configProperties.getProperty("driverClassName"));
-        profileProperties.put("jarName", configProperties.getProperty("jarName"));
+        profileProperties.put("pathToDriverJar", configProperties.getProperty("pathToDriverJar"));
         profileProperties.put("host", configProperties.getProperty("host"));
         profileProperties.put("port", configProperties.getProperty("port"));
         profileProperties.put("user", configProperties.getProperty("user"));
@@ -157,7 +157,7 @@ public class ConnectionProfileHandler {
             }
         }
 
-        return new ConnectionProfile(profileProperties.get("driver"), profileProperties.get("driverClassName"), profileProperties.get("jarName"), profileProperties.get("host"), profileProperties.get("port"),
+        return new ConnectionProfile(profileProperties.get("driver"), profileProperties.get("driverClassName"), profileProperties.get("pathToDriverJar"), profileProperties.get("host"), profileProperties.get("port"),
                 profileProperties.get("user"), profileProperties.get("password"), profileProperties.get("database"));
     }
 

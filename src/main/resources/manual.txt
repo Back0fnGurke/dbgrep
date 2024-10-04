@@ -12,7 +12,7 @@ user=test
 password=test
 driver=postgresql
 driverClassName=org.postgresql.Driver
-jarName=postgresql-42.7.4.jar
+pathToDriverJar=C:/drivers/postgresql-42.7.4.jar
 
 SUPPORTED DATABASES
 - PostgreSQL driver=postgresql

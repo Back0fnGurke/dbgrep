@@ -42,11 +42,9 @@ public class Main {
 
             final SearchInputHandler inputHandler = new SearchInputHandler();
             final ConnectionProfileHandler profileHandler = new ConnectionProfileHandler();
-            final DriverLoader driverLoader = new DriverLoader();
-
             final ConnectionProfile profile = profileHandler.getConnectionProfile(args);
             //final ConnectionProfile profile = new ConnectionProfile("postgresql", "org.postgresql.Driver", "I:/Uni/Semester 6/Database and application developement/dbgrep/postgresql-42.7.4.jar", "localhost", "5432", "test", "test", "test");
-            driverLoader.loadDriver(profile);
+            DriverLoader.loadDriver(profile);
 
             final String url = String.format("jdbc:%s://%s:%s/%s", profile.driver(), profile.host(), profile.port(), profile.database());
             try (Connection connection = DriverManager.getConnection(url, profile.user(), profile.password())) {
