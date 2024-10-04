@@ -20,7 +20,7 @@ public class OutputHandler {
 
     private static final Logger log = LoggerFactory.getLogger(OutputHandler.class);
 
-    private static final int PAGE_SIZE = 5;
+    private static final int PAGE_SIZE = 10;
     private static final String RED = "\u001B[31m";
     private static final String END = "\u001b[0m";
 
