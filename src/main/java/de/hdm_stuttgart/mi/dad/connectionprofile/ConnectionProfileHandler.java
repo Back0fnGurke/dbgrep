@@ -1,10 +1,10 @@
-package de.hdm_stuttgart.mi.dad.incoming.input.connectionprofile;
+package de.hdm_stuttgart.mi.dad.connectionprofile;
 
 import de.hdm_stuttgart.mi.dad.Main;
+import de.hdm_stuttgart.mi.dad.connectionprofile.exception.InvalidConnectionProfileException;
+import de.hdm_stuttgart.mi.dad.connectionprofile.exception.MultipleProfileException;
+import de.hdm_stuttgart.mi.dad.connectionprofile.exception.NoProfileException;
 import de.hdm_stuttgart.mi.dad.incoming.input.ArgumentType;
-import de.hdm_stuttgart.mi.dad.incoming.input.connectionprofile.exception.InvalidConnectionProfileException;
-import de.hdm_stuttgart.mi.dad.incoming.input.connectionprofile.exception.MultipleProfileException;
-import de.hdm_stuttgart.mi.dad.incoming.input.connectionprofile.exception.NoProfileException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -20,6 +20,7 @@ import java.util.stream.Stream;
  * Find the connection profile file in the determined directory and create a connection profile.
  */
 public class ConnectionProfileHandler {
+
     private final Path directoryOfProfiles;
 
     public ConnectionProfileHandler() throws FileNotFoundException, URISyntaxException {
@@ -68,7 +69,7 @@ public class ConnectionProfileHandler {
         final long fileCount = profiles.size();
 
         if (fileCount == 0) {
-            throw new NoProfileException("There ar no profile files located in '" + directoryOfProfiles + "'.");
+            throw new NoProfileException("There are no profile files located in '" + directoryOfProfiles + "'.");
         }
         if (fileCount > 1) {
             throw new MultipleProfileException("There are multiply profile files in '" + directoryOfProfiles + "'." +
@@ -142,6 +143,8 @@ public class ConnectionProfileHandler {
 
         final Map<String, String> profileProperties = new HashMap<>();
         profileProperties.put("driver", configProperties.getProperty("driver"));
+        profileProperties.put("driverClassName", configProperties.getProperty("driverClassName"));
+        profileProperties.put("pathToDriverJar", configProperties.getProperty("pathToDriverJar"));
         profileProperties.put("host", configProperties.getProperty("host"));
         profileProperties.put("port", configProperties.getProperty("port"));
         profileProperties.put("user", configProperties.getProperty("user"));
@@ -154,7 +157,7 @@ public class ConnectionProfileHandler {
             }
         }
 
-        return new ConnectionProfile(profileProperties.get("driver"), profileProperties.get("host"), profileProperties.get("port"),
+        return new ConnectionProfile(profileProperties.get("driver"), profileProperties.get("driverClassName"), profileProperties.get("pathToDriverJar"), profileProperties.get("host"), profileProperties.get("port"),
                 profileProperties.get("user"), profileProperties.get("password"), profileProperties.get("database"));
     }
 

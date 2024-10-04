@@ -1,5 +1,8 @@
 package de.hdm_stuttgart.mi.dad.incoming.input;
 
+/**
+ * The `ArgumentValidator` class provides methods to validate command-line arguments.
+ */
 public class ArgumentValidator {
 
     private ArgumentValidator() {
@@ -9,6 +12,7 @@ public class ArgumentValidator {
      * Validates the given command-line arguments and prints warnings for invalid arguments.
      *
      * @param args the command-line arguments
+     * @return true if there are invalid arguments, false otherwise
      */
     public static boolean isValidArguments(final String[] args) {
         final StringBuilder validationErrorMessages = new StringBuilder();
