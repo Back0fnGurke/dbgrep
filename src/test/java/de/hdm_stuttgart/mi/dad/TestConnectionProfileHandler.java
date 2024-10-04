@@ -75,6 +75,8 @@ public class TestConnectionProfileHandler {
         assertEquals(profile2.database(), "main_test_data");
         assertEquals(profile2.password(), "secret");
         assertEquals(profile2.driver(), "Driver/postgresql-42.6.0.jar");
+        assertEquals(profile2.driverClassName(), "org.postgresql.Driver");
+        assertEquals(profile2.pathToDriverJar(), "driver/postgresql-42.6.0.jar");
     }
 
     @Test

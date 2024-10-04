@@ -24,6 +24,9 @@ public class OutputHandler {
     private static final String RED = "\u001B[31m";
     private static final String END = "\u001b[0m";
 
+    private OutputHandler() {
+    }
+
     /**
      * This method prints a Table into the console.
      * Values that are a match to the given properties will be displayed in red
@@ -33,8 +36,7 @@ public class OutputHandler {
      * @param table      the output table
      * @param properties a list with values of type Property
      */
-    public void printTable(final Table table, final List<Property<?>> properties){
-
+    public static void printTable(final Table table, final List<Property<?>> properties) {
         log.debug("Output Table: {}, Properties: {}", table, properties);
 
         final List<Row> rows = table.rows();
@@ -43,6 +45,7 @@ public class OutputHandler {
         final String divider = createDivider(longest);
 
         final StringBuilder output = new StringBuilder();
+
         output.append(System.lineSeparator())
                 .append("Table name: ").append(table.name().toUpperCase())
                 .append(System.lineSeparator())
@@ -64,7 +67,7 @@ public class OutputHandler {
      * @param longest an array of the longest string lengths for each column
      * @return a divider string
      */
-    private String createDivider(final int[] longest) {
+    private static String createDivider(final int[] longest) {
         final StringBuilder divider = new StringBuilder();
         divider.repeat("-", IntStream.of(longest).sum() + (3 * longest.length) - 1);
         return divider.toString();
@@ -73,10 +76,10 @@ public class OutputHandler {
     /**
      * Finds the longest string in each column of a table.
      *
-     * @param rows            the rows of a table to analyze
+     * @param rows the rows of a table to analyze
      * @return an array of the longest string lengths for each column
      */
-    private int[] findLongestStringsOfColumns(final List<Row> rows) {
+    private static int[] findLongestStringsOfColumns(final List<Row> rows) {
         final int[] longest = new int[rows.getFirst().columns().size()];
 
         for (final Row row : rows) {
@@ -90,7 +93,7 @@ public class OutputHandler {
         }
         for (int column = 0; column < longest.length; column++) {
             int length = rows.getFirst().columns().get(column).name().length();
-            if(length > longest[column]){
+            if (length > longest[column]) {
                 longest[column] = length;
             }
         }
@@ -100,10 +103,10 @@ public class OutputHandler {
     /**
      * Prints the header of a table.
      *
-     * @param headerColumns   a List of columns of the table to print the header for
-     * @param longest         an array of the longest string lengths for each column
+     * @param headerColumns a List of columns of the table to print the header for
+     * @param longest       an array of the longest string lengths for each column
      */
-    private String buildHeader(final List<ColumnValue> headerColumns, int[] longest) {
+    private static String buildHeader(final List<ColumnValue> headerColumns, int[] longest) {
         final StringBuilder header = new StringBuilder();
         for (int column = 0; column < headerColumns.size(); column++) {
             header.append(String.format(String.format("%%-%ds| ", longest[column] + 1), headerColumns.get(column).name()));
@@ -122,7 +125,7 @@ public class OutputHandler {
      * @param start      the starting row index
      * @param end        the ending row index
      */
-    private String buildOutputTableRange(final List<Row> rows, final List<Property<?>> properties, final int[] longest, final String divider, final int start, final int end) {
+    private static String buildOutputTableRange(final List<Row> rows, final List<Property<?>> properties, final int[] longest, final String divider, final int start, final int end) {
         final StringBuilder output = new StringBuilder();
 
         for (int row = start; row < rows.size() && row <= end; row++) {
@@ -138,7 +141,7 @@ public class OutputHandler {
                 if (ValueMatcher.isMatch(columnValue, properties)) {
                     final String value = RED + columnValue + END;
                     output.append(String.format(buildColumnFormatSpecifier(longest[column] + RED.length() + END.length() + 1), value));
-                }else {
+                } else {
                     output.append(String.format(buildColumnFormatSpecifier(longest[column] + 1), columnValue));
                 }
             }
@@ -154,7 +157,7 @@ public class OutputHandler {
      * @param width the width of the column
      * @return a format specifier string for a column
      */
-    private String buildColumnFormatSpecifier(final int width) {
+    private static String buildColumnFormatSpecifier(final int width) {
         return String.format("%%-%ds| ", width);
     }
 
@@ -166,7 +169,7 @@ public class OutputHandler {
      * @param longest    an array of the longest string lengths for each column
      * @param divider    the divider string
      */
-    private void handleUserInput(final List<Row> rows, final List<Property<?>> properties, final int[] longest, final String divider) {
+    private static void handleUserInput(final List<Row> rows, final List<Property<?>> properties, final int[] longest, final String divider) {
         int index = PAGE_SIZE;
         final int tableSize = rows.size();
         if (tableSize > PAGE_SIZE) {
@@ -183,9 +186,9 @@ public class OutputHandler {
                     case "m" -> {
                         System.out.println(buildOutputTableRange(rows, properties, longest, divider, index, index + PAGE_SIZE - 1));
                         index += PAGE_SIZE;
-                        if(index >= tableSize){
+                        if (index >= tableSize) {
                             running = false;
-                        }else{
+                        } else {
                             System.out.println("Type m for more results of this table. Type q to quit this action.");
                         }
                     }
@@ -196,5 +199,4 @@ public class OutputHandler {
             }
         }
     }
-
 }

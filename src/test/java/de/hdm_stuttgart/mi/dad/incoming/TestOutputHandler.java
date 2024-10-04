@@ -44,7 +44,6 @@ class TestOutputHandler {
     @Test
     void testOutput() {
 
-        final OutputHandler outputHandler = new OutputHandler();
         final Table table = new Table("Test", Arrays.asList(
                 new Row(Arrays.asList(
                         new ColumnValue("ID", "1"),
@@ -103,7 +102,7 @@ class TestOutputHandler {
                 PropertyFactory.createProperty(LIKE, Pattern.compile("Harry"))
         );
 
-        outputHandler.printTable(table, properties);
+        OutputHandler.printTable(table, properties);
 
         final String expected = "Table name: TEST" + System.lineSeparator() +
                 "----------------------------------------------" + System.lineSeparator()
@@ -138,7 +137,6 @@ class TestOutputHandler {
     @Test
     void testOutputWithInteraction() {
 
-        final OutputHandler outputHandler = new OutputHandler();
         final Table table = new Table("Test", Arrays.asList(
                 new Row(Arrays.asList(
                         new ColumnValue("ID", "1"),
@@ -208,38 +206,38 @@ class TestOutputHandler {
         );
 
         provideInput("m");
-        outputHandler.printTable(table, properties);
+        OutputHandler.printTable(table, properties);
 
         final String expected = "Table name: TEST" + System.lineSeparator() +
                 "----------------------------------------------" + System.lineSeparator()
-                        + "ID | Name                              | Age | " + System.lineSeparator()
+                + "ID | Name                              | Age | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "1  | \u001B[31mHarry\u001b[0m                             | 30  | " + System.lineSeparator()
+                + "1  | \u001B[31mHarry\u001b[0m                             | 30  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "2  | Barry                             | 25  | " + System.lineSeparator()
+                + "2  | Barry                             | 25  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "3  | Sarah-Jane Lillian Long Long Long | 22  | " + System.lineSeparator()
+                + "3  | Sarah-Jane Lillian Long Long Long | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "4  | Matt                              | 22  | " + System.lineSeparator()
+                + "4  | Matt                              | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "5  | Xanxia                            | 22  | " + System.lineSeparator()
+                + "5  | Xanxia                            | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "6  | Kate                              | 22  | " + System.lineSeparator()
+                + "6  | Kate                              | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "7  | Flora                             | 22  | " + System.lineSeparator()
+                + "7  | Flora                             | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "8  | Bloom                             | 22  | " + System.lineSeparator()
+                + "8  | Bloom                             | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "9  | Aisha                             | 22  | " + System.lineSeparator()
+                + "9  | Aisha                             | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "10 | Musa                              | 22  | " + System.lineSeparator()
+                + "10 | Musa                              | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
                 + "Type m for more results of this table. Type q to quit this action." + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "11 | Suthek                            | 99  | " + System.lineSeparator()
+                + "11 | Suthek                            | 99  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "12 | Anubis                            | 98  | " + System.lineSeparator()
+                + "12 | Anubis                            | 98  | " + System.lineSeparator()
                 + "----------------------------------------------";
 
         assertEquals(expected, outputStreamCaptor.toString()
@@ -249,7 +247,6 @@ class TestOutputHandler {
     @Test
     void testOutputWithQuitInteraction() {
 
-        final OutputHandler outputHandler = new OutputHandler();
         final Table table = new Table("Test", Arrays.asList(
                 new Row(Arrays.asList(
                         new ColumnValue("ID", "1"),
@@ -319,32 +316,32 @@ class TestOutputHandler {
         );
 
         provideInput("q");
-        outputHandler.printTable(table, properties);
+        OutputHandler.printTable(table, properties);
 
         String exspected = "Table name: TEST" + System.lineSeparator() +
                 "----------------------------------------------" + System.lineSeparator()
-                        + "ID | Name                              | Age | " + System.lineSeparator()
+                + "ID | Name                              | Age | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "1  | \u001B[31mHarry\u001b[0m                             | 30  | " + System.lineSeparator()
+                + "1  | \u001B[31mHarry\u001b[0m                             | 30  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "2  | Barry                             | 25  | " + System.lineSeparator()
+                + "2  | Barry                             | 25  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "3  | Sarah-Jane Lillian Long Long Long | 22  | " + System.lineSeparator()
+                + "3  | Sarah-Jane Lillian Long Long Long | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "4  | Matt                              | 22  | " + System.lineSeparator()
+                + "4  | Matt                              | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "5  | Xanxia                            | 22  | " + System.lineSeparator()
+                + "5  | Xanxia                            | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "6  | Kate                              | 22  | " + System.lineSeparator()
+                + "6  | Kate                              | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "7  | Flora                             | 22  | " + System.lineSeparator()
+                + "7  | Flora                             | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "8  | Bloom                             | 22  | " + System.lineSeparator()
+                + "8  | Bloom                             | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "9  | Aisha                             | 22  | " + System.lineSeparator()
+                + "9  | Aisha                             | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "10 | Musa                              | 22  | " + System.lineSeparator()
+                + "10 | Musa                              | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
                 + "Type m for more results of this table. Type q to quit this action.";
 
@@ -355,7 +352,6 @@ class TestOutputHandler {
     @Test
     void testOutputWithMultipleTables() {
 
-        final OutputHandler outputHandler = new OutputHandler();
         final Table table1 = new Table("Test1", Arrays.asList(
                 new Row(Arrays.asList(
                         new ColumnValue("ID", "1"),
@@ -458,55 +454,55 @@ class TestOutputHandler {
                 PropertyFactory.createProperty(LIKE, Pattern.compile("Harry"))
         );
 
-        outputHandler.printTable(table1, properties);
-        outputHandler.printTable(table2, properties);
+        OutputHandler.printTable(table1, properties);
+        OutputHandler.printTable(table2, properties);
 
         final String expected = "Table name: TEST1" + System.lineSeparator() +
                 "----------------------------------------------" + System.lineSeparator()
-                        + "ID | Name                              | Age | " + System.lineSeparator()
+                + "ID | Name                              | Age | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "1  | \u001B[31mHarry\u001b[0m                             | 30  | " + System.lineSeparator()
+                + "1  | \u001B[31mHarry\u001b[0m                             | 30  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "2  | Barry                             | 25  | " + System.lineSeparator()
+                + "2  | Barry                             | 25  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "3  | Sarah-Jane Lillian Long Long Long | 22  | " + System.lineSeparator()
+                + "3  | Sarah-Jane Lillian Long Long Long | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "4  | Lara                              | 22  | " + System.lineSeparator()
+                + "4  | Lara                              | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "5  | Xanxia                            | 22  | " + System.lineSeparator()
+                + "5  | Xanxia                            | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "6  | Kate                              | 22  | " + System.lineSeparator()
+                + "6  | Kate                              | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "7  | Flora                             | 22  | " + System.lineSeparator()
+                + "7  | Flora                             | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "8  | Bloom                             | 22  | " + System.lineSeparator()
+                + "8  | Bloom                             | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "9  | Aisha                             | 22  | " + System.lineSeparator()
+                + "9  | Aisha                             | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
                 + System.lineSeparator()
                 + "Table name: TEST2" + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "ID | Name                              | Age | " + System.lineSeparator()
+                + "ID | Name                              | Age | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "1  | \u001B[31mHarry\u001b[0m                             | 30  | " + System.lineSeparator()
+                + "1  | \u001B[31mHarry\u001b[0m                             | 30  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "2  | Barry                             | 25  | " + System.lineSeparator()
+                + "2  | Barry                             | 25  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "3  | Sarah-Jane Lillian Long Long Long | 22  | " + System.lineSeparator()
+                + "3  | Sarah-Jane Lillian Long Long Long | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "4  | Matt                              | 22  | " + System.lineSeparator()
+                + "4  | Matt                              | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "5  | Xanxia                            | 22  | " + System.lineSeparator()
+                + "5  | Xanxia                            | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "6  | Kate                              | 22  | " + System.lineSeparator()
+                + "6  | Kate                              | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "7  | Flora                             | 22  | " + System.lineSeparator()
+                + "7  | Flora                             | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "8  | Bloom                             | 22  | " + System.lineSeparator()
+                + "8  | Bloom                             | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "9  | Aisha                             | 22  | " + System.lineSeparator()
+                + "9  | Aisha                             | 22  | " + System.lineSeparator()
                 + "----------------------------------------------";
 
 
@@ -517,7 +513,6 @@ class TestOutputHandler {
     @Test
     void testOutputWithMultipleTablesAndInput() {
 
-        final OutputHandler outputHandler = new OutputHandler();
         final Table table1 = new Table("Test1", Arrays.asList(
                 new Row(Arrays.asList(
                         new ColumnValue("ID", "1"),
@@ -632,61 +627,61 @@ class TestOutputHandler {
 
         provideInput("m");
 
-        outputHandler.printTable(table1, properties);
-        outputHandler.printTable(table2, properties);
+        OutputHandler.printTable(table1, properties);
+        OutputHandler.printTable(table2, properties);
 
         final String expected = "Table name: TEST1" + System.lineSeparator() +
                 "----------------------------------------------" + System.lineSeparator()
-                        + "ID | Name                              | Age | " + System.lineSeparator()
+                + "ID | Name                              | Age | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "1  | \u001B[31mHarry\u001b[0m                             | 30  | " + System.lineSeparator()
+                + "1  | \u001B[31mHarry\u001b[0m                             | 30  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "2  | Barry                             | 25  | " + System.lineSeparator()
+                + "2  | Barry                             | 25  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "3  | Sarah-Jane Lillian Long Long Long | 22  | " + System.lineSeparator()
+                + "3  | Sarah-Jane Lillian Long Long Long | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "4  | Lara                              | 22  | " + System.lineSeparator()
+                + "4  | Lara                              | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "5  | Xanxia                            | 22  | " + System.lineSeparator()
+                + "5  | Xanxia                            | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "6  | Kate                              | 22  | " + System.lineSeparator()
+                + "6  | Kate                              | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "7  | Flora                             | 22  | " + System.lineSeparator()
+                + "7  | Flora                             | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "8  | Bloom                             | 22  | " + System.lineSeparator()
+                + "8  | Bloom                             | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "9  | Aisha                             | 22  | " + System.lineSeparator()
+                + "9  | Aisha                             | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "10 | Decimo                            | 22  | " + System.lineSeparator()
+                + "10 | Decimo                            | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
                 + "Type m for more results of this table. Type q to quit this action." + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "11 | Uno                               | 22  | " + System.lineSeparator()
+                + "11 | Uno                               | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
                 + System.lineSeparator()
                 + "Table name: TEST2" + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "ID | Name                              | Age | " + System.lineSeparator()
+                + "ID | Name                              | Age | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "1  | \u001B[31mHarry\u001b[0m                             | 30  | " + System.lineSeparator()
+                + "1  | \u001B[31mHarry\u001b[0m                             | 30  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "2  | Barry                             | 25  | " + System.lineSeparator()
+                + "2  | Barry                             | 25  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "3  | Sarah-Jane Lillian Long Long Long | 22  | " + System.lineSeparator()
+                + "3  | Sarah-Jane Lillian Long Long Long | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "4  | Matt                              | 22  | " + System.lineSeparator()
+                + "4  | Matt                              | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "5  | Xanxia                            | 22  | " + System.lineSeparator()
+                + "5  | Xanxia                            | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "6  | Kate                              | 22  | " + System.lineSeparator()
+                + "6  | Kate                              | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "7  | Flora                             | 22  | " + System.lineSeparator()
+                + "7  | Flora                             | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "8  | Bloom                             | 22  | " + System.lineSeparator()
+                + "8  | Bloom                             | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                        + "9  | Aisha                             | 22  | " + System.lineSeparator()
+                + "9  | Aisha                             | 22  | " + System.lineSeparator()
                 + "----------------------------------------------";
 
 
@@ -697,7 +692,6 @@ class TestOutputHandler {
     @Test
     void testOutputColorOnLongest() {
 
-        final OutputHandler outputHandler = new OutputHandler();
         final Table table1 = new Table("Test1", Arrays.asList(
                 new Row(Arrays.asList(
                         new ColumnValue("ID", "1"),
@@ -757,32 +751,32 @@ class TestOutputHandler {
                 PropertyFactory.createProperty(LIKE, Pattern.compile("Sarah-Jane Smith"))
         );
 
-        outputHandler.printTable(table1, properties);
+        OutputHandler.printTable(table1, properties);
 
         final String expected = "Table name: TEST1" + System.lineSeparator() +
                 "-----------------------------" + System.lineSeparator()
-                        + "ID | Name             | Age | " + System.lineSeparator()
+                + "ID | Name             | Age | " + System.lineSeparator()
                 + "-----------------------------" + System.lineSeparator()
                 + "-----------------------------" + System.lineSeparator()
-                        + "1  | Harry            | 30  | " + System.lineSeparator()
+                + "1  | Harry            | 30  | " + System.lineSeparator()
                 + "-----------------------------" + System.lineSeparator()
-                        + "2  | Barry            | 25  | " + System.lineSeparator()
+                + "2  | Barry            | 25  | " + System.lineSeparator()
                 + "-----------------------------" + System.lineSeparator()
-                        + "3  | \u001B[31mSarah-Jane Smith\u001b[0m | 22  | " + System.lineSeparator()
+                + "3  | \u001B[31mSarah-Jane Smith\u001b[0m | 22  | " + System.lineSeparator()
                 + "-----------------------------" + System.lineSeparator()
-                        + "4  | Lara             | 22  | " + System.lineSeparator()
+                + "4  | Lara             | 22  | " + System.lineSeparator()
                 + "-----------------------------" + System.lineSeparator()
-                        + "5  | Xanxia           | 22  | " + System.lineSeparator()
+                + "5  | Xanxia           | 22  | " + System.lineSeparator()
                 + "-----------------------------" + System.lineSeparator()
-                        + "6  | Kate             | 22  | " + System.lineSeparator()
+                + "6  | Kate             | 22  | " + System.lineSeparator()
                 + "-----------------------------" + System.lineSeparator()
-                        + "7  | Flora            | 22  | " + System.lineSeparator()
+                + "7  | Flora            | 22  | " + System.lineSeparator()
                 + "-----------------------------" + System.lineSeparator()
-                        + "8  | Bloom            | 22  | " + System.lineSeparator()
+                + "8  | Bloom            | 22  | " + System.lineSeparator()
                 + "-----------------------------" + System.lineSeparator()
-                        + "9  | Aisha            | 22  | " + System.lineSeparator()
+                + "9  | Aisha            | 22  | " + System.lineSeparator()
                 + "-----------------------------" + System.lineSeparator()
-                        + "10 | Decimo           | 22  | " + System.lineSeparator()
+                + "10 | Decimo           | 22  | " + System.lineSeparator()
                 + "-----------------------------";
 
         assertEquals(expected, outputStreamCaptor.toString()

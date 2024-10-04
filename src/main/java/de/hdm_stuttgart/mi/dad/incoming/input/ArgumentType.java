@@ -30,7 +30,7 @@ public enum ArgumentType {
     public final String argumentString;
     public final boolean isProperty;
 
-    ArgumentType(String argumentString, boolean isProperty){
+    ArgumentType(String argumentString, boolean isProperty) {
         this.argumentString = argumentString;
         this.isProperty = isProperty;
     }
@@ -42,8 +42,8 @@ public enum ArgumentType {
      * @param stringValue  value of the argument as string
      * @return created property
      */
-    public static Property<?> createPropertyFromArgumentType(ArgumentType argumentType, String stringValue) {
-        switch (argumentType){
+    public static Property<?> createPropertyFromArgumentType(final ArgumentType argumentType, final String stringValue) {
+        switch (argumentType) {
             case LIKE -> {
                 return createPropertyWithPattern(LIKE, PropertyType.LIKE, stringValue);
             }
@@ -54,10 +54,10 @@ public enum ArgumentType {
                 try {
                     LocalDate date = LocalDate.parse(stringValue);
                     return PropertyFactory.createProperty(PropertyType.GREATER_DATE, date);
-                } catch (DateTimeParseException e1){
+                } catch (DateTimeParseException e1) {
                     try {
-                       return createPropertyWithBigDecimal(GREATER, PropertyType.GREATER_NUMERIC, stringValue);
-                    } catch (IllegalArgumentException e2){
+                        return createPropertyWithBigDecimal(GREATER, PropertyType.GREATER_NUMERIC, stringValue);
+                    } catch (IllegalArgumentException e2) {
                         throw new IllegalArgumentException(GREATER.argumentString + " argument " + stringValue + " is neither a date nor a number.");
                     }
                 }
@@ -66,17 +66,17 @@ public enum ArgumentType {
                 return createPropertyWithPattern(REGEX, PropertyType.REGEX, stringValue);
             }
             case RANGE -> {
-                String[] rangeNumberStrings = stringValue.split(",");
-                if (rangeNumberStrings.length != 2){
+                final String[] rangeNumberStrings = stringValue.split(",");
+                if (rangeNumberStrings.length != 2) {
                     throw new IllegalArgumentException(RANGE.argumentString + " can only have two numbers as arguments not " + rangeNumberStrings.length
                             + ". You can separate numbers through ','.");
                 }
                 try {
-                    BigDecimal[] rangeNumbers = new BigDecimal[2];
+                    final BigDecimal[] rangeNumbers = new BigDecimal[2];
                     rangeNumbers[0] = new BigDecimal(rangeNumberStrings[0]);
                     rangeNumbers[1] = new BigDecimal(rangeNumberStrings[1]);
                     return PropertyFactory.createProperty(PropertyType.RANGE_NUMERIC, rangeNumbers);
-                } catch (NumberFormatException e){
+                } catch (NumberFormatException e) {
                     throw new IllegalArgumentException(RANGE.argumentString + " numbers " + rangeNumberStrings[0] + " or " + rangeNumberStrings[1] +
                             " has wrong format. You have to separate the numbers through ','. Example: '--range 2.55,5.67'");
                 }
@@ -89,15 +89,15 @@ public enum ArgumentType {
      * Validates the string value for the property that uses big decimal, parses it to BigDecimal and creates the property of property type.
      *
      * @param argumentType is used for exception message
-     * @param propertyType  property type of the created property
+     * @param propertyType property type of the created property
      * @param stringValue  value of the argument as string
      * @return created property
      */
-    private static Property<?> createPropertyWithBigDecimal(ArgumentType argumentType, PropertyType propertyType, String stringValue){
+    private static Property<?> createPropertyWithBigDecimal(ArgumentType argumentType, PropertyType propertyType, String stringValue) {
         try {
             BigDecimal value = new BigDecimal(stringValue);
             return PropertyFactory.createProperty(propertyType, value);
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             throw new IllegalArgumentException(argumentType.argumentString + " number " + stringValue + " is invalid. Example of valid number: 13.554");
         }
     }
@@ -106,11 +106,11 @@ public enum ArgumentType {
      * Validates the string value for the property that uses pattern like regex and like, parses it to Pattern and creates the property of property type.
      *
      * @param argumentType is used for exception message
-     * @param propertyType  property type of the created property
+     * @param propertyType property type of the created property
      * @param stringValue  value of the argument as string
      * @return created property
      */
-    private static Property<?> createPropertyWithPattern(ArgumentType argumentType, PropertyType propertyType, String stringValue){
+    private static Property<?> createPropertyWithPattern(ArgumentType argumentType, PropertyType propertyType, String stringValue) {
         try {
             Pattern value = Pattern.compile(stringValue);
             return PropertyFactory.createProperty(propertyType, value);

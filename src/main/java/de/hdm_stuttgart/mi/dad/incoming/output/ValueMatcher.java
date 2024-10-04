@@ -4,6 +4,9 @@ import de.hdm_stuttgart.mi.dad.core.property.Property;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -11,6 +14,9 @@ import java.util.regex.Pattern;
  * Utility class for matching values against properties.
  */
 public class ValueMatcher {
+
+    private ValueMatcher() {
+    }
 
     /**
      * Evaluates if the value is a match for the properties.
@@ -22,30 +28,20 @@ public class ValueMatcher {
     public static boolean isMatch(final String value, final List<Property<?>> properties) {
         final String checkedValue = (value == null) ? "null" : value;
 
+        boolean isMatch = false;
         for (Property<?> property : properties) {
             switch (property.getType()) {
-                case REGEX -> {
-                    return isRegexMatch(checkedValue, property);
-                }
-                case LIKE -> {
-                    return isLikeMatch(checkedValue, property);
-                }
-                case EQUAL -> {
-                    return isEqualMatch(checkedValue, property);
-                }
-                case GREATER_NUMERIC -> {
-                    return isGreaterNumericMatch(checkedValue, property);
-                }
-                case GREATER_DATE -> {
-                    return isGreaterDateMatch(checkedValue, property);
-                }
-                case RANGE_NUMERIC -> {
-                    return isRangeNumericMatch(checkedValue, property);
-                }
+                case REGEX -> isMatch = isRegexMatch(checkedValue, property);
+                case LIKE -> isMatch = isLikeMatch(checkedValue, property);
+                case EQUAL -> isMatch = isEqualMatch(checkedValue, property);
+                case GREATER_NUMERIC -> isMatch = isGreaterNumericMatch(checkedValue, property);
+                case GREATER_DATE -> isMatch = isGreaterDateMatch(checkedValue, property);
+                case RANGE_NUMERIC -> isMatch = isRangeNumericMatch(checkedValue, property);
                 default -> throw new IllegalArgumentException("Unexpected value: " + property.getType());
             }
+            if (isMatch) break;
         }
-        return false;
+        return isMatch;
     }
 
     /**
@@ -85,7 +81,12 @@ public class ValueMatcher {
      * @return true if the values are equal, false otherwise
      */
     private static boolean isEqualMatch(final String value, final Property<?> property) {
-        return property.getValue().equals(new BigDecimal(value));
+        try {
+            final BigDecimal numericValue = new BigDecimal(value);
+            return ((BigDecimal) property.getValue()).compareTo(numericValue) == 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     /**
@@ -96,7 +97,12 @@ public class ValueMatcher {
      * @return true if the value is greater, false otherwise
      */
     private static boolean isGreaterNumericMatch(final String value, final Property<?> property) {
-        return ((BigDecimal) property.getValue()).compareTo(new BigDecimal(value)) < 0;
+        try {
+            final BigDecimal numericValue = new BigDecimal(value);
+            return ((BigDecimal) property.getValue()).compareTo(numericValue) < 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     /**
@@ -107,7 +113,19 @@ public class ValueMatcher {
      * @return true if the value is greater, false otherwise
      */
     private static boolean isGreaterDateMatch(final String value, final Property<?> property) {
-        return ((LocalDate) property.getValue()).isBefore(LocalDate.parse(value));
+        try {
+            final LocalDate dateValue;
+            if (value.contains(" ")) {
+                final String isoValue = value.replace(" ", "T");
+                final LocalDateTime dateTimeValue = LocalDateTime.parse(isoValue, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                dateValue = dateTimeValue.toLocalDate();
+            } else {
+                dateValue = LocalDate.parse(value, DateTimeFormatter.ISO_LOCAL_DATE);
+            }
+            return ((LocalDate) property.getValue()).isBefore(dateValue);
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 
     /**
@@ -118,7 +136,12 @@ public class ValueMatcher {
      * @return true if the value is within the range, false otherwise
      */
     private static boolean isRangeNumericMatch(final String value, final Property<?> property) {
-        final BigDecimal[] range = (BigDecimal[]) property.getValue();
-        return range[0].compareTo(new BigDecimal(value)) <= 0 && range[1].compareTo(new BigDecimal(value)) >= 0;
+        try {
+            final BigDecimal numericValue = new BigDecimal(value);
+            final BigDecimal[] range = (BigDecimal[]) property.getValue();
+            return range[0].compareTo(numericValue) <= 0 && range[1].compareTo(numericValue) >= 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

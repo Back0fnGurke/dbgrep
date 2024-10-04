@@ -8,7 +8,7 @@
       </pattern>
     </extension>
     <option name="PACKAGE_NAME" value="de.hdm_stuttgart.mi.dad" />
-    <option name="MAIN_CLASS_NAME" value="de.hdm_stuttgart.mi.dad.TestInputHandler" />
+      <option name="MAIN_CLASS_NAME" value="de.hdm_stuttgart.mi.dad.incoming.TestSearchInputHandler"/>
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="class" />
     <option name="VM_PARAMETERS" value="-ea -Dnet.bytebuddy.experimental=true -XX:+EnableDynamicAgentLoading" />

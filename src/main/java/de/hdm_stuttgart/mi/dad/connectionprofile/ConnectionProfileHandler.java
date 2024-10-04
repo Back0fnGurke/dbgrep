@@ -1,5 +1,6 @@
 package de.hdm_stuttgart.mi.dad.connectionprofile;
 
+import de.hdm_stuttgart.mi.dad.Main;
 import de.hdm_stuttgart.mi.dad.connectionprofile.exception.InvalidConnectionProfileException;
 import de.hdm_stuttgart.mi.dad.connectionprofile.exception.MultipleProfileException;
 import de.hdm_stuttgart.mi.dad.connectionprofile.exception.NoProfileException;
@@ -8,8 +9,10 @@ import de.hdm_stuttgart.mi.dad.incoming.input.ArgumentType;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -17,14 +20,37 @@ import java.util.stream.Stream;
  * Find the connection profile file in the determined directory and create a connection profile.
  */
 public class ConnectionProfileHandler {
+
     private final Path directoryOfProfiles;
 
-    public ConnectionProfileHandler(final Path directory) throws FileNotFoundException {
-        if (!Files.exists(directory)) {
-            throw new FileNotFoundException("Please create a directory with the name “connection_profiles” at the directory where" +
-                    " the jar file is located. Add at least one connection profile there.");
+    public ConnectionProfileHandler() throws FileNotFoundException, URISyntaxException {
+        this.directoryOfProfiles = getConnectionProfileDirectory();
+
+        if (!Files.exists(directoryOfProfiles)) {
+            throw new FileNotFoundException("Please create a directory with the name \"connection_profiles\" at the root directory" +
+                    " of the jar file and add at least one connection profile to it.");
         }
-        directoryOfProfiles = directory;
+    }
+
+    public ConnectionProfileHandler(Path directoryOfProfiles) throws FileNotFoundException {
+        this.directoryOfProfiles = directoryOfProfiles;
+
+        if (!Files.exists(directoryOfProfiles)) {
+            throw new FileNotFoundException("Please create a directory with the name \"connection_profiles\" at the root directory" +
+                    " of the jar file and add at least one connection profile to it.");
+        }
+    }
+
+    /**
+     * Locate the root directory of the jar and check if the connection profile folder exists.
+     * If not, an exception is thrown.
+     *
+     * @return path of connection profile directory
+     * @throws URISyntaxException if creating the uri from the path of the jar fails
+     */
+    private static Path getConnectionProfileDirectory() throws URISyntaxException {
+        Path path = Paths.get(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+        return path.getParent().resolve("connection_profiles");
     }
 
     /**
@@ -32,9 +58,9 @@ public class ConnectionProfileHandler {
      * else an exception is thrown.
      *
      * @return a connection profile of the profile file
-     * @throws IOException if an I/O error occurs while reading the connection profile file.
-     * @throws NoProfileException if no file exist in directoryOfProfiles
-     * @throws MultipleProfileException if more than one file exist in directoryOfProfiles
+     * @throws IOException                       if an I/O error occurs while reading the connection profile file.
+     * @throws NoProfileException                if no file exist in directoryOfProfiles
+     * @throws MultipleProfileException          if more than one file exist in directoryOfProfiles
      * @throws InvalidConnectionProfileException if the connection profile miss a property or has wrong syntax
      */
     public ConnectionProfile getDefaultProfile() throws NoProfileException, MultipleProfileException, IOException, InvalidConnectionProfileException {
@@ -43,30 +69,14 @@ public class ConnectionProfileHandler {
         final long fileCount = profiles.size();
 
         if (fileCount == 0) {
-            throw new NoProfileException("There is no profile file in '" + directoryOfProfiles + "'.");
+            throw new NoProfileException("There are no profile files located in '" + directoryOfProfiles + "'.");
         }
         if (fileCount > 1) {
-            throw new MultipleProfileException("There are multiply profile files in '" + directoryOfProfiles + "'.");
+            throw new MultipleProfileException("There are multiply profile files in '" + directoryOfProfiles + "'." +
+                    "Please specify the profile that should be used with the option: " + ArgumentType.PROFILE);
         }
 
         return readProfileFile(profiles.getFirst());
-    }
-
-    /**
-     * Test if a file of the file name exist and create a connection profile
-     *
-     * @param fileName the file name of the connection profile
-     * @return a connection profile object of the file
-     * @throws IOException if an I/O error occurs while reading the connection profile file.
-     * @throws InvalidConnectionProfileException if the connection profile miss a property or has wrong syntax
-     */
-    public ConnectionProfile getSelectedProfile(final String fileName) throws IOException, InvalidConnectionProfileException {
-        final Path pathOfProfile = directoryOfProfiles.resolve(fileName);
-        if (Files.exists(pathOfProfile) && !Files.isDirectory(pathOfProfile)) {
-            return readProfileFile(pathOfProfile);
-        }
-        throw new FileNotFoundException("File '" + fileName + "' does not exist in '" +
-                directoryOfProfiles + "'.");
     }
 
     /**
@@ -101,11 +111,28 @@ public class ConnectionProfileHandler {
     }
 
     /**
+     * Test if a file of the file name exist and create a connection profile
+     *
+     * @param fileName the file name of the connection profile
+     * @return a connection profile object of the file
+     * @throws IOException                       if an I/O error occurs while reading the connection profile file.
+     * @throws InvalidConnectionProfileException if the connection profile miss a property or has wrong syntax
+     */
+    public ConnectionProfile getSelectedProfile(final String fileName) throws IOException, InvalidConnectionProfileException {
+        final Path pathOfProfile = directoryOfProfiles.resolve(fileName);
+        if (Files.exists(pathOfProfile) && !Files.isDirectory(pathOfProfile)) {
+            return readProfileFile(pathOfProfile);
+        }
+        throw new FileNotFoundException("File '" + fileName + "' does not exist in '" +
+                directoryOfProfiles + "'.");
+    }
+
+    /**
      * Read the connection profile file and filter for certain properties and pass this value to the ConnectionProfile
      *
      * @param pathOfProfile of read connection profile file
      * @return ConnectionProfile from the read connection profile file
-     * @throws IOException if an I/O error occurs while reading the connection profile file.
+     * @throws IOException                       if an I/O error occurs while reading the connection profile file.
      * @throws InvalidConnectionProfileException if the connection profile miss a property or has wrong syntax
      */
     private ConnectionProfile readProfileFile(final Path pathOfProfile) throws IOException, InvalidConnectionProfileException {
@@ -116,6 +143,8 @@ public class ConnectionProfileHandler {
 
         final Map<String, String> profileProperties = new HashMap<>();
         profileProperties.put("driver", configProperties.getProperty("driver"));
+        profileProperties.put("driverClassName", configProperties.getProperty("driverClassName"));
+        profileProperties.put("pathToDriverJar", configProperties.getProperty("pathToDriverJar"));
         profileProperties.put("host", configProperties.getProperty("host"));
         profileProperties.put("port", configProperties.getProperty("port"));
         profileProperties.put("user", configProperties.getProperty("user"));
@@ -128,7 +157,7 @@ public class ConnectionProfileHandler {
             }
         }
 
-        return new ConnectionProfile(profileProperties.get("driver"), profileProperties.get("host"), profileProperties.get("port"),
+        return new ConnectionProfile(profileProperties.get("driver"), profileProperties.get("driverClassName"), profileProperties.get("pathToDriverJar"), profileProperties.get("host"), profileProperties.get("port"),
                 profileProperties.get("user"), profileProperties.get("password"), profileProperties.get("database"));
     }
 
@@ -138,9 +167,9 @@ public class ConnectionProfileHandler {
      * If no --profile command is available, the default profile is searched for.
      *
      * @return ConnectionProfile from given file name or default profile
-     * @throws IOException if an I/O error occurs while reading the connection profile file.
-     * @throws NoProfileException if no file exist in directoryOfProfiles
-     * @throws MultipleProfileException if more than one file exist in directoryOfProfiles
+     * @throws IOException                       if an I/O error occurs while reading the connection profile file.
+     * @throws NoProfileException                if no file exist in directoryOfProfiles
+     * @throws MultipleProfileException          if more than one file exist in directoryOfProfiles
      * @throws InvalidConnectionProfileException if the connection profile miss a property or has wrong syntax
      */
     public ConnectionProfile getConnectionProfile(final String[] args) throws IOException, NoProfileException, MultipleProfileException, InvalidConnectionProfileException {

@@ -1,8 +1,8 @@
 DESCRIPTION
 dbgrep is a database command, which searches a database for matching entries and displays them in the console.
 The complete row where the match was found is displayed and the matching element is highlighted in red.
-Before using the command you have to start your database and create a folder 'connection_profiles' in the directory where the jar file is located.
-Add a connection profile of your database there.
+Before using the command you have to start your database and create the folders 'connection_profiles' and 'drivers' in the directory where the jar file is located.
+Add a connection profile of your database and its driver jar there.
 
 Example connection profile, spaces are ignored:
 host=localhost
@@ -11,6 +11,8 @@ database=test
 user=test
 password=test
 driver=postgresql
+driverClassName=org.postgresql.Driver
+pathToDriverJar=C:/drivers/postgresql-42.7.4.jar
 
 SUPPORTED DATABASES
 - PostgreSQL driver=postgresql
@@ -24,14 +26,14 @@ OPTIONS
                       Not specifying a connection profile while having multiple profiles defined in the connection_profiles folder results in an error.
                       Can be omitted if only one profile exists.
 
-You can use several of the below options or one several times, if you input none of them, it will search the whole database.
+You can use several of the below options or one several times, if you searchInput none of them, it will search the whole database.
 
 --column    String    The column to search through. Syntax: ["table name"."column name"], e.g. "account.first_name".
 --table     String    The table or view to search through.
 
 PARAMETERS FOR MATCHING
 If you use more than one parameter, the command finds only matches that fit all parameters.
-Numerical input values should be represented in American numerical notation, e.g. "1.56".
+Numerical searchInput values should be represented in American numerical notation, e.g. "1.56".
 
 --equal     String      Match entries with equal numeric values.
 --like      String      Match entries against the database's like operation and its syntax.

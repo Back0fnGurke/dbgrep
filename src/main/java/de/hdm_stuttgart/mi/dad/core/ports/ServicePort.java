@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Defines methods needed for functionality of the Handler classes.
+ * Defines methods needed for functionality of the ApplicationHandler classes.
  */
 public interface ServicePort {
     /**
