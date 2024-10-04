@@ -211,13 +211,11 @@ public class OutputHandler {
      * @param countOfRemainingTables count of remaining tables that have not been printed
      */
     private static void printUserInputInfo(int tableSize, int index, int countOfRemainingTables) {
-        String message = "There are" + tableSize + "matching entries from this table.";
-        message += "Of these, " + index + " have been printed. \n";
+        String message = "There are " + tableSize + " matching entries from this table. ";
+        message += "Of these, " + index + " have been printed.\n";
         message += "Type m for more entries. ";
-        if (countOfRemainingTables > 1) {
-            message += "Type c to close this table and print the next table. There are " + countOfRemainingTables + " remaining tables.";
-        } else if (countOfRemainingTables == 1) {
-            message += "Type c to close this table and print the next table. There is " + countOfRemainingTables + " remaining table.";
+        if (countOfRemainingTables > 0) {
+            message += "Type c to close this table and print the next table. There are " + countOfRemainingTables + " remaining tables. ";
         }
         message += "Type q to quit.";
         System.out.println(message);

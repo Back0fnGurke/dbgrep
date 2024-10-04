@@ -102,7 +102,7 @@ class TestOutputHandler {
                 PropertyFactory.createProperty(LIKE, Pattern.compile("Harry"))
         );
 
-        OutputHandler.printTable(table, properties);
+        OutputHandler.printTable(table, properties, 0);
 
         final String expected = "Table name: TEST" + System.lineSeparator() +
                 "----------------------------------------------" + System.lineSeparator()
@@ -206,7 +206,7 @@ class TestOutputHandler {
         );
 
         provideInput("m");
-        OutputHandler.printTable(table, properties);
+        OutputHandler.printTable(table, properties, 0);
 
         final String expected = "Table name: TEST" + System.lineSeparator() +
                 "----------------------------------------------" + System.lineSeparator()
@@ -233,7 +233,8 @@ class TestOutputHandler {
                 + "----------------------------------------------" + System.lineSeparator()
                 + "10 | Musa                              | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                + "Type m for more results of this table. Type q to quit this action." + System.lineSeparator()
+                + "There are 12 matching entries from this table. Of these, 10 have been printed.\n"
+                + "Type m for more entries. Type q to quit." + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
                 + "11 | Suthek                            | 99  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
@@ -315,8 +316,8 @@ class TestOutputHandler {
                 PropertyFactory.createProperty(LIKE, Pattern.compile("Harry"))
         );
 
-        provideInput("q");
-        OutputHandler.printTable(table, properties);
+        provideInput("c");
+        OutputHandler.printTable(table, properties, 0);
 
         String exspected = "Table name: TEST" + System.lineSeparator() +
                 "----------------------------------------------" + System.lineSeparator()
@@ -343,7 +344,8 @@ class TestOutputHandler {
                 + "----------------------------------------------" + System.lineSeparator()
                 + "10 | Musa                              | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                + "Type m for more results of this table. Type q to quit this action.";
+                + "There are 12 matching entries from this table. Of these, 10 have been printed.\n"
+                + "Type m for more entries. Type q to quit.";
 
         assertEquals(exspected, outputStreamCaptor.toString()
                 .trim());
@@ -454,8 +456,8 @@ class TestOutputHandler {
                 PropertyFactory.createProperty(LIKE, Pattern.compile("Harry"))
         );
 
-        OutputHandler.printTable(table1, properties);
-        OutputHandler.printTable(table2, properties);
+        OutputHandler.printTable(table1, properties, 0);
+        OutputHandler.printTable(table2, properties, 0);
 
         final String expected = "Table name: TEST1" + System.lineSeparator() +
                 "----------------------------------------------" + System.lineSeparator()
@@ -627,8 +629,8 @@ class TestOutputHandler {
 
         provideInput("m");
 
-        OutputHandler.printTable(table1, properties);
-        OutputHandler.printTable(table2, properties);
+        OutputHandler.printTable(table1, properties, 0);
+        OutputHandler.printTable(table2, properties, 0);
 
         final String expected = "Table name: TEST1" + System.lineSeparator() +
                 "----------------------------------------------" + System.lineSeparator()
@@ -655,7 +657,8 @@ class TestOutputHandler {
                 + "----------------------------------------------" + System.lineSeparator()
                 + "10 | Decimo                            | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
-                + "Type m for more results of this table. Type q to quit this action." + System.lineSeparator()
+                + "There are 11 matching entries from this table. Of these, 10 have been printed.\n"
+                + "Type m for more entries. Type q to quit." + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
                 + "11 | Uno                               | 22  | " + System.lineSeparator()
                 + "----------------------------------------------" + System.lineSeparator()
@@ -751,7 +754,7 @@ class TestOutputHandler {
                 PropertyFactory.createProperty(LIKE, Pattern.compile("Sarah-Jane Smith"))
         );
 
-        OutputHandler.printTable(table1, properties);
+        OutputHandler.printTable(table1, properties, 0);
 
         final String expected = "Table name: TEST1" + System.lineSeparator() +
                 "-----------------------------" + System.lineSeparator()
