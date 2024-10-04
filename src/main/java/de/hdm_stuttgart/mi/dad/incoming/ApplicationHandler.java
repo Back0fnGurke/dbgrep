@@ -32,7 +32,6 @@ public class ApplicationHandler {
         this.service = service;
     }
 
-
     /**
      * Processes the given {@link SearchInput} and performs the search operations based on the input parameters.
      * The search can be performed on the whole database, specific tables, and or specific columns.
@@ -42,31 +41,31 @@ public class ApplicationHandler {
      * @throws ServiceException if an error occurs during the search operations
      */
     public List<Table> handle(final SearchInput searchInput) throws ServiceException {
-        log.debug("searchInput: {}", searchInput);
+        log.debug("Called with searchInput: {}", searchInput);
 
         final List<Property<?>> propertyList = searchInput.propertyList();
         final List<Table> resultTables = new ArrayList<>();
 
         if (!searchInput.searchTables() && !searchInput.searchColumns()) {
-            log.debug("search through whole database.");
+            log.debug("Searching through whole database.");
             resultTables.addAll(service.searchThroughWholeDatabase(propertyList));
         }
         if (searchInput.searchTables()) {
-            log.debug("search through tables.");
+            log.debug("Searching through tables.");
             final List<String> tableNames = searchInput.tables();
             service.validateTableNames(tableNames);
             resultTables.addAll(service.searchThroughTables(tableNames, propertyList));
         }
         if (searchInput.searchColumns()) {
-            log.debug("search through columns.");
+            log.debug("Searching through columns.");
             final Map<String, List<String>> columns = searchInput.columns();
-            for (Map.Entry<String, List<String>> entry : columns.entrySet()) {
+            for (final Map.Entry<String, List<String>> entry : columns.entrySet()) {
                 service.validateColumnNames(entry.getKey(), entry.getValue());
             }
             resultTables.addAll(service.searchThroughColumns(columns, propertyList));
         }
 
-        log.debug("result list{} size: {}", resultTables, resultTables.size());
+        log.debug("Result list size: {}", resultTables.size());
         return resultTables;
     }
 }

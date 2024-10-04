@@ -32,13 +32,13 @@ public final class QueryBuilder {
      */
     private final Map<PropertyType, String> propertyExpressions;
 
-
     /**
      * Constructor for QueryBuilder.
      *
      * @param propertyExpressions a map of property expressions used to generate the WHERE clause of the SQL query.
      */
     public QueryBuilder(final Map<PropertyType, String> propertyExpressions) {
+        log.debug("Initializing QueryBuilder with propertyExpressions: {}", propertyExpressions);
         this.propertyExpressions = Map.copyOf(propertyExpressions);
     }
 
@@ -50,12 +50,10 @@ public final class QueryBuilder {
      * @return the SQL query string.
      */
     public String buildQueryString(final String tableName, final LinkedHashMap<Property<?>, List<String>> propertyColumns) {
-        log.debug("tableName: {}, propertyColumns: {}", tableName, propertyColumns);
-
+        log.debug("Called buildQueryString with tableName: {}, propertyColumns: {}", tableName, propertyColumns);
         final StringBuilder query = new StringBuilder();
         query.append("SELECT * FROM ").append(tableName).append(" WHERE ").append(getWhereClause(propertyColumns));
-        log.debug("sql query string with placeholders: {}", query);
-
+        log.debug("Returning SQL query string: {}", query);
         return query.toString();
     }
 
@@ -66,6 +64,7 @@ public final class QueryBuilder {
      * @return the WHERE clause of the SQL query.
      */
     private String getWhereClause(final Map<Property<?>, List<String>> propertyColumns) {
+        log.debug("Called getWhereClause with propertyColumns: {}", propertyColumns);
         final StringBuilder clause = new StringBuilder();
         final int propertyColumnsCount = propertyColumns.size();
 
@@ -80,6 +79,7 @@ public final class QueryBuilder {
             index++;
         }
 
+        log.debug("Returning WHERE clause: {}", clause);
         return clause.toString();
     }
 
@@ -91,6 +91,7 @@ public final class QueryBuilder {
      * @return the SQL statement for the column.
      */
     private String getStatementForColumn(final List<String> columnNames, final Property<?> property) {
+        log.debug("Called getStatementForColumn with columnNames: {}, property: {}", columnNames, property);
         final StringBuilder statement = new StringBuilder();
         statement.append("(");
 
@@ -103,6 +104,7 @@ public final class QueryBuilder {
         }
 
         statement.append(")");
+        log.debug("Returning SQL statement for column: {}", statement);
         return statement.toString();
     }
 }
