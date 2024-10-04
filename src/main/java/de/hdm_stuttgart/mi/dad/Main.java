@@ -55,7 +55,7 @@ public class Main {
 
                 for (Table table : resultTables) {
                     if (!table.rows().isEmpty()) {
-                        OutputHandler.printTable(table, searchInput.propertyList());
+                        OutputHandler.printTable(table, searchInput.propertyList(), resultTables.size() - resultTables.indexOf(table) - 1);
                     }
                 }
             }
