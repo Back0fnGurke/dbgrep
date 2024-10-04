@@ -31,6 +31,15 @@ public class ConnectionProfileHandler {
         }
     }
 
+    public ConnectionProfileHandler(Path directoryOfProfiles) throws FileNotFoundException {
+        this.directoryOfProfiles = directoryOfProfiles;
+
+        if (!Files.exists(directoryOfProfiles)) {
+            throw new FileNotFoundException("Please create a directory with the name \"connection_profiles\" at the root directory" +
+                    " of the jar file and add at least one connection profile to it.");
+        }
+    }
+
     /**
      * Locate the root directory of the jar and check if the connection profile folder exists.
      * If not, an exception is thrown.
