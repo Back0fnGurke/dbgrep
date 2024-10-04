@@ -55,9 +55,9 @@ public class OutputHandler {
 
     private static void displayPage(final Page page, final int currentPage, final int totalPages) {
         log.debug("Called with page: {}, currentPage: {}, totalPages: {}", page, currentPage, totalPages);
-        System.out.println("\n" + page.content.trim());
-        System.out.printf(BOLD + YELLOW + "Page %d of %d " + RESET + "\n", currentPage, totalPages);
-        System.out.printf("%n" + GREEN + "Enter " + BOLD + BLUE + "N" + RESET + GREEN + " for next page, " + BLUE + "P" + RESET + GREEN + " for previous page, " + BLUE + "Q" + RESET + GREEN + " to quit:" + RESET);
+        System.out.println(System.lineSeparator() + page.content.trim());
+        System.out.printf(BOLD + YELLOW + "Page %d of %d " + RESET + System.lineSeparator(), currentPage, totalPages);
+        System.out.printf(System.lineSeparator() + GREEN + "Enter " + BOLD + BLUE + "N" + RESET + GREEN + " for next page, " + BOLD + BLUE + "P" + RESET + GREEN + " for previous page, " + BOLD + BLUE + "Q" + RESET + GREEN + " to quit:" + RESET);
         log.debug("Completed");
     }
 
