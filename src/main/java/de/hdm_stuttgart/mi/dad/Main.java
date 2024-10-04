@@ -34,8 +34,6 @@ public class Main {
     public static void main(String[] args) {
         log.debug("args: {}", args);
 
-        //args = new String[]{"--profile", "postgres.cfg", "--greater", "2007-12-24", "--range", "4.0,7.0", "--regex", "test"};
-
         try {
             if (ArgumentValidator.isValidArguments(args)) return;
             if (HelpInputHandler.handleHelp(args)) return;
@@ -43,7 +41,6 @@ public class Main {
             final SearchInputHandler inputHandler = new SearchInputHandler();
             final ConnectionProfileHandler profileHandler = new ConnectionProfileHandler();
             final ConnectionProfile profile = profileHandler.getConnectionProfile(args);
-            //final ConnectionProfile profile = new ConnectionProfile("postgresql", "org.postgresql.Driver", "I:/Uni/Semester 6/Database and application developement/dbgrep/postgresql-42.7.4.jar", "localhost", "5432", "test", "test", "test");
             DriverLoader.loadDriver(profile);
 
             final String url = String.format("jdbc:%s://%s:%s/%s", profile.driver(), profile.host(), profile.port(), profile.database());
