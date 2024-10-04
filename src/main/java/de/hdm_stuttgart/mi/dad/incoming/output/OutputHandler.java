@@ -36,7 +36,7 @@ public class OutputHandler {
      * @param table      the output table
      * @param properties a list with values of type Property
      */
-    public static void printTable(final Table table, final List<Property<?>> properties) {
+    public static void printTable(final Table table, final List<Property<?>> properties, final int countOfRemainingTables) {
         log.debug("Output Table: {}, Properties: {}", table, properties);
 
         final List<Row> rows = table.rows();
@@ -58,7 +58,7 @@ public class OutputHandler {
                 .append(System.lineSeparator());
 
         System.out.print(output);
-        handleUserInput(rows, properties, longest, divider);
+        handleUserInput(rows, properties, longest, divider, countOfRemainingTables);
     }
 
     /**
@@ -169,17 +169,17 @@ public class OutputHandler {
      * @param longest    an array of the longest string lengths for each column
      * @param divider    the divider string
      */
-    private static void handleUserInput(final List<Row> rows, final List<Property<?>> properties, final int[] longest, final String divider) {
+    private static void handleUserInput(final List<Row> rows, final List<Property<?>> properties, final int[] longest, final String divider, final int countOfRemainingTables) {
         int index = PAGE_SIZE;
         final int tableSize = rows.size();
         if (tableSize > PAGE_SIZE) {
-            System.out.println("Type m for more results of this table. Type q to quit this action.");
+            printUserInputInfo(tableSize, index, countOfRemainingTables);
 
             final Scanner in = new Scanner(System.in);
             String input;
 
-            boolean running = true;
-            while (running) {
+            boolean tableIsRunning = true;
+            while (tableIsRunning) {
 
                 input = in.nextLine();
                 switch (input) {
@@ -187,16 +187,39 @@ public class OutputHandler {
                         System.out.println(buildOutputTableRange(rows, properties, longest, divider, index, index + PAGE_SIZE - 1));
                         index += PAGE_SIZE;
                         if (index >= tableSize) {
-                            running = false;
+                            tableIsRunning = false;
                         } else {
-                            System.out.println("Type m for more results of this table. Type q to quit this action.");
+                            printUserInputInfo(tableSize, index, countOfRemainingTables);
                         }
                     }
-                    case "q" -> running = false;
-                    default ->
-                            System.out.println("Invalid input. Type m for more results of this table. Type q to quit this action.");
+                    case "c" -> tableIsRunning = false;
+                    case "q" -> System.exit(0);
+                    default -> {
+                        System.out.println("Invalid input.");
+                        printUserInputInfo(tableSize, index, countOfRemainingTables);
+                    }
                 }
             }
         }
+    }
+
+    /**
+     * Prints a message about possible user input commands.
+     *
+     * @param tableSize              count of matching entries
+     * @param index                  count of already printed entries
+     * @param countOfRemainingTables count of remaining tables that have not been printed
+     */
+    private static void printUserInputInfo(int tableSize, int index, int countOfRemainingTables) {
+        String message = "There are" + tableSize + "matching entries from this table.";
+        message += "Of these, " + index + " have been printed. \n";
+        message += "Type m for more entries. ";
+        if (countOfRemainingTables > 1) {
+            message += "Type c to close this table and print the next table. There are " + countOfRemainingTables + " remaining tables.";
+        } else if (countOfRemainingTables == 1) {
+            message += "Type c to close this table and print the next table. There is " + countOfRemainingTables + " remaining table.";
+        }
+        message += "Type q to quit.";
+        System.out.println(message);
     }
 }
