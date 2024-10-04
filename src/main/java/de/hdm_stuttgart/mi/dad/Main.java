@@ -32,7 +32,7 @@ public class Main {
      * @param args user input
      */
     public static void main(String[] args) {
-        log.debug("args: {}", args);
+        log.debug("args: {}", (Object) args);
 
         try {
             if (ArgumentValidator.isValidArguments(args)) return;

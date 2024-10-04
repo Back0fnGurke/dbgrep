@@ -98,7 +98,7 @@ public class ConnectionProfileHandler {
                     "Please specify the profile that should be used with the option: " + ArgumentType.PROFILE);
         }
 
-        final ConnectionProfile result = readProfileFile(profiles.get(0));
+        final ConnectionProfile result = readProfileFile(profiles.getFirst());
         log.debug("Returning: {}", result);
         return result;
     }

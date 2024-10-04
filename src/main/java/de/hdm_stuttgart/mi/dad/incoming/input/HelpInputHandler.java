@@ -25,7 +25,7 @@ public class HelpInputHandler {
      */
     public static boolean handleHelp(final String[] args) throws IOException {
         log.debug("Called with args: {}", (Object) args);
-        if (hasArgument(args, ArgumentType.HELP)) {
+        if (hasArgument(args)) {
             printManual();
             log.debug("Returning: true");
             return true;
@@ -61,13 +61,12 @@ public class HelpInputHandler {
     /**
      * Checks if the specified {@link ArgumentType} is present in the command-line arguments.
      *
-     * @param args     the command-line arguments
-     * @param argument the {@link ArgumentType} to check for
+     * @param args the command-line arguments
      * @return true if the {@link ArgumentType} is present, false otherwise
      */
-    private static boolean hasArgument(final String[] args, final ArgumentType argument) {
-        log.debug("Called with args: {}, argument: {}", args, argument);
-        final boolean result = Arrays.asList(args).contains(argument.toString());
+    private static boolean hasArgument(final String[] args) {
+        log.debug("Called with args: {}", (Object) args);
+        final boolean result = Arrays.asList(args).contains(ArgumentType.HELP.toString());
         log.debug("Returning: {}", result);
         return result;
     }
