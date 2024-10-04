@@ -1,16 +1,17 @@
 package de.hdm_stuttgart.mi.dad;
 
+import de.hdm_stuttgart.mi.dad.connectionprofile.ConnectionProfile;
+import de.hdm_stuttgart.mi.dad.connectionprofile.ConnectionProfileHandler;
 import de.hdm_stuttgart.mi.dad.core.Service;
 import de.hdm_stuttgart.mi.dad.core.entity.Table;
 import de.hdm_stuttgart.mi.dad.core.ports.RepositoryPort;
 import de.hdm_stuttgart.mi.dad.core.ports.ServicePort;
+import de.hdm_stuttgart.mi.dad.driverloader.DriverLoader;
 import de.hdm_stuttgart.mi.dad.incoming.ApplicationHandler;
 import de.hdm_stuttgart.mi.dad.incoming.input.ArgumentValidator;
 import de.hdm_stuttgart.mi.dad.incoming.input.HelpInputHandler;
 import de.hdm_stuttgart.mi.dad.incoming.input.SearchInput;
 import de.hdm_stuttgart.mi.dad.incoming.input.SearchInputHandler;
-import de.hdm_stuttgart.mi.dad.incoming.input.connectionprofile.ConnectionProfile;
-import de.hdm_stuttgart.mi.dad.incoming.input.connectionprofile.ConnectionProfileHandler;
 import de.hdm_stuttgart.mi.dad.incoming.output.OutputHandler;
 import de.hdm_stuttgart.mi.dad.outgoing.repository.RepositoryFactory;
 import org.slf4j.Logger;
@@ -41,8 +42,11 @@ public class Main {
 
             final SearchInputHandler inputHandler = new SearchInputHandler();
             final ConnectionProfileHandler profileHandler = new ConnectionProfileHandler();
+            final DriverLoader driverLoader = new DriverLoader();
+
             final ConnectionProfile profile = profileHandler.getConnectionProfile(args);
-            //final ConnectionProfile profile = new ConnectionProfile("postgresql", "localhost", "5432", "test", "test", "test");
+            //final ConnectionProfile profile = new ConnectionProfile("postgresql", "org.postgresql.Driver", "I:/Uni/Semester 6/Database and application developement/dbgrep/postgresql-42.7.4.jar", "localhost", "5432", "test", "test", "test");
+            driverLoader.loadDriver(profile);
 
             final String url = String.format("jdbc:%s://%s:%s/%s", profile.driver(), profile.host(), profile.port(), profile.database());
             try (Connection connection = DriverManager.getConnection(url, profile.user(), profile.password())) {
