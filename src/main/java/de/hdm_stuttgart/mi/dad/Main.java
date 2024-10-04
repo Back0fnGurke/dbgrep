@@ -52,11 +52,7 @@ public class Main {
                 final SearchInput searchInput = inputHandler.handleInput(args);
                 final List<Table> resultTables = applicationHandler.handle(searchInput);
 
-                for (Table table : resultTables) {
-                    if (!table.rows().isEmpty()) {
-                        OutputHandler.printTable(table, searchInput.propertyList(), resultTables.size() - resultTables.indexOf(table) - 1);
-                    }
-                }
+                OutputHandler.handleOutput(resultTables, searchInput.propertyList());
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
