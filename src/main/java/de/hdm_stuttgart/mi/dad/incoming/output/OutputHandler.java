@@ -20,7 +20,7 @@ public class OutputHandler {
 
     private static final Logger log = LoggerFactory.getLogger(OutputHandler.class);
 
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 5;
     private static final String RED = "\u001B[31m";
     private static final String END = "\u001b[0m";
 
@@ -211,13 +211,12 @@ public class OutputHandler {
      * @param countOfRemainingTables count of remaining tables that have not been printed
      */
     private static void printUserInputInfo(int tableSize, int index, int countOfRemainingTables) {
-        String message = "There are" + tableSize + "matching entries from this table.";
-        message += "Of these, " + index + " have been printed. \n";
-        message += "Type m for more entries. ";
+        String message = index + "/" + tableSize + " entries of table printed.\n";
+        message += "Type m for more entries.\n";
         if (countOfRemainingTables > 1) {
-            message += "Type c to close this table and print the next table. There are " + countOfRemainingTables + " remaining tables.";
+            message += "Type c to close this table and print the next table. There are " + countOfRemainingTables + " remaining tables.\n";
         } else if (countOfRemainingTables == 1) {
-            message += "Type c to close this table and print the next table. There is " + countOfRemainingTables + " remaining table.";
+            message += "Type c to close this table and print the next table. There is " + countOfRemainingTables + " remaining table.\n";
         }
         message += "Type q to quit.";
         System.out.println(message);
