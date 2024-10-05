@@ -24,6 +24,9 @@ public class OutputHandler {
     private static final String BOLD = "\u001B[1m";
     private static final String RESET = "\u001B[0m";
 
+    private OutputHandler() {
+    }
+
     public static void handleOutput(final List<Table> resultTables, final List<Property<?>> properties) {
         log.debug("Called with resultTables: {}, properties: {}", resultTables, properties);
         if (isNoResultsFound(resultTables)) {
