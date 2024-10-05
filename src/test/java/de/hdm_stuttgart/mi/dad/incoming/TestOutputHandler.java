@@ -213,7 +213,7 @@ class TestOutputHandler {
                 + "----------------------------------------------" + System.lineSeparator()
                 + BOLD + YELLOW + "Page 2 of 2 " + RESET + System.lineSeparator() + System.lineSeparator()
                 + GREEN + "Enter " + BOLD + BLUE + "N" + RESET + GREEN + " for next page, " + BOLD + BLUE + "P" + RESET + GREEN + " for previous page, " + BOLD + BLUE + "Q" + RESET + GREEN + " to quit:" + RESET
-                + BOLD + GREEN + "Exiting pagination. Goodbye!" + RESET;
+                + BOLD + GREEN + "Exiting. Goodbye!" + RESET;
 
         assertEquals(expected, outputStreamCaptor.toString().trim());
     }
@@ -317,7 +317,7 @@ class TestOutputHandler {
                 + "----------------------------------------------" + System.lineSeparator()
                 + BOLD + YELLOW + "Page 1 of 2 " + RESET + System.lineSeparator() + System.lineSeparator()
                 + GREEN + "Enter " + BOLD + BLUE + "N" + RESET + GREEN + " for next page, " + BOLD + BLUE + "P" + RESET + GREEN + " for previous page, " + BOLD + BLUE + "Q" + RESET + GREEN + " to quit:" + RESET
-                + BOLD + GREEN + "Exiting pagination. Goodbye!" + RESET + System.lineSeparator();
+                + BOLD + GREEN + "Exiting. Goodbye!" + RESET + System.lineSeparator();
 
         assertEquals(expected, outputStreamCaptor.toString());
     }
@@ -389,7 +389,7 @@ class TestOutputHandler {
                 "------------------" + System.lineSeparator() +
                 BOLD + YELLOW + "Page 1 of 2 " + RESET + System.lineSeparator() + System.lineSeparator() +
                 GREEN + "Enter " + BOLD + BLUE + "N" + RESET + GREEN + " for next page, " + BOLD + BLUE + "P" + RESET + GREEN + " for previous page, " + BOLD + BLUE + "Q" + RESET + GREEN + " to quit:" + RESET +
-                BOLD + GREEN + "Exiting pagination. Goodbye!" + RESET + System.lineSeparator();
+                BOLD + GREEN + "Exiting. Goodbye!" + RESET + System.lineSeparator();
 
         assertEquals(expected, outputStreamCaptor.toString());
     }
