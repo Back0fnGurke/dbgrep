@@ -11,23 +11,57 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
- * Argument types that the user can use. They always start with “--”.
+ * Enum representing different types of arguments.
  */
 public enum ArgumentType {
+    /**
+     * Argument for specifying a profile.
+     */
     PROFILE("--profile", false),
 
+    /**
+     * Argument for specifying a column.
+     */
     COLUMN("--column", false),
+    /**
+     * Argument for specifying a table.
+     */
     TABLE("--table", false),
 
+    /**
+     * Argument for specifying an equal condition.
+     */
     EQUAL("--equal", true),
+    /**
+     * Argument for specifying a like condition.
+     */
     LIKE("--like", true),
+    /**
+     * Argument for specifying a greater condition.
+     */
     GREATER("--greater", true),
+    /**
+     * Argument for specifying a range condition.
+     */
     RANGE("--range", true),
+    /**
+     * Argument for specifying a regex condition.
+     */
     REGEX("--regex", true),
 
+    /**
+     * Argument for specifying a help request.
+     */
     HELP("--help", false);
 
+    /**
+     * The argument string.
+     */
     public final String argumentString;
+
+    /**
+     * Indicates if the argument is a property.
+     */
     public final boolean isProperty;
 
     ArgumentType(String argumentString, boolean isProperty) {

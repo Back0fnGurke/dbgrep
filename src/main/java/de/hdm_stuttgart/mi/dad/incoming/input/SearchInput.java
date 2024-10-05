@@ -7,8 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents the input for a search operation, containing properties, tables, columns, and search flags.
- * This class is immutable and ensures that the lists and maps provided are unmodifiable.
+ * Represents the search input data.
+ *
+ * @param propertyList  the list of properties used in the search
+ * @param tables        the list of tables to search
+ * @param columns       the map of table names to their respective columns
+ * @param searchTables  flag indicating whether to search tables
+ * @param searchColumns flag indicating whether to search columns
  */
 public record SearchInput(List<Property<?>> propertyList, List<String> tables, Map<String, List<String>> columns,
                           boolean searchTables, boolean searchColumns) {

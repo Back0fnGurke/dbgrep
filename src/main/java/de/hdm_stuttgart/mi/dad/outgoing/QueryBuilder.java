@@ -12,13 +12,10 @@ import java.util.Map;
 /**
  * This class is responsible for building SQL query strings based on provided properties and their corresponding columns.
  * It uses a map of property expressions to generate the WHERE clause of the SQL query.
- * <p>
- * The class is not meant to be instantiated multiple times for a single query. Instead, create a single instance and use it to build your query.
- * <p>
- * Example usage:
- * <p>
- * QueryBuilder builder = new QueryBuilder(propertyExpressions);
- * String query = builder.buildQueryString("tableName", propertyColumns);
+ * <p>The class is not meant to be instantiated multiple times for a single query. Instead, create a single instance and use it to build your query.</p>
+ * <p>Example usage:</p>
+ * <p>QueryBuilder builder = new QueryBuilder(propertyExpressions);
+ * String query = builder.buildQueryString("tableName", propertyColumns);</p>
  */
 public final class QueryBuilder {
 

@@ -29,8 +29,7 @@ public class DriverLoader {
 
     /**
      * Loads and registers a JDBC driver specified in the given {@link ConnectionProfile}.
-     * <p>
-     * This method performs the following steps:
+     * <p>This method performs the following steps:</p>
      * <ol>
      *     <li>Validates the existence of the driver JAR file specified in the connection profile.</li>
      *     <li>Creates a new {@link URLClassLoader} to load the driver class from the JAR file.</li>

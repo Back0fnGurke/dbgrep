@@ -21,15 +21,19 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.List;
 
+/**
+ * The main class of the application.
+ */
 public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
+    private Main() {
+    }
+
     /**
-     * This function is started when the application is executed.
-     * Set up everything necessary for SearchLevelHandler and pass the service and user input to it.
-     * Any exceptions are caught and printed for the user.
+     * The main method of the application.
      *
-     * @param args user input
+     * @param args the command line arguments
      */
     public static void main(String[] args) {
         log.debug("args: {}", (Object) args);
@@ -37,8 +41,7 @@ public class Main {
         try {
             if (ArgumentValidator.isValidArguments(args)) return;
             if (HelpInputHandler.handleHelp(args)) return;
-
-            final SearchInputHandler inputHandler = new SearchInputHandler();
+            
             final ConnectionProfileHandler profileHandler = new ConnectionProfileHandler();
             final ConnectionProfile profile = profileHandler.getConnectionProfile(args);
             DriverLoader.loadDriver(profile);
@@ -49,7 +52,7 @@ public class Main {
                 final ServicePort service = new Service(repository);
                 final ApplicationHandler applicationHandler = new ApplicationHandler(service);
 
-                final SearchInput searchInput = inputHandler.handleInput(args);
+                final SearchInput searchInput = SearchInputHandler.handleInput(args);
                 final List<Table> resultTables = applicationHandler.handle(searchInput);
 
                 OutputHandler.handleOutput(resultTables, searchInput.propertyList());

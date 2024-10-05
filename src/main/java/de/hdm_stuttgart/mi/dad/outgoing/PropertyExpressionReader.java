@@ -14,15 +14,11 @@ import java.util.Map;
 /**
  * The PropertyExpressionReader class is responsible for reading the propertyExpressions map from a JSON file.
  * It uses the Jackson library to parse the JSON file and convert it into an EnumMap.
- * <p>
- * The class is not meant to be instantiated. Instead, use its static method to read the propertyExpressions map.
- * <p>
- * The class has a single static method `readPropertyExpressions` that reads the propertyExpressions map from a JSON file.
- * The file name is passed as a string, and the method returns an EnumMap of PropertyType and String.
- * <p>
- * Example usage:
- * <p>
- * EnumMap&lt;PropertyType, String&gt; propertyExpressions = PropertyExpressionReader.readPropertyExpressions("propertyExpressions.json");
+ * <p>The class is not meant to be instantiated. Instead, use its static method to read the propertyExpressions map.</p>
+ * <p>The class has a single static method `readPropertyExpressions` that reads the propertyExpressions map from a JSON file.
+ * The file name is passed as a string, and the method returns an EnumMap of PropertyType and String.</p>
+ * <p>Example usage:</p>
+ * <p>EnumMap&lt;PropertyType, String&gt; propertyExpressions = PropertyExpressionReader.readPropertyExpressions("propertyExpressions.json");</p>
  */
 public class PropertyExpressionReader {
 

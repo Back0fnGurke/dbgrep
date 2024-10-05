@@ -18,6 +18,9 @@ public class SearchInputHandler {
 
     private static final Logger log = LoggerFactory.getLogger(SearchInputHandler.class);
 
+    private SearchInputHandler() {
+    }
+
     /**
      * Processes the given command-line arguments and constructs a {@link SearchInput} object.
      * If the help argument is present, prints the manual and returns null.
@@ -25,7 +28,7 @@ public class SearchInputHandler {
      * @param args the command-line arguments
      * @return a {@link SearchInput} object containing the parsed search parameters
      */
-    public SearchInput handleInput(final String[] args) {
+    public static SearchInput handleInput(final String[] args) {
         log.debug("Called with args: {}", (Object) args);
 
         final List<Property<?>> propertyList = createPropertyList(args);
@@ -47,7 +50,7 @@ public class SearchInputHandler {
      * @param args the command-line arguments
      * @return a {@link List} of {@link Property}
      */
-    private List<Property<?>> createPropertyList(final String[] args) {
+    private static List<Property<?>> createPropertyList(final String[] args) {
         log.debug("Called with args: {}", (Object) args);
         final List<Property<?>> propertyList = new ArrayList<>();
 
@@ -65,7 +68,7 @@ public class SearchInputHandler {
      * @param index        the index of the current argument
      * @param propertyList the {@link List} of {@link Property} to add to
      */
-    private void createPropertyIfArgumentIsProperty(final String[] args, final int index, final List<Property<?>> propertyList) {
+    private static void createPropertyIfArgumentIsProperty(final String[] args, final int index, final List<Property<?>> propertyList) {
         log.debug("Called with args: {}, index: {}, propertyList: {}", args, index, propertyList);
         final String argument = args[index];
 
@@ -84,7 +87,7 @@ public class SearchInputHandler {
      * @param argument the {@link ArgumentType} to search for
      * @return a {@link List} of values associated with the specified {@link ArgumentType}
      */
-    private List<String> findAllValuesOfArgument(final String[] args, final ArgumentType argument) {
+    private static List<String> findAllValuesOfArgument(final String[] args, final ArgumentType argument) {
         log.debug("Called with args: {}, argument: {}", args, argument);
         final List<String> values = new ArrayList<>();
         for (int i = 0; i < args.length - 1; i++) {
@@ -104,7 +107,7 @@ public class SearchInputHandler {
      * @return a {@link Map} where the key is the table name and the value is a {@link List} of column names
      * @throws IllegalArgumentException if the column values are not in the correct format
      */
-    private Map<String, List<String>> createColumnsByTable(final List<String> columnNames) {
+    private static Map<String, List<String>> createColumnsByTable(final List<String> columnNames) {
         log.debug("Called with columnNames: {}", columnNames);
         final Map<String, List<String>> columnsByTable = new HashMap<>();
         for (final String columnValue : columnNames) {
