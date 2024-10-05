@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  *     <li>{@link Equal}: Requires a {@link BigDecimal} value.</li>
  *     <li>{@link GreaterNumeric}: Requires a {@link BigDecimal} value.</li>
  *     <li>{@link GreaterDate}: Requires a {@link LocalDate} value.</li>
- *     <li>{@link RangeNumeric}: Requires a {@link BigDecimal[]} value.</li>
+ *     <li>{@link RangeNumeric}: Requires a {@link BigDecimal} array value.</li>
  * </ul>
  *
  * <p>Each {@link PropertyType} has a corresponding private method in this class that is responsible for creating the {@link Property} object and validating the value type.</p>
@@ -127,7 +127,7 @@ public class PropertyFactory {
      *
      * @param value the value to use when creating the property
      * @return the created property
-     * @throws IllegalArgumentException if the value type is not a {@link BigDecimal[]}
+     * @throws IllegalArgumentException if the value type is not a {@link BigDecimal} array
      */
     private static Property<BigDecimal[]> createRangeNumericProperty(Object value) {
         if (value instanceof BigDecimal[] nums) {

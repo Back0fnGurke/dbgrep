@@ -4,18 +4,14 @@ import java.sql.SQLException;
 
 /**
  * The RepositoryException class extends the RuntimeException class and represents an exception that can occur in the repository layer.
- * <p>
- * This exception is thrown when there is an issue with the database operation, such as a SQL exception.
- * <p>
- * The class has a constructor that takes a SQLException object, which represents the original exception that occurred during the database operation.
- * <p>
- * Example usage:
- * <p>
- * try {
+ * <p>This exception is thrown when there is an issue with the database operation, such as a SQL exception.</p>
+ * <p>The class has a constructor that takes a SQLException object, which represents the original exception that occurred during the database operation.</p>
+ * <p>Example usage:</p>
+ * <p>try {
  * // some database operation
  * } catch (SQLException e) {
  * throw new RepositoryException(e);
- * }
+ * }</p>
  */
 public class RepositoryException extends RuntimeException {
 

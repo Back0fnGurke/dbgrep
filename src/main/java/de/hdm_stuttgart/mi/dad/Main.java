@@ -21,29 +21,29 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.List;
 
+/**
+ * The main class of the application.
+ */
 public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
+    private Main() {
+    }
+
     /**
-     * This function is started when the application is executed.
-     * Set up everything necessary for SearchLevelHandler and pass the service and user input to it.
-     * Any exceptions are caught and printed for the user.
+     * The main method of the application.
      *
-     * @param args user input
+     * @param args the command line arguments
      */
     public static void main(String[] args) {
-        log.debug("args: {}", args);
-
-        //args = new String[]{"--profile", "postgres.cfg", "--greater", "2007-12-24", "--range", "4.0,7.0", "--regex", "test"};
+        log.debug("args: {}", (Object) args);
 
         try {
             if (ArgumentValidator.isValidArguments(args)) return;
             if (HelpInputHandler.handleHelp(args)) return;
-
-            final SearchInputHandler inputHandler = new SearchInputHandler();
+            
             final ConnectionProfileHandler profileHandler = new ConnectionProfileHandler();
             final ConnectionProfile profile = profileHandler.getConnectionProfile(args);
-            //final ConnectionProfile profile = new ConnectionProfile("postgresql", "org.postgresql.Driver", "I:/Uni/Semester 6/Database and application developement/dbgrep/postgresql-42.7.4.jar", "localhost", "5432", "test", "test", "test");
             DriverLoader.loadDriver(profile);
 
             final String url = String.format("jdbc:%s://%s:%s/%s", profile.driver(), profile.host(), profile.port(), profile.database());
@@ -52,14 +52,10 @@ public class Main {
                 final ServicePort service = new Service(repository);
                 final ApplicationHandler applicationHandler = new ApplicationHandler(service);
 
-                final SearchInput searchInput = inputHandler.handleInput(args);
+                final SearchInput searchInput = SearchInputHandler.handleInput(args);
                 final List<Table> resultTables = applicationHandler.handle(searchInput);
 
-                for (Table table : resultTables) {
-                    if (!table.rows().isEmpty()) {
-                        OutputHandler.printTable(table, searchInput.propertyList());
-                    }
-                }
+                OutputHandler.handleOutput(resultTables, searchInput.propertyList());
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());

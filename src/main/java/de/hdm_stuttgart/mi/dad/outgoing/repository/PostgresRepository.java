@@ -25,20 +25,13 @@ import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.RANGE_NUMERIC;
 /**
  * The PostgresRepository class is an implementation of the RepositoryPort interface for PostgreSQL databases.
  * It provides methods to interact with a PostgreSQL database, such as finding table names, column names, and rows with specific properties.
- * <p>
- * The class uses a Connection object to connect to the database and a QueryBuilder object to build SQL queries.
- * <p>
- * The class has a constructor that takes a Connection object and a Map of PropertyType and String pairs, which are used to initialize the connection and queryBuilder fields, respectively.
- * <p>
- * The findTableRowsWithProperties method is used to find rows in a specified table whose columns match the given properties. It builds an SQL query using the QueryBuilder, executes the query, and returns a Table object containing the result.
- * <p>
- * The findTableNames method is used to find the names of all non-system tables in the database. It executes an SQL query and returns a List of table names.
- * <p>
- * The findTableColumnNamesAll, findTableColumnNamesNumeric, and findTableColumnNamesDate methods are used to find the names of all columns, numeric columns, and date columns, respectively, in a specified table. They execute an SQL query and return a List of column names.
- * <p>
- * The getNames method is a private helper method used to get the names from a ResultSet object. It is used by the findTableNames and findTableColumnNames methods.
- * <p>
- * The getResultTable method is a private helper method used to get a Table object from a ResultSet object. It is used by the findTableRowsWithProperties method.
+ * <p>The class uses a Connection object to connect to the database and a QueryBuilder object to build SQL queries.</p>
+ * <p>The class has a constructor that takes a Connection object and a Map of PropertyType and String pairs, which are used to initialize the connection and queryBuilder fields, respectively.</p>
+ * <p>The findTableRowsWithProperties method is used to find rows in a specified table whose columns match the given properties. It builds an SQL query using the QueryBuilder, executes the query, and returns a Table object containing the result.</p>
+ * <p>The findTableNames method is used to find the names of all non-system tables in the database. It executes an SQL query and returns a List of table names.</p>
+ * <p>The findTableColumnNamesAll, findTableColumnNamesNumeric, and findTableColumnNamesDate methods are used to find the names of all columns, numeric columns, and date columns, respectively, in a specified table. They execute an SQL query and return a List of column names.</p>
+ * <p>The getNames method is a private helper method used to get the names from a ResultSet object. It is used by the findTableNames and findTableColumnNames methods.</p>
+ * <p>The getResultTable method is a private helper method used to get a Table object from a ResultSet object. It is used by the findTableRowsWithProperties method.</p>
  */
 class PostgresRepository implements RepositoryPort {
 

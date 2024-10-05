@@ -23,21 +23,16 @@ import static de.hdm_stuttgart.mi.dad.core.property.PropertyType.getNumericTypes
 
 /**
  * The Service class implements the ServicePort interface and provides the main business logic for the application.
- * <p>
- * This class is responsible for searching through tables, columns, and the whole database based on provided properties.
- * It also validates table names and column names.
- * <p>
- * The class has a constructor that takes a RepositoryPort object, which is used to interact with the database.
- * <p>
- * Example usage:
- * <p>
- * RepositoryPort repository = new RepositoryImplementation();
+ * <p>This class is responsible for searching through tables, columns, and the whole database based on provided properties.
+ * It also validates table names and column names.</p>
+ * <p>The class has a constructor that takes a RepositoryPort object, which is used to interact with the database.</p>
+ * <p>Example usage:</p>
+ * <p>RepositoryPort repository = new RepositoryImplementation();
  * Service service = new Service(repository);
  * List&lt;Property&gt; properties = List.of(new Property(...));
  * List&lt;String&gt; tableNames = List.of("table1", "table2");
- * service.searchThroughTables(tableNames, properties);
- * <p>
- * Note: This class throws ServiceException when there is an issue with the service logic.
+ * service.searchThroughTables(tableNames, properties);</p>
+ * <p>Note: This class throws ServiceException when there is an issue with the service logic.</p>
  */
 public class Service implements ServicePort {
 
@@ -193,7 +188,7 @@ public class Service implements ServicePort {
     }
 
     /**
-     * Returns column names with valid column types according to provided property
+     * Returns column names with valid column types according to provided property.
      *
      * @param tableName the table the columns belong to
      * @param property  property for column type check.
@@ -217,7 +212,7 @@ public class Service implements ServicePort {
     }
 
     /**
-     * Returns table names existing in the database
+     * Returns table names existing in the database.
      *
      * @return a list of Strings containing valid non system table names
      * @throws SQLException if a database error occurs

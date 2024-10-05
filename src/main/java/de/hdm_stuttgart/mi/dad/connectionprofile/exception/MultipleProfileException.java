@@ -1,9 +1,15 @@
 package de.hdm_stuttgart.mi.dad.connectionprofile.exception;
 
 /**
- * Is thrown if a default profile is searched for and there are several files in the folder.
+ * Exception thrown when multiple profiles are encountered.
  */
 public class MultipleProfileException extends Exception {
+
+    /**
+     * Constructs a new MultipleProfileException with the specified detail message.
+     *
+     * @param message the detail message
+     */
     public MultipleProfileException(String message) {
         super(message);
     }
