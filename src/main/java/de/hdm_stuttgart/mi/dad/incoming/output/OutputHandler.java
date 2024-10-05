@@ -122,7 +122,7 @@ public class OutputHandler {
                     break;
                 case "Q":
                     isRunning = false;
-                    System.out.println(BOLD + GREEN + "Exiting pagination. Goodbye!" + RESET);
+                    System.out.println(BOLD + GREEN + "Exiting. Goodbye!" + RESET);
                     break;
                 default:
                     System.out.println(RED + BOLD + "Invalid input." + RESET + " Please enter " + BLUE + BOLD + "N" + RESET + " for next page, " + BLUE + BOLD + "P" + RESET + " for previous page, " + BLUE + BOLD + "Q" + RESET + " to quit.");
